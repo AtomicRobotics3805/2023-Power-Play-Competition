@@ -14,12 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package org.firstinspires.ftc.teamcode
+package com.atomicrobotics.cflib.example.localizers
 
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryConstants
 
 @Suppress("PropertyName")
-class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
+class ExampleOdometryConstants : TwoWheelOdometryConstants {
     @JvmField
     var _PARALLEL_X = 0.0 // in; forward offset of the parallel wheel
     @JvmField
@@ -29,9 +29,9 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     @JvmField
     var _PERPENDICULAR_Y = 0.0 // in; left offset of the perpendicular wheel
     @JvmField
-    var _PARALLEL_NAME = "LB"
+    var _PARALLEL_NAME = "LF" // the name of the wheel that the parallel deadwheel encoder is plugged into
     @JvmField
-    var _PERPENDICULAR_NAME = "LF"
+    var _PERPENDICULAR_NAME = "LB" // the name of the wheel that the perpendicular deadwheel encoder is plugged into
 
     override val PARALLEL_X: Double
         get() = _PARALLEL_X
