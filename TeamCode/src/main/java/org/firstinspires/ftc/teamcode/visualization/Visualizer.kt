@@ -27,21 +27,19 @@ import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 
-class Visualizer {
-    fun main() {
-        MeepMeepVisualizer.addRobot(
-            MecanumDrive(
-                CompetitionMecanumDriveConstants,
-                TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-            ) { ExampleTrajectoryFactory.hubFrontStartPose },
-            {
-                sequential {
-                    +Constants.drive.followTrajectory(ExampleTrajectoryFactory.startToHubFront)
-                    +Constants.drive.followTrajectory(ExampleTrajectoryFactory.hubFrontToPark)
-                }
-            },
-            Constants.Color.BLUE
-        )
-        MeepMeepVisualizer.run(ExampleTrajectoryFactory)
-    }
+fun main() {
+    MeepMeepVisualizer.addRobot(
+        MecanumDrive(
+            CompetitionMecanumDriveConstants,
+            TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
+        ) { ExampleTrajectoryFactory.hubFrontStartPose },
+        {
+            sequential {
+                +Constants.drive.followTrajectory(ExampleTrajectoryFactory.startToHubFront)
+                +Constants.drive.followTrajectory(ExampleTrajectoryFactory.hubFrontToPark)
+            }
+        },
+        Constants.Color.BLUE
+    )
+    MeepMeepVisualizer.run(ExampleTrajectoryFactory)
 }
