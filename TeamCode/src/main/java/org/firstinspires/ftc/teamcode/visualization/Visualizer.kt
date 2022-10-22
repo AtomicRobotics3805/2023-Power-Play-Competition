@@ -43,5 +43,5 @@ fun main() {
         },
         Constants.Color.BLUE
     )
-    MeepMeepVisualizer.run(ExampleTrajectoryFactory)
+    MeepMeepVisualizer.run(CompetitionTrajectoryFactory)
 }
