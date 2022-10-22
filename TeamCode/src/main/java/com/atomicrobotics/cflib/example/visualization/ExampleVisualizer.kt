@@ -24,17 +24,22 @@ import com.atomicrobotics.cflib.example.localizers.ExampleOdometryConstants
 import com.atomicrobotics.cflib.example.trajectoryfactory.ExampleTrajectoryFactory
 import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
+import com.noahbres.meepmeep.MeepMeep
 
 fun main() {
+    MeepMeepVisualizer.init()
+    MeepMeepVisualizer.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
     MeepMeepVisualizer.addRobot(
         MecanumDrive(
             ExampleMecanumDriveConstants,
             TwoWheelOdometryLocalizer(ExampleOdometryConstants())
         ) { ExampleTrajectoryFactory.hubFrontStartPose },
-        { sequential {
-            +Constants.drive.followTrajectory(ExampleTrajectoryFactory.startToHubFront)
-            +Constants.drive.followTrajectory(ExampleTrajectoryFactory.hubFrontToPark)
-        } },
+        {
+            sequential {
+                +Constants.drive.followTrajectory(ExampleTrajectoryFactory.startToHubFront)
+                +Constants.drive.followTrajectory(ExampleTrajectoryFactory.hubFrontToPark)
+            }
+        },
         Constants.Color.BLUE
     )
     MeepMeepVisualizer.run(ExampleTrajectoryFactory)
