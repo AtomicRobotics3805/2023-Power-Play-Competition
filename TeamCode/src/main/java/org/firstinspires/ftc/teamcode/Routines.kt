@@ -20,9 +20,9 @@ import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants.drive
 import com.atomicrobotics.cflib.example.mechanisms.Claw
 import com.atomicrobotics.cflib.example.mechanisms.Lift
-import com.atomicrobotics.cflib.example.trajectoryfactory.ExampleTrajectoryFactory
 import com.atomicrobotics.cflib.parallel
 import com.atomicrobotics.cflib.sequential
+import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 /**
  * This class is an example of how to create routines. Routines are essentially just groups of
