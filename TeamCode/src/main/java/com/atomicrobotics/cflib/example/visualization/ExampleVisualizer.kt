@@ -27,8 +27,6 @@ import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import com.noahbres.meepmeep.MeepMeep
 
 fun main() {
-    MeepMeepVisualizer.init()
-    MeepMeepVisualizer.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
     MeepMeepVisualizer.addRobot(
         MecanumDrive(
             ExampleMecanumDriveConstants,
@@ -42,5 +40,5 @@ fun main() {
         },
         Constants.Color.BLUE
     )
-    MeepMeepVisualizer.run(ExampleTrajectoryFactory)
+    MeepMeepVisualizer.run(ExampleTrajectoryFactory, background = MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
 }

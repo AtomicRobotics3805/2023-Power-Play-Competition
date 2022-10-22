@@ -30,8 +30,6 @@ import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 fun main() {
-    MeepMeepVisualizer.init()
-    MeepMeepVisualizer.setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
     MeepMeepVisualizer.addRobot(
         MecanumDrive(
             CompetitionMecanumDriveConstants,
