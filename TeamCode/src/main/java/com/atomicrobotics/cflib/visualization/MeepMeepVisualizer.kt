@@ -32,22 +32,13 @@ import com.atomicrobotics.cflib.trajectories.TrajectoryFactory
 
 object MeepMeepVisualizer {
 
-    lateinit var meepMeep: MeepMeep;
-
     val robots = mutableListOf<Triple<Driver, () -> CommandGroup, Constants.Color>>()
 
-    fun setBackground(background: MeepMeep.Background) {
+    fun run(trajectoryFactory: TrajectoryFactory, windowSize: Int = 600, darkMode: Boolean = true, backgroundAlpha: Float = 0.95f, background: MeepMeep.Background = MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK) {
+        val meepMeep = MeepMeep(windowSize)
         meepMeep.setBackground(background)
-    }
-
-    fun init(windowSize: Int = 600, darkMode: Boolean = true, backgroundAlpha: Float = 0.95f) {
-        meepMeep = MeepMeep(windowSize)
-        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK)
             .setDarkMode(darkMode)
             .setBackgroundAlpha(backgroundAlpha)
-    }
-
-    fun run(trajectoryFactory: TrajectoryFactory) {
         robots.forEach {
             Constants.drive = it.first
             Constants.color = it.third
@@ -69,7 +60,6 @@ object MeepMeepVisualizer {
             ))
         }
         meepMeep.start()
-
     }
 
     fun addRobot(driver: Driver, routine: () -> CommandGroup, color: Constants.Color) {
