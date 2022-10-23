@@ -38,7 +38,7 @@ import java.util.*
  * This class is currently broken. We are working to resolve the issue.
  */
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
-class VuforiaLocalizer(val constants: VuforiaConstants) : Localizer {
+class VuforiaLocalizer(val constants: VuforiaConstants) : SubsystemLocalizer {
 
     val cameraLocationOnRobot: OpenGLMatrix = OpenGLMatrix
             .translation(constants.CAMERA_FORWARD_DISPLACEMENT, constants.CAMERA_LEFT_DISPLACEMENT, constants.CAMERA_VERTICAL_DISPLACEMENT)

@@ -50,7 +50,7 @@ import java.util.*
 @Suppress("PropertyName", "MemberVisibilityCanBePrivate", "unused")
 abstract class Driver(
     val constants: DriveConstants,
-    val localizer: com.atomicrobotics.cflib.driving.localizers.Localizer,
+    val localizer: com.atomicrobotics.cflib.driving.localizers.SubsystemLocalizer,
     private val startPose: () -> Pose2d
 ) : Subsystem {
 

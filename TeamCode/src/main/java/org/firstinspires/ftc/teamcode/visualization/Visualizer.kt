@@ -19,12 +19,8 @@ package org.firstinspires.ftc.teamcode.visualization
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
-import cflibexample.drive.ExampleMecanumDriveConstants
-import cflibexample.localizers.ExampleOdometryConstants
-import cflibexample.trajectoryfactory.ExampleTrajectoryFactory
 import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
-import com.noahbres.meepmeep.MeepMeep
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
@@ -37,8 +33,19 @@ fun main() {
         ) { CompetitionTrajectoryFactory.leftStartPose },
         {
             sequential {
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftStartToLowJunction)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftLowJunctionToTerminal)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftComplexStartToLowJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftComplexLowJunctionToSignal)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftSignalToConeStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
             }
         },
         Constants.Color.BLUE

@@ -24,9 +24,9 @@ import kotlin.math.abs
  * This class is currently broken. We are working to resolve the issue.
  */
 class PoseEstimator(
-    private val odometryLocalizer: Localizer,
+    private val odometryLocalizer: SubsystemLocalizer,
     private val vuforiaLocalizer: VuforiaLocalizer
-) : Localizer {
+) : SubsystemLocalizer {
     override var poseEstimate: Pose2d
         get() = odometryPositions.last().second + absoluteAdjustment + manualAdjustment
         set(value) {

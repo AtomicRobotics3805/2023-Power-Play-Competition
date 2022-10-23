@@ -40,7 +40,7 @@ import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 class MecanumDriveWheelLocalizer(
     private val drive: MecanumDrive,
     private val useExternalHeading: Boolean = true
-) : Localizer {
+) : SubsystemLocalizer {
     private var _poseEstimate = Pose2d()
     override var poseEstimate: Pose2d
         get() = _poseEstimate

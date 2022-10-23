@@ -18,10 +18,12 @@ package org.firstinspires.ftc.teamcode.routines
 
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants.drive
+import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import com.atomicrobotics.cflib.example.mechanisms.Claw
 import com.atomicrobotics.cflib.example.mechanisms.Lift
 import com.atomicrobotics.cflib.parallel
 import com.atomicrobotics.cflib.sequential
+import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 /**
@@ -32,7 +34,9 @@ object Routines {
 
     val initializationRoutine: Command
         get() = parallel {
-
+            +TelemetryCommand(999.9, "Estimated Position") { drive.localizer.poseEstimate.toString() }
+            +TelemetryCommand(999.9, "Parallel Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).parallelEncoder.currentPosition.toString() }
+            +TelemetryCommand(999.9, "Perpendicular Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).perpendicularEncoder.currentPosition.toString() }
         }
 
     val leftMainRoutine: Command

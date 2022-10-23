@@ -33,7 +33,7 @@ import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.driving.DriverControlled
 import com.atomicrobotics.cflib.driving.TankDriveConstants
-import com.atomicrobotics.cflib.driving.localizers.Localizer
+import com.atomicrobotics.cflib.driving.localizers.SubsystemLocalizer
 import java.util.*
 
 /**
@@ -48,7 +48,7 @@ import java.util.*
 @Suppress("unused")
 @Config
 class TankDrive(constants: TankDriveConstants,
-                localizer: Localizer,
+                localizer: SubsystemLocalizer,
                 startPose: () -> Pose2d = { Pose2d() }
 ) : Driver(constants, localizer, startPose) {
 

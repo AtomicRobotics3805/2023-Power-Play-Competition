@@ -39,7 +39,7 @@ import com.atomicrobotics.cflib.roadrunner.Encoder
 class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoTrackingWheelLocalizer(listOf(
     Pose2d(constants.PARALLEL_X, constants.PARALLEL_Y, 0.0),
     Pose2d(constants.PERPENDICULAR_X, constants.PERPENDICULAR_Y, Math.toRadians(90.0))
-)), Localizer {
+)), SubsystemLocalizer {
 
     @JvmField
     var TICKS_PER_REV = 8192 // REV through bore encoder
@@ -68,6 +68,7 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
 
         if (PERPENDICULAR_REVERSED) perpendicularEncoder.direction = Encoder.Direction.REVERSE
         if (PARALLEL_REVERSED) parallelEncoder.direction = Encoder.Direction.REVERSE
+
     }
 
     /**
