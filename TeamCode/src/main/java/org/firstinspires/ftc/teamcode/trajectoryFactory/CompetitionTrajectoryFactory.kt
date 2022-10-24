@@ -95,12 +95,6 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
         leftComplexLowJunctionToSignal = Constants.drive.trajectoryBuilder(leftComplexStartToLowJunction.end())
             .splineToLinearHeading(Pose2d(34.5, 46.8, 270.0.toRadians), 270.0.toRadians)
             .build()
-        // ~ 12.0
-        leftSignalResultRed = Constants.drive.trajectoryBuilder(leftComplexLowJunctionToSignal.end())
-            //.splineToSplineHeading(Pose2d(34.5, 23.0, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
-            .lineTo(Vector2d(34.5, 25.5))
-            .splineTo(Vector2d(60.0, 12.0), 0.0.toRadians)
-            .build()
         leftSignalToConeStack = Constants.drive.trajectoryBuilder(leftComplexLowJunctionToSignal.end())
             .lineTo(Vector2d(34.5, 25.5))
             .splineTo(Vector2d(60.0, 12.0), 0.0.toRadians)
@@ -110,6 +104,21 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
             .build()
         highJunctionToConeStack = Constants.drive.trajectoryBuilder(coneStackToHighJunction.end())
             .lineTo(Vector2d(60.0, 12.0))
+            .build()
+
+        // ~ 12.0
+     //   leftSignalResultRed = Constants.drive.trajectoryBuilder(leftComplexLowJunctionToSignal.end())
+            //.splineToSplineHeading(Pose2d(34.5, 23.0, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+         //   .lineTo(Vector2d(34.5, 25.5))
+          //  .splineTo(Vector2d(60.0, 12.0), 0.0.toRadians)
+         //   .build()
+
+        leftSignalResultBlue = Constants.drive.trajectoryBuilder(highJunctionToConeStack.end())
+            .lineTo(Vector2d(11.5, 11.5))
+            .build()
+
+        leftSignalResultRed = Constants.drive.trajectoryBuilder(highJunctionToConeStack.end())
+            .lineTo(Vector2d(58.0, 30.5))
             .build()
 
 

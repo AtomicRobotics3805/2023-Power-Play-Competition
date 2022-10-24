@@ -19,10 +19,16 @@ package org.firstinspires.ftc.teamcode.visualization
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
+import com.atomicrobotics.cflib.parallel
 import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
+import org.firstinspires.ftc.teamcode.mechanisms.Arm
+import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
+import org.firstinspires.ftc.teamcode.mechanisms.Lift
+import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 fun main() {
@@ -30,7 +36,7 @@ fun main() {
         MecanumDrive(
             CompetitionMecanumDriveConstants,
             TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-        ) { CompetitionTrajectoryFactory.leftStartPose },
+        ) { CompetitionTrajectoryFactory.leftComplexStartPose },
         {
             sequential {
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftComplexStartToLowJunction)
@@ -44,8 +50,8 @@ fun main() {
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftSignalResultRed)
+                // Park
             }
         },
         Constants.Color.BLUE

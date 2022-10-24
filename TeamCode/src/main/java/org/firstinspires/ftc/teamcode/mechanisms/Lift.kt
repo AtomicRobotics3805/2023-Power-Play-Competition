@@ -41,14 +41,32 @@ object Lift : Subsystem {
     // configurable constants
     @JvmField
     var NAME = "lift"
+
+    // Lift Positions
     @JvmField
-    var SPEED = 1.0
+    var HIGH_JUNCTION = 10.0 // in
     @JvmField
-    var HIGH_POSITION = 10.0 // in
+    var MEDIUM_JUNCTION = 5.0 // in
     @JvmField
-    var LOW_POSITION = 5.0 // in
+    var LOW_JUNCTION = 3.0 // in
+    @JvmField
+    var GROUND_JUNCTION = 0.5 // in
+    @JvmField
+    var INTAKE_POSITION = 0.0 // in
+    @JvmField
+    var STACK_5 = 5.0 // in
+    @JvmField
+    var STACK_4 = 4.0 // in
+    @JvmField
+    var STACK_3 = 3.0 // in
+    @JvmField
+    var STACK_2 = 2.0 // in
+
+    // Motor Information
     @JvmField
     var DIRECTION = DcMotorSimple.Direction.FORWARD
+    @JvmField
+    var SPEED = 1.0
 
     // unconfigurable constants
     private const val PULLEY_WIDTH = 1.0 // in
@@ -56,17 +74,33 @@ object Lift : Subsystem {
     private const val DRIVE_GEAR_REDUCTION = 1.0 // higher value means that driven gear is slower
     private const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (PULLEY_WIDTH * Math.PI)
 
-    // commands
-    val toLow: Command
-        get() = MotorToPosition(liftMotor, (LOW_POSITION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
-    val toHigh: Command
-        get() = MotorToPosition(liftMotor, (HIGH_POSITION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    // manual control
     val start: Command
         get() = PowerMotor(liftMotor, SPEED, requirements = listOf(this))
     val reverse: Command
         get() = PowerMotor(liftMotor, -SPEED, requirements = listOf(this))
     val stop: Command
         get() = PowerMotor(liftMotor, 0.0, requirements = listOf(this))
+
+    // preset positions
+    val toHigh: Command
+        get() = MotorToPosition(liftMotor, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toMedium: Command
+        get() = MotorToPosition(liftMotor, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toLow: Command
+        get() = MotorToPosition(liftMotor, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toGround: Command
+        get() = MotorToPosition(liftMotor, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toIntake: Command
+        get() = MotorToPosition(liftMotor, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toLevel5: Command
+        get() = MotorToPosition(liftMotor, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toLevel4: Command
+        get() = MotorToPosition(liftMotor, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toLevel3: Command
+        get() = MotorToPosition(liftMotor, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val toLevel2: Command
+        get() = MotorToPosition(liftMotor, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
 
     // motor
     lateinit var liftMotor: DcMotorEx

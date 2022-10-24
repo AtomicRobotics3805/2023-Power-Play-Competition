@@ -38,17 +38,21 @@ object Arm : Subsystem {
     @JvmField
     var NAME = "arm"
     @JvmField
-    var OPEN_POSITION = 0.0
+    var FORWARD = 0.0
     @JvmField
-    var CLOSE_POSITION = 1.0
+    var MIDDLE = 0.5
+    @JvmField
+    var BACK = 1.0
     @JvmField
     var TIME = 1.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
 
     // commands
-    val open: Command
-        get() = MoveServo(armServo, OPEN_POSITION, TIME, listOf(this), true)
-    val close: Command
-        get() = MoveServo(armServo, CLOSE_POSITION, TIME, listOf(this), true)
+    val toForward: Command
+        get() = MoveServo(armServo, FORWARD, TIME, listOf(this), true)
+    val toMiddle: Command
+        get() = MoveServo(armServo, MIDDLE, TIME, listOf(this), true)
+    val toBack: Command
+        get() = MoveServo(armServo, BACK, TIME, listOf(this), true)
 
     // servo
     private lateinit var armServo: Servo

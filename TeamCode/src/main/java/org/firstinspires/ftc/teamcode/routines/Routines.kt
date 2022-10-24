@@ -16,14 +16,15 @@
 */
 package org.firstinspires.ftc.teamcode.routines
 
-import com.atomicrobotics.cflib.Command
+import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
-import com.atomicrobotics.cflib.example.mechanisms.Claw
-import com.atomicrobotics.cflib.example.mechanisms.Lift
-import com.atomicrobotics.cflib.parallel
-import com.atomicrobotics.cflib.sequential
+import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
+import org.firstinspires.ftc.teamcode.mechanisms.Arm
+import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
+import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 /**
@@ -49,9 +50,156 @@ object Routines {
             }
         }
 
-    val teleOpStartRoutine: Command
-        get() = parallel {
-            +Lift.toLow
+    // Color sensor value
+
+
+    val stackScoreRoutine: Command
+        get() = sequential {
+            // Drive to low junction
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.leftComplexStartToLowJunction)
+                +Lift.toHigh
+                +Arm.toMiddle
+            }
+            // Score preload
             +Claw.open
+
+            // Drive to signal
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.leftComplexLowJunctionToSignal)
+                +sequential {
+                    +parallel {
+                        +Claw.close
+                        +Arm.toForward
+                    }
+                    +Lift.toLow
+                    +Claw.open
+                }
+            }
+            // Detect signal
+            +ColorSensor.detect
+
+            // CYCLE 1:
+            // Drive to cone stack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.leftSignalToConeStack)
+                +Arm.toForward
+                +Lift.toLevel5
+            }
+            // Pick up cone
+            +Claw.close
+            +sequential {
+                // Lift cone
+                +Lift.toHigh
+                // Drive away
+                parallel {
+                    +drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                    +Arm.toMiddle
+                }
+            }
+            // Score cone
+            +Claw.open
+
+            // CYCLE 2:
+            // Drive to cone stack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Arm.toForward
+                +Lift.toLevel4
+            }
+            // Pick up cone
+            +Claw.close
+            +sequential {
+                // Lift cone
+                +Lift.toHigh
+                // Drive away
+                parallel {
+                    +drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                    +Arm.toMiddle
+                }
+            }
+            // Score cone
+            +Claw.open
+
+            // CYCLE 3:
+            // Drive to cone stack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Arm.toForward
+                +Lift.toLevel3
+            }
+            // Pick up cone
+            +Claw.close
+            +sequential {
+                // Lift cone
+                +Lift.toHigh
+                // Drive away
+                parallel {
+                    +drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                    +Arm.toMiddle
+                }
+            }
+            // Score cone
+            +Claw.open
+
+            // CYCLE 4:
+            // Drive to cone stack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Arm.toForward
+                +Lift.toLevel2
+            }
+            // Pick up cone
+            +Claw.close
+            +sequential {
+                // Lift cone
+                +Lift.toHigh
+                // Drive away
+                parallel {
+                    +drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                    +Arm.toMiddle
+                }
+            }
+            // Score cone
+            +Claw.open
+
+            // CYCLE 5:
+            // Drive to cone stack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Arm.toForward
+                +Lift.toIntake
+            }
+            // Pick up cone
+            +Claw.close
+            +sequential {
+                // Lift cone
+                +Lift.toHigh
+                // Drive away
+                parallel {
+                    +drive.followTrajectory(CompetitionTrajectoryFactory.coneStackToHighJunction)
+                    +Arm.toMiddle
+                }
+            }
+            // Score cone
+            +Claw.open
+            + sequential {
+                +Lift.toIntake
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToConeStack)
+                +Claw.close
+            }
+            // Park
+            +ConditionalCommand({ ColorSensor.detectedColor == ColorSensor.SleeveColor.RED }, { CommandScheduler.scheduleCommand(
+                redRoutine)})
+        }
+
+    val blueRoutine: Command
+        get() = sequential {
+
+        }
+
+    val redRoutine: Command
+        get() = parallel {
+            +drive.followTrajectory(CompetitionTrajectoryFactory.leftSignalResultRed)
         }
 }
