@@ -56,6 +56,9 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
     lateinit var coneStackToHighJunction: ParallelTrajectory
     lateinit var highJunctionToConeStack: ParallelTrajectory
 
+    lateinit var forward: ParallelTrajectory
+    lateinit var strafeRight: ParallelTrajectory
+
     /**
      * Initializes the robot's start positions and trajectories. This is where the trajectories are
      * actually created.
@@ -79,6 +82,15 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
         leftSensorStartToLeftSignal = Constants.drive.trajectoryBuilder(leftSensorStartPose)
             .lineTo(Vector2d(34.5, 46.8))
             .build()
+
+        forward = Constants.drive.trajectoryBuilder(Pose2d())
+            .forward(10.0)
+            .build()
+        strafeRight = Constants.drive.trajectoryBuilder(forward.end())
+            .strafeRight(10.0)
+            .build()
+
+
 
         // 36.4
         leftSignalToLeftParkZone = Constants.drive.trajectoryBuilder(leftSensorStartToLeftSignal.end())
