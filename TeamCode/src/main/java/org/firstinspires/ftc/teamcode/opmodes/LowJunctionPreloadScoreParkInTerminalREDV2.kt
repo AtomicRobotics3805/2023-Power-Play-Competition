@@ -10,9 +10,9 @@ import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
-@Autonomous(name = "Score Preload in Low Junction & Park in Terminal")
+@Autonomous(name = "Score Preload in Low Junction & Park in Terminal (RED)")
 class LowJunctionPreloadScoreParkInTerminalREDV2 : AutonomousOpMode(
-    Constants.Color.BLUE,
+    Constants.Color.RED,
     CompetitionTrajectoryFactory,
     { Routines.leftMainRoutine },
     { Routines.initializationRoutine },

@@ -21,13 +21,13 @@ import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryConstants
 @Suppress("PropertyName")
 class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     @JvmField
-    var _PARALLEL_X = 0.0 // in; forward offset of the parallel wheel
+    var _PARALLEL_X = -4.5 // in; forward offset of the parallel wheel
     @JvmField
-    var _PARALLEL_Y = 0.0 // in; left offset of the parallel wheel
+    var _PARALLEL_Y = -1.5 // in; left offset of the parallel wheel
     @JvmField
-    var _PERPENDICULAR_X = 0.0 // in; forward offset of the perpendicular wheel
+    var _PERPENDICULAR_X = -5.0 // in; forward offset of the perpendicular wheel
     @JvmField
-    var _PERPENDICULAR_Y = 0.0 // in; left offset of the perpendicular wheel
+    var _PERPENDICULAR_Y = 2.0 // in; left offset of the perpendicular wheel
     @JvmField
     var _PARALLEL_NAME = "LB"
     @JvmField

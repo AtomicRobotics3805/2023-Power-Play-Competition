@@ -74,7 +74,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _GEAR_RATIO = 1.0 // output (wheel) speed / input (motor) speed
     @JvmField
-    var _TRACK_WIDTH = 12.5 // in, the distance between center of left and right drive wheels
+    var _TRACK_WIDTH = 12.25 // in, the distance between center of left and right drive wheels
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
