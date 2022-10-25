@@ -35,6 +35,8 @@ import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.driving.DriveConstants
 import com.atomicrobotics.cflib.driving.FollowTrajectory
 import com.atomicrobotics.cflib.driving.Turn
+import com.atomicrobotics.cflib.roadrunner.AxisDirection
+import com.atomicrobotics.cflib.roadrunner.BNO055IMUUtil
 import com.atomicrobotics.cflib.roadrunner.DashboardUtil
 import com.atomicrobotics.cflib.roadrunner.LynxModuleUtil
 import com.atomicrobotics.cflib.subsystems.Subsystem
@@ -161,6 +163,7 @@ abstract class Driver(
         // if your hub is mounted vertically, remap the IMU axes so that the z-axis points
         // upward (normal to the floor) using a command like the following:
         //BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+        BNO055IMUUtil.remapZAxis(imu, constants.VERTICAL_AXIS)
         // initializes the batteryVoltageSensor
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next()
         // makes sure the turnController knows to go from 0 to 2pi (a full rotation in radians)

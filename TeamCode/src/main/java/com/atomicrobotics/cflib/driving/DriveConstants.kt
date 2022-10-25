@@ -17,6 +17,7 @@
 package com.atomicrobotics.cflib.driving
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients
+import com.atomicrobotics.cflib.roadrunner.AxisDirection
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
 
 /**
@@ -42,6 +43,22 @@ interface DriveConstants {
     val TRANSLATIONAL_PID: PIDCoefficients
     val HEADING_PID: PIDCoefficients
     val DRIVER_SPEEDS: List<Double>
+    /**
+    Depending on the direction your hub is mounted, the IMU has to be reset to have a different vertical direction.
+    //                           | Z axis
+    //                           |
+    //     (Motor Port Side)     |   / X axis
+    //                       ____|__/____
+    //          Y axis     / *   | /    /|   (IO Side)
+    //          _________ /______|/    //      I2C
+    //                   /___________ //     Digital
+    //                  |____________|/      Analog
+    //
+    //                 (Servo Port Side)
+    //
+    // The positive x axis points toward the USB port(s)
+    */
+    val VERTICAL_AXIS: AxisDirection
 
     /**
      * Converts encoder ticks to inches

@@ -20,6 +20,7 @@ import com.acmerobotics.roadrunner.control.PIDCoefficients
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import com.atomicrobotics.cflib.driving.MecanumDriveConstants
+import com.atomicrobotics.cflib.roadrunner.AxisDirection
 import com.atomicrobotics.cflib.trajectories.toRadians
 
 /**
@@ -142,6 +143,10 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _RIGHT_BACK_NAME = "RB"
 
+    // the vertical  direction the hub is mounted
+    @JvmField
+    var _VERTICAL_AXIS = AxisDirection.POS_X
+
     override val TICKS_PER_REV: Double
         get() = _TICKS_PER_REV
     override val MAX_RPM: Double
@@ -198,4 +203,6 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
         get() = _HEADING_PID
     override val DRIVER_SPEEDS: List<Double>
         get() = _DRIVER_SPEEDS
+    override val VERTICAL_AXIS: AxisDirection
+        get() = _VERTICAL_AXIS
 }
