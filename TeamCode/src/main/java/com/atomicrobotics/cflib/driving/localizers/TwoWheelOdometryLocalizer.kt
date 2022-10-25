@@ -48,9 +48,9 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
     @JvmField
     var GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
     @JvmField
-    var PARALLEL_REVERSED = true
+    var PARALLEL_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
-    var PERPENDICULAR_REVERSED = true
+    var PERPENDICULAR_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
     var X_MULTIPLIER = 1.0
     @JvmField

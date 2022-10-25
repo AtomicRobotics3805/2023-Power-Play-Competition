@@ -6,11 +6,13 @@ import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import com.atomicrobotics.cflib.opmodes.AutonomousOpMode
 import com.atomicrobotics.cflib.sequential
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
+@Autonomous(name = "Drive Strafe Test")
 class DriveStrafeTest : AutonomousOpMode (
     Constants.Color.BLUE,
     CompetitionTrajectoryFactory,

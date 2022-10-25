@@ -125,13 +125,13 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
 
     // these are the directions (forward or reverse) for each motor
     @JvmField
-    var _LEFT_FRONT_DIRECTION = DcMotorSimple.Direction.REVERSE
+    var _LEFT_FRONT_DIRECTION = DcMotorSimple.Direction.FORWARD
     @JvmField
-    var _LEFT_BACK_DIRECTION = DcMotorSimple.Direction.REVERSE
+    var _LEFT_BACK_DIRECTION = DcMotorSimple.Direction.FORWARD
     @JvmField
-    var _RIGHT_FRONT_DIRECTION = DcMotorSimple.Direction.FORWARD
+    var _RIGHT_FRONT_DIRECTION = DcMotorSimple.Direction.REVERSE
     @JvmField
-    var _RIGHT_BACK_DIRECTION = DcMotorSimple.Direction.FORWARD
+    var _RIGHT_BACK_DIRECTION = DcMotorSimple.Direction.REVERSE
 
     // these are the names for the motors in the configuration files on the robot
     @JvmField
