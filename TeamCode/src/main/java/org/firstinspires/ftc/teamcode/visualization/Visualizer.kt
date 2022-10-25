@@ -21,6 +21,7 @@ import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import com.atomicrobotics.cflib.parallel
 import com.atomicrobotics.cflib.sequential
+import com.atomicrobotics.cflib.visualization.MeepMeepRobot
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
@@ -32,11 +33,13 @@ import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 fun main() {
-    MeepMeepVisualizer.addRobot(
+    MeepMeepVisualizer.addRobot(MeepMeepRobot(
         MecanumDrive(
             CompetitionMecanumDriveConstants,
             TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
         ) { CompetitionTrajectoryFactory.leftComplexStartPose },
+        14.5,
+        15.0,
         {
             sequential {
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.leftComplexStartToLowJunction)
@@ -55,6 +58,6 @@ fun main() {
             }
         },
         Constants.Color.BLUE
-    )
+    ))
     MeepMeepVisualizer.run(CompetitionTrajectoryFactory)
 }
