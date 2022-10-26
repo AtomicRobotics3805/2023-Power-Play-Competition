@@ -32,7 +32,7 @@ import com.atomicrobotics.cflib.trajectories.TrajectoryFactory
 
 object MeepMeepVisualizer {
 
-    val robots = mutableListOf<Triple<Driver, () -> CommandGroup, Constants.Color>>()
+    val robots = mutableListOf<MeepMeepRobot>()
 
     fun run(trajectoryFactory: TrajectoryFactory, windowSize: Int = 600, darkMode: Boolean = true, backgroundAlpha: Float = 0.95f, background: MeepMeep.Background = MeepMeep.Background.FIELD_POWERPLAY_KAI_DARK) {
         val meepMeep = MeepMeep(windowSize)
@@ -40,31 +40,30 @@ object MeepMeepVisualizer {
             .setDarkMode(darkMode)
             .setBackgroundAlpha(backgroundAlpha)
         robots.forEach {
-
-            Constants.drive = it.first
-            Constants.color = it.third
+            Constants.drive = it.driver
+            Constants.color = it.color
             trajectoryFactory.initialize()
-            val constants: DriveConstants = it.first.constants
+            val constants: DriveConstants = it.driver.constants
             val botBuilder: DefaultBotBuilder = DefaultBotBuilder(meepMeep)
                 .setConstraints(
                     constants.MAX_VEL, constants.MAX_ACCEL,
                     constants.MAX_ANG_VEL, constants.MAX_ANG_ACCEL,
                     constants.TRACK_WIDTH
                 ).setColorScheme(
-                    if (it.third == Constants.Color.RED) ColorSchemeRedDark()
+                    if (it.color == Constants.Color.RED) ColorSchemeRedDark()
                     else ColorSchemeBlueDark()
                 )
             meepMeep.addEntity(botBuilder.followTrajectorySequence(
                 TrajectorySequence(
-                    routineToSegmentList(it.second.invoke())
+                    routineToSegmentList(it.routine.invoke())
                 )
             ))
         }
         meepMeep.start()
     }
 
-    fun addRobot(driver: Driver, routine: () -> CommandGroup, color: Constants.Color) {
-        robots.add(Triple(driver, routine, color))
+    fun addRobot(robot: MeepMeepRobot) {
+        robots.add(robot)
     }
 
     private fun routineToSegmentList(routine: CommandGroup): List<SequenceSegment> {
