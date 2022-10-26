@@ -38,11 +38,11 @@ object Claw : Subsystem {
     @JvmField
     var NAME = "claw"
     @JvmField
-    var OPEN_POSITION = 0.0
+    var OPEN_POSITION = 0.8
     @JvmField
-    var CLOSE_POSITION = 1.0
+    var CLOSE_POSITION = 0.42
     @JvmField
-    var TIME = 1.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
+    var TIME = 3.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
 
     // commands
     val open: Command

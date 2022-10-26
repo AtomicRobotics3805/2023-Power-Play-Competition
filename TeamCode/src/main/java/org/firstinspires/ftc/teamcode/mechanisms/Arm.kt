@@ -38,11 +38,11 @@ object Arm : Subsystem {
     @JvmField
     var NAME = "arm"
     @JvmField
-    var FORWARD = 0.0
+    var FORWARD = 0.82
     @JvmField
     var MIDDLE = 0.5
     @JvmField
-    var BACK = 1.0
+    var BACK = 0.15
     @JvmField
     var TIME = 1.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
 

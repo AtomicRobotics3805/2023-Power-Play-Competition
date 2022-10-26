@@ -127,7 +127,7 @@ class GamepadEx(private val gamepad: Gamepad) {
             down = value
             // Run the associated commands
             if (pressed && toggleCommands != null && toggleCommands!!.isNotEmpty()) {
-                if (toggleState > toggleCommands!!.size) {
+                if (toggleState >= toggleCommands!!.size) {
                     toggleState = 0
                 }
                 CommandScheduler.scheduleCommand(toggleCommands!![toggleState].invoke())

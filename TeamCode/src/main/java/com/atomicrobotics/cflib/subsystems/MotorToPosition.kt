@@ -85,7 +85,9 @@ open class MotorToPosition(
      * Stops the motor
      */
     override fun end(interrupted: Boolean) {
-        motor.power = 0.0
+        motor.power = speed
+        motor.mode = DcMotor.RunMode.RUN_TO_POSITION
+        motor.targetPosition = motor.currentPosition
     }
 
     /**
@@ -100,7 +102,7 @@ open class MotorToPosition(
             if (positions.size > 1) {
                 val lastSpeed = abs(positions[positions.size - 2] - positions[positions.size - 1])
                 val currentSpeed = abs(positions[positions.size - 1] - motor.currentPosition)
-                if (lastSpeed / currentSpeed >= minimumChangeForStall) {
+                if (currentSpeed == 0 || lastSpeed / currentSpeed >= minimumChangeForStall) {
                     CommandScheduler.scheduleCommand(
                         TelemetryCommand(3.0, "Motor " + motor.deviceName + " Stalled!")
                     )

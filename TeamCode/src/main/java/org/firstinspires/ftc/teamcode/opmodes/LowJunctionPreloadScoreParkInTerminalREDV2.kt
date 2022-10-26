@@ -7,6 +7,9 @@ import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
+import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import org.firstinspires.ftc.teamcode.mechanisms.Lift
+import org.firstinspires.ftc.teamcode.mechanisms.Arm
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
@@ -19,5 +22,8 @@ class LowJunctionPreloadScoreParkInTerminalREDV2 : AutonomousOpMode(
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.leftStartPose }
+    ) { CompetitionTrajectoryFactory.leftStartPose },
+    Arm,
+    Claw,
+    Lift
 )
