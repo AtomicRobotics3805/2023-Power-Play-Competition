@@ -17,12 +17,12 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFac
 class LowJunctionPreloadScoreParkInTerminalREDV2 : AutonomousOpMode(
     Constants.Color.RED,
     CompetitionTrajectoryFactory,
-    { Routines.leftMainRoutine },
+    { Routines.lowJunctionScoreParkInTerminal },
     { Routines.initializationRoutine },
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.leftStartPose },
+    ) { CompetitionTrajectoryFactory.startPoseF4F5 },
     Arm,
     Claw,
     Lift

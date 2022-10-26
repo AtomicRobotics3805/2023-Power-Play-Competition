@@ -70,7 +70,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * looking at the robot. TRACK_WIDTH may require additional tuning, however.
      */
     @JvmField
-    var _WHEEL_RADIUS = 2.0 // in
+    var _WHEEL_RADIUS = 1.8898 // in
     @JvmField
     var _GEAR_RATIO = 1.0 // output (wheel) speed / input (motor) speed
     @JvmField
@@ -88,11 +88,11 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _MAX_VEL = 52.0
     @JvmField
-    var _MAX_ACCEL = 45.0
+    var _MAX_ACCEL = 52.0
     @JvmField
-    var _MAX_ANG_VEL = 90.0.toRadians
+    var _MAX_ANG_VEL = 245.4.toRadians
     @JvmField
-    var _MAX_ANG_ACCEL = 90.0.toRadians
+    var _MAX_ANG_ACCEL = 245.4.toRadians
 
     /*
      * These values are used solely with Mecanum Drives to adjust the kinematics functions that

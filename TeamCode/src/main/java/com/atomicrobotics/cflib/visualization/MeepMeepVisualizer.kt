@@ -40,6 +40,7 @@ object MeepMeepVisualizer {
             .setDarkMode(darkMode)
             .setBackgroundAlpha(backgroundAlpha)
         robots.forEach {
+
             Constants.drive = it.first
             Constants.color = it.third
             trajectoryFactory.initialize()

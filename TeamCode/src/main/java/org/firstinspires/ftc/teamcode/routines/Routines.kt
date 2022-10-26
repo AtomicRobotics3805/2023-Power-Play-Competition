@@ -18,13 +18,9 @@ package org.firstinspires.ftc.teamcode.routines
 
 import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
-import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
-import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
-import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.teamcode.mechanisms.Arm
 import org.firstinspires.ftc.teamcode.mechanisms.Claw
-import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
@@ -35,29 +31,40 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFac
 object Routines {
 
     val initializationRoutine: Command
-        get() = parallel {
-            +TelemetryCommand(999.9, "Estimated Position") { drive.localizer.poseEstimate.toString() }
-            +TelemetryCommand(999.9, "Parallel Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).parallelEncoder.currentPosition.toString() }
-            +TelemetryCommand(999.9, "Perpendicular Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).perpendicularEncoder.currentPosition.toString() }
+        get() = sequential {
+//            +TelemetryCommand(999.9, "Estimated Position") { drive.localizer.poseEstimate.toString() }
+//            +TelemetryCommand(999.9, "Parallel Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).parallelEncoder.currentPosition.toString() }
+//            +TelemetryCommand(999.9, "Perpendicular Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).perpendicularEncoder.currentPosition.toString() }
             +Claw.close
             +Arm.toForward
         }
 
-    val leftMainRoutine: Command
+    val lowJunctionScoreParkInTerminal: Command
         get() = sequential {
             +parallel {
                 +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.leftStartToLowJunction)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.f4F5StartToLowJunction)
             }
             // Score the preloaded cone onto the low junction
             +Claw.open
-            +Delay(0.75)
+            +Delay(0.25)
             +parallel {
-                // Lower the lift to pick up the next element
+                +drive.followTrajectory(CompetitionTrajectoryFactory.f4F5LowJunctionToTerminal)
                 +Lift.toIntake
-                +drive.followTrajectory(CompetitionTrajectoryFactory.leftLowJunctionToTerminal)
             }
         }
+
+    val lowJunctionScoreParkInSignalZone: Command
+        get() = sequential {
+            +parallel {
+                +Lift.toLow
+                +drive.followTrajectory(CompetitionTrajectoryFactory.f4F5StartToLowJunction)
+            }
+            +Claw.open
+            +Delay(0.25)
+
+        }
+
 
     // Color sensor value
 

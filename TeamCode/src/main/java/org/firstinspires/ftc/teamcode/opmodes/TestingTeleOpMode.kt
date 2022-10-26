@@ -37,6 +37,7 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFac
  * TeleOpMode parent class, so all you have to do is pass in the constructor parameters.
  */
 
+@Disabled
 @TeleOp(name = "Testing TeleOp OpMode")
 class ExampleTeleOpMode : TeleOpMode(
     ExampleControls,
