@@ -50,7 +50,7 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
     override fun initialize() {
         super.initialize()
         // start positions
-        startPoseF4F5 = Pose2d(30.0, 61.5.switchColor, 270.0.switchColorAngle.toRadians)
+        startPoseF4F5 = Pose2d(30.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
 
         // trajectories
         f4F5StartToLowJunction = Constants.drive.trajectoryBuilder(startPoseF4F5)
@@ -60,8 +60,9 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
             .lineTo(Vector2d(12.3, 59.5.switchColor))
             .build()
         f4F5LowJunctionToSignal = Constants.drive.trajectoryBuilder(f4F5StartToLowJunction.end())
-            .splineToConstantHeading(Vector2d(30.0, 60.0), 0.0.switchColorAngle.toRadians)
-            .splineToConstantHeading(Vector2d(33.8, 44.2), 270.0.switchColorAngle.toRadians)
+            .lineTo(Vector2d(23.8, 56.2))
+            .splineToConstantHeading(Vector2d(32.0, 60.0), 0.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(33.8, 47.2, 260.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .build()
     }
 }
