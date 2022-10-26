@@ -53,7 +53,7 @@ class MoveServo(private val servo: Servo,
      * Calculates the difference in position, moves the servo, and resets the timer
      */
     override fun start() {
-        positionDif = abs(position - positionDif)
+        positionDif = abs(position - servo.position)
         servo.position = position
         timer.reset()
     }

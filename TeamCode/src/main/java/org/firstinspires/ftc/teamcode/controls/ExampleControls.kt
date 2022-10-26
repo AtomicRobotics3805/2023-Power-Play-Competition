@@ -19,6 +19,9 @@ package org.firstinspires.ftc.teamcode.controls
 import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.controls.Controls
+import org.firstinspires.ftc.teamcode.mechanisms.Arm
+import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import org.firstinspires.ftc.teamcode.mechanisms.Lift
 
 /**
  * This class manages the controls for TeleOp OpModes. It gives examples of how to register
@@ -42,5 +45,13 @@ object ExampleControls : Controls() {
         CommandScheduler.scheduleCommand(Constants.drive.driverControlled(Constants.opMode.gamepad1))
         gamepad1.a.pressedCommand = { Constants.drive.switchSpeed() }
         // gamepad 2
+        gamepad2.dpadDown.pressedCommand = { Lift.toIntake }
+        gamepad2.dpadLeft.pressedCommand = { Lift.toLow }
+        gamepad2.dpadRight.pressedCommand = { Lift.toMedium }
+        gamepad2.dpadUp.pressedCommand = { Lift.toHigh }
+        gamepad2.x.pressedCommand = { Arm.toMiddle }
+        gamepad2.y.pressedCommand = { Arm.toBack }
+        gamepad2.b.pressedCommand = { Arm.toForward }
+        gamepad2.a.toggleCommands = listOf({ Claw.open }, { Claw.close })
     }
 }

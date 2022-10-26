@@ -44,23 +44,23 @@ object Lift : Subsystem {
 
     // Lift Positions
     @JvmField
-    var HIGH_JUNCTION = 10.0 // in
+    var HIGH_JUNCTION = 34.0 // in
     @JvmField
-    var MEDIUM_JUNCTION = 5.0 // in
+    var MEDIUM_JUNCTION = 25.0 // in
     @JvmField
-    var LOW_JUNCTION = 3.0 // in
+    var LOW_JUNCTION = 15.0 // in
     @JvmField
-    var GROUND_JUNCTION = 0.5 // in
+    var GROUND_JUNCTION = 1.5 // in
     @JvmField
     var INTAKE_POSITION = 0.0 // in
     @JvmField
-    var STACK_5 = 5.0 // in
+    var STACK_5 = 8.0 // in
     @JvmField
-    var STACK_4 = 4.0 // in
+    var STACK_4 = 6.75 // in (NOT YET CORRECT)
     @JvmField
-    var STACK_3 = 3.0 // in
+    var STACK_3 = 5.5 // in (NOT YET CORRECT)
     @JvmField
-    var STACK_2 = 2.0 // in
+    var STACK_2 = 4.25 // in
 
     // Motor Information
     @JvmField
@@ -69,7 +69,7 @@ object Lift : Subsystem {
     var SPEED = 1.0
 
     // unconfigurable constants
-    private const val PULLEY_WIDTH = 1.0 // in
+    private const val PULLEY_WIDTH = 2 // in
     private const val COUNTS_PER_REV = 28 * 19.2 // NeveRest 20 orbital (really 19.2 ratio, not 20)
     private const val DRIVE_GEAR_REDUCTION = 1.0 // higher value means that driven gear is slower
     private const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (PULLEY_WIDTH * Math.PI)

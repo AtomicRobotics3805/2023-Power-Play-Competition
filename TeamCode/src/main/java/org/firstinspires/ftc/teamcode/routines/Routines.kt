@@ -20,6 +20,7 @@ import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
+import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.teamcode.mechanisms.Arm
 import org.firstinspires.ftc.teamcode.mechanisms.Claw
@@ -38,14 +39,22 @@ object Routines {
             +TelemetryCommand(999.9, "Estimated Position") { drive.localizer.poseEstimate.toString() }
             +TelemetryCommand(999.9, "Parallel Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).parallelEncoder.currentPosition.toString() }
             +TelemetryCommand(999.9, "Perpendicular Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).perpendicularEncoder.currentPosition.toString() }
+            +Claw.close
+            +Arm.toForward
         }
 
     val leftMainRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.leftStartToLowJunction)
+            +parallel {
+                +Lift.toLow
+                +drive.followTrajectory(CompetitionTrajectoryFactory.leftStartToLowJunction)
+            }
             // Score the preloaded cone onto the low junction
+            +Claw.open
+            +Delay(0.75)
             +parallel {
                 // Lower the lift to pick up the next element
+                +Lift.toIntake
                 +drive.followTrajectory(CompetitionTrajectoryFactory.leftLowJunctionToTerminal)
             }
         }

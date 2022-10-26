@@ -42,7 +42,7 @@ object CommandScheduler {
      */
     // exercise is healthy (and fun!)
     fun run() {
-        if (Constants.opMode.opModeIsActive()) {
+        if (!Constants.opMode.isStopRequested) {
             updateGamepads()
             updateSubsystems()
             scheduleCommands()
@@ -54,6 +54,8 @@ object CommandScheduler {
                     scheduleCommand(TelemetryCommand(30.0, "Error updating " +
                             command.javaClass, e.message ?: "Message Unknown"))
                 }
+
+
                 if (command.isDone) {
                     commandsToCancel += Pair(command, false)
                 }

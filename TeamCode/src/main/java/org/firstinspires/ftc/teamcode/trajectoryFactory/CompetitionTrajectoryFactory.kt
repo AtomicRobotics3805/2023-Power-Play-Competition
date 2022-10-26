@@ -74,7 +74,7 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
         // trajectories
         leftStartToLowJunction = Constants.drive.trajectoryBuilder(leftStartPose)
-            .lineTo(Vector2d(23.8, 59.5.switchColor))
+            .lineTo(Vector2d(23.8, 50.5.switchColor))
             .build()
         leftLowJunctionToTerminal = Constants.drive.trajectoryBuilder(leftStartToLowJunction.end())
             .lineTo(Vector2d(12.3, 59.5.switchColor))
