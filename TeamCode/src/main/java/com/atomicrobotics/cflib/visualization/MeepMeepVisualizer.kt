@@ -45,6 +45,7 @@ object MeepMeepVisualizer {
             trajectoryFactory.initialize()
             val constants: DriveConstants = it.driver.constants
             val botBuilder: DefaultBotBuilder = DefaultBotBuilder(meepMeep)
+                .setDimensions(it.width, it.length)
                 .setConstraints(
                     constants.MAX_VEL, constants.MAX_ACCEL,
                     constants.MAX_ANG_VEL, constants.MAX_ANG_ACCEL,
