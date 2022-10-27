@@ -92,6 +92,7 @@ abstract class TeleOpMode(private val controls: Controls,
             // cancels all commands and unregisters all gamepads & subsystems
             CommandScheduler.cancelAll()
             CommandScheduler.unregisterAll()
+            while (!isStopRequested);
         }
     }
 }

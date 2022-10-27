@@ -29,7 +29,9 @@ val Double.inchesToMm get() = this * 25.4
 val Double.mmToInches get() = this / 25.4
 val Double.toRadians get() = (Math.toRadians(this))
 val Double.switchColorAngle get () = (if (color == BLUE) this else 360 - this)
+val Double.switchApproachTangentAngle get () = (if (color == BLUE) this else this - 180)
 val Double.switchColor get () = (if (color == BLUE) this else this * -1)
+val Double.flipAlongX36 get() = (if (color == BLUE) this else 72 - this)
 fun Pose2d(matrix: OpenGLMatrix) = Pose2d(
     matrix.translation.get(0).toDouble().mmToInches,
     // TODO("Figure out where this is matrix.get(1) (y) or matrix.get(2) (z)")

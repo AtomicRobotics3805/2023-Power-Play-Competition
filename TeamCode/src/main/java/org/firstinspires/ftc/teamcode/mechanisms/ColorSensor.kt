@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode.mechanisms
 
 import com.acmerobotics.dashboard.config.Config
 import com.atomicrobotics.cflib.Command
+import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.NormalizedRGBA
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap
 
 @Config
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
@@ -47,14 +47,14 @@ object ColorSensor : Subsystem {
         }
 
         override fun execute() {
+            colors = colorSensor.normalizedColors
             detectedColor = color
         }
     }
 
     override fun initialize() {
+        colorSensor = Constants.opMode.hardwareMap.get(NormalizedColorSensor::class.java, NAME)
         colorSensor.gain = GAIN
-        colorSensor = hardwareMap.get(NormalizedColorSensor::class.java, NAME)
-        colors = colorSensor.normalizedColors
     }
 
 }

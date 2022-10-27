@@ -82,6 +82,7 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             // cancels all commands and unregisters all gamepads & subsystems
             CommandScheduler.cancelAll()
             CommandScheduler.unregisterAll()
+            while (!isStopRequested);
         }
     }
 }

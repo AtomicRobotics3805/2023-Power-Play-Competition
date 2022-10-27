@@ -18,9 +18,11 @@ package org.firstinspires.ftc.teamcode.routines
 
 import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
+import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
 import org.firstinspires.ftc.teamcode.mechanisms.Arm
 import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
@@ -43,26 +45,33 @@ object Routines {
         get() = sequential {
             +parallel {
                 +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.f4F5StartToLowJunction)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.awayStartToLowJunction)
             }
             // Score the preloaded cone onto the low junction
             +Claw.open
             +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.f4F5LowJunctionToTerminal)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.awayLowJunctionToTerminal)
                 +Lift.toIntake
             }
         }
 
-    val lowJunctionScoreParkInSignalZone: Command
+    val lowJunctionScoreParkInSignalZoneRed: Command
         get() = sequential {
             +parallel {
                 +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.f4F5StartToLowJunction)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.awayStartToLowJunction)
             }
             +Claw.open
             +Delay(0.25)
-
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.awayLowJunctionToAwaySignalRed)
+                +Lift.toIntake
+            }
+            +ColorSensor.detect
+            +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.BLUE }, { CommandScheduler.scheduleCommand(blueRoutine) })
+            +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.RED }, { CommandScheduler.scheduleCommand(redRoutine) })
+            +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.GREEN }, { CommandScheduler.scheduleCommand(greenRoutine) })
         }
 
 
@@ -75,11 +84,16 @@ object Routines {
 
     val blueRoutine: Command
         get() = sequential {
-
+            +drive.followTrajectory(CompetitionTrajectoryFactory.awaySignalResultBlue)
         }
 
     val redRoutine: Command
-        get() = parallel {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.leftSignalResultRed)
+        get() = sequential {
+            +drive.followTrajectory(CompetitionTrajectoryFactory.e5SignalResultRed)
+        }
+
+    val greenRoutine: Command
+        get() = sequential {
+            +drive.followTrajectory(CompetitionTrajectoryFactory.e5SignalResultGreen)
         }
 }
