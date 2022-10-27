@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.atomicrobotics.cflib.roadrunner.AxisDirection;
+import com.atomicrobotics.cflib.roadrunner.BNO055IMUUtil;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -73,7 +75,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
     BNO055IMU imu;
     NormalizedColorSensor colorSensor = null;
 
-    Orientation angles;
+    double angle;
 
     final float[] hsvValues = new float[3];
     final double K = 0.05;
@@ -81,7 +83,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
     final float encoderCountYJ = 537.7f;
     final float circumferenceNR40 = 12.56f;
     final float encoderCountNR40 = 1120f;
-    final float circumferenceDW = 0.688975f;
+    final float circumferenceDW = 4.3289539405f;
     final float encoderCountDW = 8192;
 
     final int liftZero = 0;
@@ -125,15 +127,17 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
 
-        //LF.setDirection(DcMotor.Direction.REVERSE);
-        //RF.setDirection(DcMotor.Direction.FORWARD);
-        //LB.setDirection(DcMotor.Direction.REVERSE);
-        //RB.setDirection(DcMotor.Direction.FORWARD);
+        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_X);
 
-        LF.setDirection(DcMotor.Direction.FORWARD);
-        RF.setDirection(DcMotor.Direction.REVERSE);
-        LB.setDirection(DcMotor.Direction.FORWARD);
-        RB.setDirection(DcMotor.Direction.REVERSE);
+        LF.setDirection(DcMotor.Direction.REVERSE);
+        RF.setDirection(DcMotor.Direction.FORWARD);
+        LB.setDirection(DcMotor.Direction.REVERSE);
+        RB.setDirection(DcMotor.Direction.FORWARD);
+
+        //LF.setDirection(DcMotor.Direction.FORWARD);
+        //RF.setDirection(DcMotor.Direction.REVERSE);
+        //LB.setDirection(DcMotor.Direction.FORWARD);
+        //RB.setDirection(DcMotor.Direction.REVERSE);
 
         LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -149,7 +153,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
         if (opModeIsActive()) {
             //closeClaw();
-            forward(0, 9);
+            forward(0, 16.5);
             sleep(500);
             endLocation = readSensor();
             //raise(liftLow);
@@ -171,8 +175,8 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         }
     }
 
-    Orientation getAngles() {
-        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
+    double getAngles() {
+        return Math.toDegrees(imu.getAngularOrientation().firstAngle);
     }
 
     public EndLocation readSensor(){
@@ -201,18 +205,21 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
         double encoderPosition = (targetPosition / circumferenceDW) * encoderCountDW;
         do {
-            angles = getAngles();
+            angle = getAngles();
             //speed = Range.clip(0.0005 * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
-            speed = 0.4;
-            error = K * (angles.firstAngle - targetAngle);
-            LF.setPower(speed - error);
-            RF.setPower(speed + error);
-            LB.setPower(speed - error);
-            RB.setPower(speed + error);
-            telemetry.addData("Motor Positions", deadWheel.getCurrentPosition());
+            speed = -0.3;
+            error = K * (angle - targetAngle);
+            LF.setPower(speed);
+            RF.setPower(speed);
+            LB.setPower(speed);
+            RB.setPower(speed);
+            telemetry.addData("Motor Positions", -deadWheel.getCurrentPosition());
             telemetry.addData("Target Position", encoderPosition);
+            telemetry.addData("Robot Angle", angle);
+            telemetry.addData("Target Angle", targetAngle);
+            telemetry.addData("Error", error);
             telemetry.update();
-        } while (Math.abs(deadWheel.getCurrentPosition()) < Math.abs(encoderPosition) && opModeIsActive());
+        } while (Math.abs(-deadWheel.getCurrentPosition()) < Math.abs(encoderPosition) && opModeIsActive());
 
         LF.setPower(0);
         RF.setPower(0);
@@ -235,10 +242,10 @@ public class ZaynBackupAutonomous extends LinearOpMode {
             LB.setPower(-0.5);
             RB.setPower(0.5);
             do {
-                angles = getAngles();
-                telemetry.addData("Robot Angle", angles.firstAngle);
+                angle = getAngles();
+                telemetry.addData("Robot Angle", angle);
                 telemetry.update();
-            } while (opModeIsActive() && (angles.firstAngle) > (targetAngle));
+            } while (opModeIsActive() && (angle) > (targetAngle));
         }
         else{
             LF.setPower(0.5);
@@ -246,8 +253,8 @@ public class ZaynBackupAutonomous extends LinearOpMode {
             LB.setPower(0.5);
             RB.setPower(-0.5);
             do {
-                angles = getAngles();
-            } while (opModeIsActive() && (angles.firstAngle) < (targetAngle));
+                angle = getAngles();
+            } while (opModeIsActive() && (angle) < (targetAngle));
         }
 
         LF.setPower(0);
