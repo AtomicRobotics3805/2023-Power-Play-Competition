@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -129,15 +130,15 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
         BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_X);
 
-        LF.setDirection(DcMotor.Direction.REVERSE);
-        RF.setDirection(DcMotor.Direction.FORWARD);
-        LB.setDirection(DcMotor.Direction.REVERSE);
-        RB.setDirection(DcMotor.Direction.FORWARD);
+        //LF.setDirection(DcMotor.Direction.REVERSE);
+        //RF.setDirection(DcMotor.Direction.FORWARD);
+        //LB.setDirection(DcMotor.Direction.REVERSE);
+        //RB.setDirection(DcMotor.Direction.FORWARD);
 
-        //LF.setDirection(DcMotor.Direction.FORWARD);
-        //RF.setDirection(DcMotor.Direction.REVERSE);
-        //LB.setDirection(DcMotor.Direction.FORWARD);
-        //RB.setDirection(DcMotor.Direction.REVERSE);
+        LF.setDirection(DcMotor.Direction.FORWARD);
+        RF.setDirection(DcMotor.Direction.REVERSE);
+        LB.setDirection(DcMotor.Direction.FORWARD);
+        RB.setDirection(DcMotor.Direction.REVERSE);
 
         LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -153,24 +154,28 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
         if (opModeIsActive()) {
             //closeClaw();
-            forward(0, 16.5);
+            forward(0, 15);
+            turn(Direction.RIGHT, -20);
             sleep(500);
             endLocation = readSensor();
             //raise(liftLow);
             //openClaw();
             //lower();
             if (endLocation == EndLocation.LEFT){
+                turn(Direction.LEFT, 0);
                 forward(0, 10.0);
                 turn(Direction.LEFT, 90);
-                forward(90, 16.0);
+                forward(90, 18.0);
             }
             else if (endLocation == EndLocation.MIDDLE){
-                forward(0, 7.0);
+                turn(Direction.LEFT, 0);
+                forward(0, 10.0);
             }
             else {
+                turn(Direction.LEFT, 0);
                 forward(0, 10.0);
-                turn(Direction.RIGHT, -90);
-                forward(-90, 16.0);
+                turn(Direction.RIGHT, -92);
+                forward(-90, 18.0);
             }
         }
     }
@@ -207,12 +212,12 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         do {
             angle = getAngles();
             //speed = Range.clip(0.0005 * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
-            speed = -0.3;
+            speed = 0.3;
             error = K * (angle - targetAngle);
-            LF.setPower(speed);
-            RF.setPower(speed);
-            LB.setPower(speed);
-            RB.setPower(speed);
+            LF.setPower(speed + error);
+            RF.setPower(speed - error);
+            LB.setPower(speed + error);
+            RB.setPower(speed - error);
             telemetry.addData("Motor Positions", -deadWheel.getCurrentPosition());
             telemetry.addData("Target Position", encoderPosition);
             telemetry.addData("Robot Angle", angle);
@@ -237,10 +242,10 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if (direction == Direction.RIGHT){
-            LF.setPower(-0.5);
-            RF.setPower(0.5);
-            LB.setPower(-0.5);
-            RB.setPower(0.5);
+            LF.setPower(0.4);
+            RF.setPower(-0.4);
+            LB.setPower(0.4);
+            RB.setPower(-0.4);
             do {
                 angle = getAngles();
                 telemetry.addData("Robot Angle", angle);
@@ -248,10 +253,10 @@ public class ZaynBackupAutonomous extends LinearOpMode {
             } while (opModeIsActive() && (angle) > (targetAngle));
         }
         else{
-            LF.setPower(0.5);
-            RF.setPower(-0.5);
-            LB.setPower(0.5);
-            RB.setPower(-0.5);
+            LF.setPower(-0.4);
+            RF.setPower(0.4);
+            LB.setPower(-0.4);
+            RB.setPower(0.4);
             do {
                 angle = getAngles();
             } while (opModeIsActive() && (angle) < (targetAngle));
