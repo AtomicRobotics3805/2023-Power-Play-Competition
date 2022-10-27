@@ -111,10 +111,10 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
 
-        LF  = hardwareMap.get(DcMotor.class, "left_front");
-        RF = hardwareMap.get(DcMotor.class, "right_front");
-        LB  = hardwareMap.get(DcMotor.class, "left_back");
-        RB = hardwareMap.get(DcMotor.class, "right_back");
+        LF  = hardwareMap.get(DcMotor.class, "LF");
+        RF = hardwareMap.get(DcMotor.class, "RF");
+        LB  = hardwareMap.get(DcMotor.class, "LB");
+        RB = hardwareMap.get(DcMotor.class, "RB");
 
         deadWheel = hardwareMap.get(DcMotor.class, "LB");
 
@@ -202,7 +202,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         double encoderPosition = (targetPosition / circumferenceDW) * encoderCountDW;
         do {
             angles = getAngles();
-            //speed = Range.clip(0.00005 * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
+            //speed = Range.clip(0.0005 * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
             speed = 0.4;
             error = K * (angles.firstAngle - targetAngle);
             LF.setPower(speed - error);
