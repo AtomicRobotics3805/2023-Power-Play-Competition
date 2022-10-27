@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -65,26 +66,42 @@ public class ZaynBackupAutonomous extends LinearOpMode {
     private DcMotor RB = null;
 
     private DcMotor lift = null;
+    private DcMotor deadWheel = null;
     private Servo claw = null;
     private Servo arm = null;
 
     BNO055IMU imu;
-    NormalizedColorSensor colorSensor;
+    NormalizedColorSensor colorSensor = null;
 
     Orientation angles;
 
     final float[] hsvValues = new float[3];
     final double K = 0.05;
-    final float circumference = 3.77953f;
-    final float encoderCountYJ = 383.6f;
-    final int junction = 3000;
-    final int ground = 120;
-    final double armRight = 0.4;
-    final double armCenter = 0.1;
-    final double open = 0.9;
-    final double closed = 0.4;
+    final float circumferenceYJ = 3.77953f;
+    final float encoderCountYJ = 537.7f;
+    final float circumferenceNR40 = 12.56f;
+    final float encoderCountNR40 = 1120f;
+    final float circumferenceDW = 0.688975f;
+    final float encoderCountDW = 8192;
+
+    final int liftZero = 0;
+    final int liftGround = 120;
+    final int liftLow = 1300;
+    final int liftMed = 2100;
+    final int liftHigh = 2900;
+    final int liftStack = 700;
+
+    final double armFront = 0.82;
+    final double armSide = 0.5;
+    final double armBack = 0.15;
+
+    final double clawOpen = 0.9;
+    final double clawClosed = 0.4;
+
     int gain = 20;
     double error;
+    double average;
+    double speed;
 
     @Override
     public void runOpMode() {
@@ -99,17 +116,29 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         LB  = hardwareMap.get(DcMotor.class, "left_back");
         RB = hardwareMap.get(DcMotor.class, "right_back");
 
-        lift = hardwareMap.get(DcMotor.class, "lift");
-        claw = hardwareMap.get(Servo.class, "claw");
-        arm = hardwareMap.get(Servo.class, "arm");
+        deadWheel = hardwareMap.get(DcMotor.class, "LB");
+
+        //lift = hardwareMap.get(DcMotor.class, "lift");
+        //claw = hardwareMap.get(Servo.class, "claw");
+        //arm = hardwareMap.get(Servo.class, "arm");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
 
-        LF.setDirection(DcMotor.Direction.REVERSE);
-        RF.setDirection(DcMotor.Direction.FORWARD);
-        LB.setDirection(DcMotor.Direction.REVERSE);
-        RB.setDirection(DcMotor.Direction.FORWARD);
+        //LF.setDirection(DcMotor.Direction.REVERSE);
+        //RF.setDirection(DcMotor.Direction.FORWARD);
+        //LB.setDirection(DcMotor.Direction.REVERSE);
+        //RB.setDirection(DcMotor.Direction.FORWARD);
+
+        LF.setDirection(DcMotor.Direction.FORWARD);
+        RF.setDirection(DcMotor.Direction.REVERSE);
+        LB.setDirection(DcMotor.Direction.FORWARD);
+        RB.setDirection(DcMotor.Direction.REVERSE);
+
+        LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         imu.initialize(parameters);
 
@@ -119,23 +148,37 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         runtime.reset();
 
         if (opModeIsActive()) {
-            forward(LF,RF,LB,RB,-0.5, 0, 19.25);
-            stopAndReset(LF,RF,LB,RB);
-            endLocation = readSensor(colorSensor);
-            raise(lift,arm);
-            openClaw(claw);
-            lower(lift,arm);
+            //closeClaw();
+            forward(0, 9);
+            sleep(500);
+            endLocation = readSensor();
+            //raise(liftLow);
+            //openClaw();
+            //lower();
+            if (endLocation == EndLocation.LEFT){
+                forward(0, 10.0);
+                turn(Direction.LEFT, 90);
+                forward(90, 16.0);
+            }
+            else if (endLocation == EndLocation.MIDDLE){
+                forward(0, 7.0);
+            }
+            else {
+                forward(0, 10.0);
+                turn(Direction.RIGHT, -90);
+                forward(-90, 16.0);
+            }
         }
     }
 
     Orientation getAngles() {
-        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
     }
 
-    public EndLocation readSensor(NormalizedColorSensor sensor){
+    public EndLocation readSensor(){
         EndLocation endLocation = EndLocation.LEFT;
-        sensor.setGain(gain);
-        NormalizedRGBA colors = sensor.getNormalizedColors();
+        colorSensor.setGain(gain);
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
         android.graphics.Color.colorToHSV(colors.toColor(), hsvValues);
         if (colors.blue > colors.red && colors.blue > colors.green){
             endLocation = EndLocation.RIGHT;
@@ -149,7 +192,28 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         return endLocation;
     }
 
-    public void stopAndReset(DcMotor LF, DcMotor RF, DcMotor LB, DcMotor RB){
+    public void forward(double targetAngle, double targetPosition){
+
+        LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        double encoderPosition = (targetPosition / circumferenceDW) * encoderCountDW;
+        do {
+            angles = getAngles();
+            //speed = Range.clip(0.00005 * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
+            speed = 0.4;
+            error = K * (angles.firstAngle - targetAngle);
+            LF.setPower(speed - error);
+            RF.setPower(speed + error);
+            LB.setPower(speed - error);
+            RB.setPower(speed + error);
+            telemetry.addData("Motor Positions", deadWheel.getCurrentPosition());
+            telemetry.addData("Target Position", encoderPosition);
+            telemetry.update();
+        } while (Math.abs(deadWheel.getCurrentPosition()) < Math.abs(encoderPosition) && opModeIsActive());
+
         LF.setPower(0);
         RF.setPower(0);
         LB.setPower(0);
@@ -161,65 +225,75 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         RB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void forward(DcMotor LF, DcMotor RF, DcMotor LB, DcMotor RB, double speed, double targetAngle, double targetPosition){
-        angles = getAngles();
-        double encoderPosition = (targetPosition / circumference) * encoderCountYJ;
-        error = K * (angles.firstAngle - targetAngle);
-        do {
-            LF.setPower(speed + error);
-            RF.setPower(speed - error);
-            LB.setPower(speed + error);
-            RB.setPower(speed - error);
-        } while (LF.getCurrentPosition() < encoderPosition);
-    }
+    public void turn (Direction direction, double targetAngle){
 
-    public void turn (DcMotor LF, DcMotor RF, DcMotor LB, DcMotor RB, Direction direction, double targetAngle){
+        LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         if (direction == Direction.RIGHT){
-            LF.setPower(0.5);
-            RF.setPower(-0.5);
-            LB.setPower(0.5);
-            RB.setPower(-0.5);
-        }
-        else{
             LF.setPower(-0.5);
             RF.setPower(0.5);
             LB.setPower(-0.5);
             RB.setPower(0.5);
+            do {
+                angles = getAngles();
+                telemetry.addData("Robot Angle", angles.firstAngle);
+                telemetry.update();
+            } while (opModeIsActive() && (angles.firstAngle) > (targetAngle));
         }
-        do {
-            angles = getAngles();
-        } while (opModeIsActive()&& angles.firstAngle < targetAngle);
+        else{
+            LF.setPower(0.5);
+            RF.setPower(-0.5);
+            LB.setPower(0.5);
+            RB.setPower(-0.5);
+            do {
+                angles = getAngles();
+            } while (opModeIsActive() && (angles.firstAngle) < (targetAngle));
+        }
+
+        LF.setPower(0);
+        RF.setPower(0);
+        LB.setPower(0);
+        RB.setPower(0);
+
+        LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void raise (DcMotor lift, Servo arm){
+    public void raise (int height){
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift.setTargetPosition(junction);
-        while (lift.isBusy() || arm.getPosition() != armRight){
-            lift.setPower(1);
-            arm.setPosition(armRight);
+        lift.setTargetPosition(height);
+        lift.setPower(1);
+        while (lift.isBusy() || arm.getPosition() != armSide){
+            arm.setPosition(armSide);
         }
+        lift.setPower(0);
     }
 
-    public void lower (DcMotor lift, Servo arm){
+    public void lower (){
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift.setTargetPosition(ground);
-        while (lift.isBusy() || arm.getPosition() != armCenter){
-            lift.setPower(1);
-            arm.setPosition(armCenter);
+        lift.setTargetPosition(liftZero);
+        lift.setPower(1);
+        while (lift.isBusy() || arm.getPosition() != armFront){
+            arm.setPosition(armFront);
+        }
+        lift.setPower(0);
+    }
+
+    public void closeClaw (){
+        while (claw.getPosition() != clawClosed){
+            claw.setPosition(clawClosed);
         }
     }
 
-    public void closeClaw (Servo claw){
-        while (claw.getPosition() != closed){
-            claw.setPosition(closed);
-        }
-    }
-
-    public void openClaw (Servo claw){
-        while (claw.getPosition() != open){
-            claw.setPosition(open);
+    public void openClaw (){
+        while (claw.getPosition() != clawOpen){
+            claw.setPosition(clawOpen);
         }
     }
 
 }
-
