@@ -219,10 +219,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         LB.setPower(0);
         RB.setPower(0);
 
-        LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        LB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        deadWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void turn (Direction direction, double targetAngle){
@@ -258,10 +255,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         LB.setPower(0);
         RB.setPower(0);
 
-        LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        LB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        RB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        deadWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void raise (int height){
