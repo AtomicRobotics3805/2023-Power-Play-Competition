@@ -10,14 +10,15 @@ import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.mechanisms.Claw
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.mechanisms.Arm
+import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
-@Autonomous(name = "Score Preload in Low Junction & Park in Terminal (RED)")
-class LowJunctionPreloadScoreParkInTerminalREDV2 : AutonomousOpMode(
+@Autonomous(name = "Score Preload & Detect Signal (Red)")
+class SignalDetectionRed : AutonomousOpMode(
     Constants.Color.RED,
     CompetitionTrajectoryFactory,
-    { Routines.lowJunctionScoreParkInTerminal },
+    { Routines.lowJunctionScoreParkInSignalZoneRed },
     { Routines.initializationRoutine },
     MecanumDrive(
         CompetitionMecanumDriveConstants,
@@ -25,5 +26,6 @@ class LowJunctionPreloadScoreParkInTerminalREDV2 : AutonomousOpMode(
     ) { CompetitionTrajectoryFactory.startPoseAway },
     Arm,
     Claw,
-    Lift
+    Lift,
+    ColorSensor
 )
