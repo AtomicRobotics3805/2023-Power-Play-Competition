@@ -91,10 +91,17 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
         // If your encoder velocity can exceed 32767 counts / second (such as the REV Through Bore and other
         //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
         //  compensation method
-        return listOf(
-            encoderTicksToInches(perpendicularEncoder.rawVelocity) * constants.X_MULTIPLIER,
-            encoderTicksToInches(parallelEncoder.rawVelocity) * constants.Y_MULTIPLIER
-        )
+        return if (constants.CORRECTED_VELOCITY) {
+            listOf(
+                encoderTicksToInches(perpendicularEncoder.correctedVelocity) * constants.X_MULTIPLIER,
+                encoderTicksToInches(parallelEncoder.correctedVelocity) * constants.Y_MULTIPLIER
+            )
+        } else {
+            listOf(
+                encoderTicksToInches(perpendicularEncoder.rawVelocity) * constants.X_MULTIPLIER,
+                encoderTicksToInches(parallelEncoder.rawVelocity) * constants.Y_MULTIPLIER
+            )
+        }
     }
 
     /**
@@ -121,4 +128,5 @@ interface TwoWheelOdometryConstants {
     val PERPENDICULAR_REVERSED: Boolean
     val X_MULTIPLIER: Double
     val Y_MULTIPLIER: Double
+    val CORRECTED_VELOCITY: Boolean
 }

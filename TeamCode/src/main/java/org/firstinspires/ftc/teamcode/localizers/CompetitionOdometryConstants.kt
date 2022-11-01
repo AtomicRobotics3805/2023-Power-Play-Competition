@@ -48,6 +48,8 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     var _X_MULTIPLIER = 1.0
     @JvmField
     var _Y_MULTIPLIER = 1.0
+    @JvmField
+    var _CORRECTED_VELOCITY = true
 
     override val PARALLEL_X: Double
         get() = _PARALLEL_X
@@ -75,4 +77,6 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
         get() = _X_MULTIPLIER
     override val Y_MULTIPLIER: Double
         get() = _Y_MULTIPLIER
+    override val CORRECTED_VELOCITY: Boolean
+        get() = _CORRECTED_VELOCITY
 }
