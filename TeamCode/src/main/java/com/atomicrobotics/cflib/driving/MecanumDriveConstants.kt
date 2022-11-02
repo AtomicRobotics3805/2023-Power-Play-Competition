@@ -32,4 +32,9 @@ interface MecanumDriveConstants : DriveConstants {
     val LEFT_BACK_NAME: String
     val RIGHT_FRONT_NAME: String
     val RIGHT_BACK_NAME: String
+    val POV: DriverControlled.POV
+    val REVERSE_STRAFE: Boolean
+    val REVERSE_STRAIGHT: Boolean
+    val REVERSE_TURN: Boolean
+
 }

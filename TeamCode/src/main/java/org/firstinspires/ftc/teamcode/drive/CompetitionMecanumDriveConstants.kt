@@ -18,6 +18,7 @@ package org.firstinspires.ftc.teamcode.drive
 
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.control.PIDCoefficients
+import com.atomicrobotics.cflib.driving.DriverControlled
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import com.atomicrobotics.cflib.driving.MecanumDriveConstants
@@ -32,7 +33,7 @@ import com.atomicrobotics.cflib.trajectories.toRadians
  * The current values for these constants are what we used for Trio (our main competition robot)
  * during the 2021-22 Freight Frenzy season.
  */
-@Suppress("ObjectPropertyName")
+@Suppress("ObjectPropertyName", "RedundantQualifierName")
 @Config
 object CompetitionMecanumDriveConstants : MecanumDriveConstants {
 
@@ -149,6 +150,18 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _VERTICAL_AXIS = AxisDirection.POS_X
 
+    @JvmField
+    var _POV = DriverControlled.POV.ROBOT_CENTRIC
+
+    @JvmField
+    var _REVERSE_STRAFE = true
+
+    @JvmField
+    var _REVERSE_STRAIGHT = false
+
+    @JvmField
+    var _REVERSE_TURN = true
+
     override val TICKS_PER_REV: Double
         get() = _TICKS_PER_REV
     override val MAX_RPM: Double
@@ -207,4 +220,12 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
         get() = _DRIVER_SPEEDS
     override val VERTICAL_AXIS: AxisDirection
         get() = _VERTICAL_AXIS
+    override val POV: DriverControlled.POV
+        get() = _POV
+    override val REVERSE_STRAFE: Boolean
+        get() = _REVERSE_STRAFE
+    override val REVERSE_STRAIGHT: Boolean
+        get() = _REVERSE_STRAIGHT
+    override val REVERSE_TURN: Boolean
+        get() = _REVERSE_TURN
 }
