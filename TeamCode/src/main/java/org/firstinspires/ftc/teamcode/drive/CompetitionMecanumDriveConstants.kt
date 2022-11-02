@@ -16,6 +16,7 @@
 */
 package org.firstinspires.ftc.teamcode.drive
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.control.PIDCoefficients
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
@@ -32,6 +33,7 @@ import com.atomicrobotics.cflib.trajectories.toRadians
  * during the 2021-22 Freight Frenzy season.
  */
 @Suppress("ObjectPropertyName")
+@Config
 object CompetitionMecanumDriveConstants : MecanumDriveConstants {
 
     // These are motor constants that should be listed online for your motors.

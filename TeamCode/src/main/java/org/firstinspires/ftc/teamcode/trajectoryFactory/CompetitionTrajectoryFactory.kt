@@ -28,7 +28,7 @@ import com.atomicrobotics.cflib.trajectories.*
  * segments (like back and splineToSplineHeading) here:
  * https://learnroadrunner.com/trajectorybuilder-functions.html
  */
-public object CompetitionTrajectoryFactory : TrajectoryFactory() {
+object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
     // start position declarations
     lateinit var legalStartPose: Pose2d
