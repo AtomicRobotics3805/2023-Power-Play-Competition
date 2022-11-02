@@ -45,9 +45,9 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     @JvmField
     var _PERPENDICULAR_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
-    var _X_MULTIPLIER = 1.0
+    var _X_MULTIPLIER = 1.012712019
     @JvmField
-    var _Y_MULTIPLIER = 1.0
+    var _Y_MULTIPLIER = 1.008686388
     @JvmField
     var _CORRECTED_VELOCITY = true
 
