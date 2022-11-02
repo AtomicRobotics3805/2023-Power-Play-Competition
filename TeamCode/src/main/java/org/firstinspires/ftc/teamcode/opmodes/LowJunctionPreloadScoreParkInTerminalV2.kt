@@ -22,7 +22,7 @@ class LowJunctionPreloadScoreParkInTerminalV2 : AutonomousOpMode(
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.startPoseAway },
+    ) { CompetitionTrajectoryFactory.legalStartPose },
     Arm,
     Claw,
     Lift

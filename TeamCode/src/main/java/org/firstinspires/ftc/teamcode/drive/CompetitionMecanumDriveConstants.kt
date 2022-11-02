@@ -59,11 +59,11 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * feedback, which adjusts motor movements mid-trajectory)
      */
     @JvmField
-    var _kV = 0.013
+    var _kV = 0.018
     @JvmField
-    var _kA = 0.0025
+    var _kA = 0.0021
     @JvmField
-    var _kStatic = 0.01
+    var _kStatic = 0.088
 
     /*
      * These constants are tied to your robot's hardware. You should be able to find them just by
@@ -86,9 +86,9 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * angular values are in radians.
      */
     @JvmField
-    var _MAX_VEL = 52.0
+    var _MAX_VEL = 30.0
     @JvmField
-    var _MAX_ACCEL = 52.0
+    var _MAX_ACCEL = 30.0
     @JvmField
     var _MAX_ANG_VEL = 245.4.toRadians
     @JvmField

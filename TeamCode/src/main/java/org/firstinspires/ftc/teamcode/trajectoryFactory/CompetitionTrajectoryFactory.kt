@@ -31,18 +31,18 @@ import com.atomicrobotics.cflib.trajectories.*
 public object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
     // start position declarations
-    lateinit var startPoseAway: Pose2d
+    lateinit var legalStartPose: Pose2d
 
     // trajectory declarations
-    lateinit var awayStartToLowJunction: ParallelTrajectory
-    lateinit var awayLowJunctionToTerminal: ParallelTrajectory
-    lateinit var awayLowJunctionToAwaySignalBlue: ParallelTrajectory
-    lateinit var awayLowJunctionToAwaySignalRed: ParallelTrajectory
+    lateinit var startToLowJunction: ParallelTrajectory
+    lateinit var lowJunctionToTerminal: ParallelTrajectory
+    lateinit var lowJunctionToSignalLeft: ParallelTrajectory
+    lateinit var lowJunctionToSignalRight: ParallelTrajectory
 
     // Signal results
-    lateinit var e5SignalResultRed: ParallelTrajectory // Left
-    lateinit var e5SignalResultGreen: ParallelTrajectory // Center
-    lateinit var awaySignalResultBlue: ParallelTrajectory // Right
+    lateinit var signalResultRed: ParallelTrajectory // Left
+    lateinit var signalResultGreen: ParallelTrajectory // Center
+    lateinit var signalResultBlue: ParallelTrajectory // Right
 
     /**
      * Initializes the robot's start positions and trajectories. This is where the trajectories are
@@ -51,28 +51,36 @@ public object CompetitionTrajectoryFactory : TrajectoryFactory() {
     override fun initialize() {
         super.initialize()
         // start positions
-        startPoseAway = Pose2d(30.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
+        legalStartPose = Pose2d(33.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
 
         // trajectories
-        awayStartToLowJunction = Constants.drive.trajectoryBuilder(startPoseAway)
-            .lineTo(Vector2d(23.8, 52.5.switchColor))
+        startToLowJunction = Constants.drive.trajectoryBuilder(legalStartPose)
+            .lineTo(Vector2d(23.0, 52.5.switchColor))
             .build()
-        awayLowJunctionToTerminal = Constants.drive.trajectoryBuilder(awayStartToLowJunction.end())
+        lowJunctionToTerminal = Constants.drive.trajectoryBuilder(startToLowJunction.end())
             .lineTo(Vector2d(12.3, 59.5.switchColor))
             .build()
-        awayLowJunctionToAwaySignalBlue = Constants.drive.trajectoryBuilder(awayStartToLowJunction.end())
-            .lineTo(Vector2d(23.8, 56.2.switchColor))
+        val x = 33.0
+        val y = 46.0
+        lowJunctionToSignalLeft = Constants.drive.trajectoryBuilder(startToLowJunction.end())
+            .lineTo(Vector2d(23.9, 56.4.switchColor))
             .splineToConstantHeading(Vector2d(32.0, 60.0.switchColor), 300.0.switchColorAngle.toRadians)
-            .splineToSplineHeading(Pose2d(33.8, 47.2.switchColor, 250.0.switchColorAngle.toRadians), 250.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(x, y.switchColor, 250.0.switchColorAngle.toRadians), 250.0.switchColorAngle.toRadians)
             .build()
-        awayLowJunctionToAwaySignalRed = Constants.drive.trajectoryBuilder(awayStartToLowJunction.end())
-            .lineTo(Vector2d(23.8, 56.2.switchColor))
+        lowJunctionToSignalRight = Constants.drive.trajectoryBuilder(startToLowJunction.end())
+            .lineTo(Vector2d(23.9, 56.4.switchColor))
             .splineToConstantHeading(Vector2d(32.0, 60.0.switchColor), 300.0.switchColorAngle.toRadians)
-            .splineToSplineHeading(Pose2d(33.8, 47.2.switchColor, 300.0.switchColorAngle.toRadians), 250.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(x, y.switchColor, 300.0.switchColorAngle.toRadians), 250.0.switchColorAngle.toRadians)
             .build()
 
-        awaySignalResultBlue = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) awayLowJunctionToAwaySignalRed.end() else awayLowJunctionToAwaySignalBlue.end())
-            .splineToSplineHeading(Pose2d(11.3.flipAlongX36, 34.8.switchColor, 90.0.switchColorAngle.toRadians), 180.0.switchApproachTangentAngle.toRadians)
+        signalResultBlue = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) lowJunctionToSignalRight.end() else lowJunctionToSignalLeft.end())
+            .splineToSplineHeading(Pose2d(11.3.flipAlongX36, 35.0.switchColor, 270.0.switchColorAngle.toRadians), 180.0.switchApproachTangentAngle.toRadians)
+            .build()
+        signalResultRed = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) lowJunctionToSignalRight.end() else lowJunctionToSignalLeft.end())
+            .splineToSplineHeading(Pose2d(59.5.flipAlongX36, 35.0.switchColor, 270.0.switchColorAngle.toRadians), 0.0.switchApproachTangentAngle.toRadians)
+            .build()
+        signalResultGreen = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) lowJunctionToSignalRight.end() else lowJunctionToSignalLeft.end())
+            .lineToSplineHeading(Pose2d(35.0, 35.0.switchColor, 270.0.switchColorAngle.toRadians))
             .build()
     }
 }

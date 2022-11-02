@@ -14,16 +14,16 @@ import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
-@Autonomous(name = "Score Preload & Detect Signal (Red)")
-class SignalDetectionRed : AutonomousOpMode(
-    Constants.Color.RED,
+@Autonomous(name = "Score Preload & Detect Signal (Driver's left)")
+class SignalDetectionLeft : AutonomousOpMode(
+    Constants.Color.BLUE,
     CompetitionTrajectoryFactory,
-    { Routines.lowJunctionScoreParkInSignalZoneRed },
+    { Routines.lowJunctionScoreParkInSignalZoneLeft },
     { Routines.initializationRoutine },
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.startPoseAway },
+    ) { CompetitionTrajectoryFactory.legalStartPose },
     Arm,
     Claw,
     Lift,

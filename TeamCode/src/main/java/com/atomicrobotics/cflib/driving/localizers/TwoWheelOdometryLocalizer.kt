@@ -52,9 +52,10 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
     @JvmField
     var PERPENDICULAR_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
-    var X_MULTIPLIER = 1.0
+    var X_MULTIPLIER = 1.012712019
     @JvmField
-    var Y_MULTIPLIER = 1.0
+    var Y_MULTIPLIER = 1.008686388
+
 
     lateinit var perpendicularEncoder: Encoder
     lateinit var parallelEncoder: Encoder
