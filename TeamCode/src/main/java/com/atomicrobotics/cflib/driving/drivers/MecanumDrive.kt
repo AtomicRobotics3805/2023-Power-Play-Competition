@@ -51,7 +51,11 @@ import java.util.*
 @Config
 class MecanumDrive(constants: MecanumDriveConstants,
                    localizer: SubsystemLocalizer,
-                   startPose: () -> Pose2d = { Pose2d() }
+                   startPose: () -> Pose2d = { Pose2d() },
+                   private val pov: DriverControlled.POV = DriverControlled.POV.ROBOT_CENTRIC,
+                   private val reverseStrafe: Boolean = true,
+                   private val reverseStraight: Boolean = false,
+                   private val reverseTurn: Boolean = true
 ) : Driver(constants, localizer, startPose) {
 
     // this constraint is used when building trajectories to determine how fast the robot will go
@@ -82,7 +86,7 @@ class MecanumDrive(constants: MecanumDriveConstants,
      * Allows the drivers to control the drivetrain using a gamepad
      * @param gamepad the gamepad that controls the drivetrain
      */
-    override fun driverControlled(gamepad: Gamepad): Command = DriverControlled(gamepad, listOf(this), true)
+    override fun driverControlled(gamepad: Gamepad): Command = DriverControlled(gamepad, listOf(this), true, pov, reverseStraight, reverseStrafe, reverseTurn)
 
     /**
      * Initializes the drivetrain. This includes initializing the IMU, motor, and the battery
