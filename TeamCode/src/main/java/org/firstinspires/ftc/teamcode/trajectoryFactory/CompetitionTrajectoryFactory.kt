@@ -82,13 +82,13 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
             .build()
 
         signalResultBlue = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) lowJunctionToSignalRight.end() else lowJunctionToSignalLeft.end())
-            .splineToSplineHeading(Pose2d(12.3.flipAlongX36, 35.0.switchColor, 270.0.switchColorAngle.toRadians), 180.0.switchApproachTangentAngle.toRadians)
+            .splineToSplineHeading(Pose2d(12.3.flipAlongX36, 37.0.switchColor, 270.0.switchColorAngle.toRadians), 180.0.switchApproachTangentAngle.toRadians)
             .build()
         signalResultRed = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) lowJunctionToSignalRight.end() else lowJunctionToSignalLeft.end())
-            .splineToSplineHeading(Pose2d(59.5.flipAlongX36, 35.0.switchColor, 270.0.switchColorAngle.toRadians), 0.0.switchApproachTangentAngle.toRadians)
+            .splineToSplineHeading(Pose2d(59.5.flipAlongX36, 37.0.switchColor, 270.0.switchColorAngle.toRadians), 0.0.switchApproachTangentAngle.toRadians)
             .build()
         signalResultGreen = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) lowJunctionToSignalRight.end() else lowJunctionToSignalLeft.end())
-            .lineToSplineHeading(Pose2d(35.0, 35.0.switchColor, 270.0.switchColorAngle.toRadians))
+            .lineToSplineHeading(Pose2d(35.0, 37.0.switchColor, 270.0.switchColorAngle.toRadians))
             .build()
 
         // 30 Point
