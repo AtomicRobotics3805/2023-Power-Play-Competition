@@ -77,7 +77,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _GEAR_RATIO = 1.0 // output (wheel) speed / input (motor) speed
     @JvmField
-    var _TRACK_WIDTH = 12.25 // in, the distance between center of left and right drive wheels
+    var _TRACK_WIDTH = 13.22 // in, the distance between center of left and right drive wheels
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -106,7 +106,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * is meant to increase left/right speed.
      */
     @JvmField
-    var _LATERAL_MULTIPLIER = 1.0
+    var _LATERAL_MULTIPLIER = 1.39534883721
     @JvmField
     var _DRIFT_MULTIPLIER = 1.0
     @JvmField
@@ -120,7 +120,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
     @JvmField
-    var _HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
+    var _HEADING_PID = PIDCoefficients(5.0, 0.0, 0.0)
 
     // used during TeleOp to make precise movements
     @JvmField
