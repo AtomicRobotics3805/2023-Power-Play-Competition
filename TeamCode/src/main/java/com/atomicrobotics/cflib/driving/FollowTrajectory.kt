@@ -40,11 +40,9 @@ class FollowTrajectory(
         get() = !drive.follower.isFollowing()
 
     /**
-     * Sets the robot's current position to the start of the trajectory (should this be removed?), then tells the
-     * follower to start following the trajectory.
+     * Tells the follower to start following the trajectory.
      */
     override fun start() {
-        drive.poseEstimate = trajectory.trajectory.start()
         drive.follower.followTrajectory(trajectory.trajectory)
     }
 

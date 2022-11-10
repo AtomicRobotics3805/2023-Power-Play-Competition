@@ -33,6 +33,8 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
     // start position declarations
     lateinit var legalStartPose: Pose2d
 
+
+
     // 26 Point
     // trajectory declarations
     lateinit var startToLowJunction: ParallelTrajectory
@@ -54,6 +56,13 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
     lateinit var highJunctionToRedResult: ParallelTrajectory
     lateinit var highJunctionToGreenResult: ParallelTrajectory
     lateinit var highJunctionToBlueResult: ParallelTrajectory
+
+    // STACK SCORING
+    lateinit var stack: Pose2d
+    lateinit var highJunction: Vector2d
+
+    lateinit var stackToHighJunction: ParallelTrajectory
+    lateinit var highJunctionToStack: ParallelTrajectory
 
     /**
      * Initializes the robot's start positions and trajectories. This is where the trajectories are
@@ -103,6 +112,20 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
         signalToHighJunction = Constants.drive.trajectoryBuilder(if(Constants.color == Constants.Color.RED) startToSignalRight.end() else startToSignalLeft.end())
             .lineToSplineHeading(Pose2d(34.0, 5.6.switchColor, 180.0.switchColorAngle.toRadians))
             .splineToConstantHeading(Vector2d(29.0, 2.0), 180.0.toRadians)
+            .build()
+
+        // 60.0, 11.8
+// 24.0, 18.0
+        stack = Pose2d(62.5, 12.0.switchColor, 0.0.switchColorAngle.toRadians)
+        highJunction = Vector2d(27.75, 9.9.switchColor)
+
+
+        stackToHighJunction = Constants.drive.trajectoryBuilder(stack)
+            .lineTo(highJunction)
+            .build()
+
+        highJunctionToStack = Constants.drive.trajectoryBuilder(stackToHighJunction.end())
+            .lineTo(stackToHighJunction.trajectory.start().vec())
             .build()
     }
 }

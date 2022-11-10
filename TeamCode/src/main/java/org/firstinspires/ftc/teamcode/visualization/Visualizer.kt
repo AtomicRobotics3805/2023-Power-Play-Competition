@@ -31,13 +31,13 @@ fun main() {
         MecanumDrive(
             CompetitionMecanumDriveConstants,
             TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-        ) { CompetitionTrajectoryFactory.legalStartPose },
+        ) { CompetitionTrajectoryFactory.stack },
         14.5,
         15.0,
         {
             sequential {
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.startToLowJunction)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToSignalLeft)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
             }
         },
         Constants.Color.BLUE

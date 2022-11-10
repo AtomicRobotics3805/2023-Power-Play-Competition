@@ -125,4 +125,9 @@ object Routines {
         get() = sequential {
             +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultGreen)
         }
+
+    val stackCycle: Command
+        get() = sequential {
+
+        }
 }
