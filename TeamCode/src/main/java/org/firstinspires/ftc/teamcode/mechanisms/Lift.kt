@@ -66,6 +66,8 @@ object Lift : Subsystem {
     var STACK_3 = 2.5 // in (NOT YET TESTED)
     @JvmField
     var STACK_2 = 1.25 // in (NOT YET TESTED)
+    @JvmField
+    var ABOVE_STACK = 14.0
 
     // Motor Information
     @JvmField
@@ -106,6 +108,9 @@ object Lift : Subsystem {
         get() = MotorToPosition(liftMotor, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
     val toLevel2: Command
         get() = MotorToPosition(liftMotor, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val aboveStack: Command
+        get() = MotorToPosition(liftMotor, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+
 
     var conesLeftOnStack = 5
     val toNextStack: Command

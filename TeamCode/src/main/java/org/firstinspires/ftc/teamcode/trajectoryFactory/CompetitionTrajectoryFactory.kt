@@ -116,16 +116,14 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
         // 60.0, 11.8
 // 24.0, 18.0
-        stack = Pose2d(62.5, 12.0.switchColor, 0.0.switchColorAngle.toRadians)
+        stack = Pose2d(59.0, 12.0.switchColor, 0.0.switchColorAngle.toRadians)
         highJunction = Vector2d(27.75, 9.9.switchColor)
 
-
         stackToHighJunction = Constants.drive.trajectoryBuilder(stack)
-            .lineTo(highJunction)
+            .lineTo(Vector2d(23.75, 12.0.switchColor))
             .build()
-
         highJunctionToStack = Constants.drive.trajectoryBuilder(stackToHighJunction.end())
-            .lineTo(stackToHighJunction.trajectory.start().vec())
+            .lineTo(Vector2d(59.0, 12.0.switchColor))
             .build()
     }
 }

@@ -126,8 +126,45 @@ object Routines {
             +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultGreen)
         }
 
-    val stackCycle: Command
+    val stackCycleBlue: Command
         get() = sequential {
-
+            +parallel {
+                +Claw.open
+                +Lift.toLevel5
+                +Arm.toForward
+            }
+            +Claw.close
+            +Delay(1.0)
+            +Lift.aboveStack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                +Arm.toMiddle
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(0.25)
+            +parallel {
+                +Arm.toForward
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
+            +parallel {
+                +Claw.open
+                +Lift.toLevel4
+                +Arm.toForward
+            }
+            +Claw.close
+            +Delay(1.0)
+            +Lift.aboveStack
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                +Arm.toMiddle
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(0.25)
+            +parallel {
+                +Arm.toForward
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
         }
 }
