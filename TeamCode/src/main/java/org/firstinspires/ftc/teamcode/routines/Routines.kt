@@ -134,11 +134,15 @@ object Routines {
                 +Arm.toForward
             }
             +Claw.close
-            +Delay(1.0)
-            +Lift.aboveStack
+            +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                +Arm.toMiddle
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toMiddle
+                    }
+                }
                 +Lift.toHigh
             }
             +Claw.open
@@ -146,18 +150,18 @@ object Routines {
             +parallel {
                 +Arm.toForward
                 +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-            }
-            +parallel {
-                +Claw.open
                 +Lift.toLevel4
-                +Arm.toForward
             }
             +Claw.close
-            +Delay(1.0)
-            +Lift.aboveStack
+            +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                +Arm.toMiddle
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toMiddle
+                    }
+                }
                 +Lift.toHigh
             }
             +Claw.open

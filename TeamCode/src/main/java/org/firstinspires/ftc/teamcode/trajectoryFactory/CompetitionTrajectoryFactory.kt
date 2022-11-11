@@ -53,16 +53,19 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
     lateinit var signalToHighJunction: ParallelTrajectory
 
-    lateinit var highJunctionToRedResult: ParallelTrajectory
-    lateinit var highJunctionToGreenResult: ParallelTrajectory
-    lateinit var highJunctionToBlueResult: ParallelTrajectory
-
     // STACK SCORING
     lateinit var stack: Pose2d
     lateinit var highJunction: Vector2d
 
     lateinit var stackToHighJunction: ParallelTrajectory
     lateinit var highJunctionToStack: ParallelTrajectory
+
+    lateinit var centeredStartPose: Pose2d
+    lateinit var centerStartToHighJunction: ParallelTrajectory
+
+    lateinit var highJunctionToRedResult: ParallelTrajectory
+    lateinit var highJunctionToGreenResult: ParallelTrajectory
+    lateinit var highJunctionToBlueResult: ParallelTrajectory
 
     /**
      * Initializes the robot's start positions and trajectories. This is where the trajectories are
@@ -119,11 +122,28 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
         stack = Pose2d(59.0, 12.0.switchColor, 0.0.switchColorAngle.toRadians)
         highJunction = Vector2d(27.75, 9.9.switchColor)
 
+        centeredStartPose = Pose2d(35.5, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
+
         stackToHighJunction = Constants.drive.trajectoryBuilder(stack)
             .lineTo(Vector2d(23.75, 12.0.switchColor))
             .build()
         highJunctionToStack = Constants.drive.trajectoryBuilder(stackToHighJunction.end())
             .lineTo(Vector2d(59.0, 12.0.switchColor))
+            .build()
+
+        centerStartToHighJunction = Constants.drive.trajectoryBuilder(centeredStartPose)
+            .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToConstantHeading(Vector2d(23.75, 12.0.switchColor), 180.0.switchColorAngle.toRadians)
+            .build()
+
+        highJunctionToBlueResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())
+            .lineToLinearHeading(Pose2d(12.0, 12.0.switchColor, 270.0.switchColorAngle.toRadians))
+            .build()
+        highJunctionToGreenResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())
+            .lineToLinearHeading(Pose2d(35.5, 12.0.switchColor, 270.0.switchColorAngle.toRadians))
+            .build()
+        highJunctionToRedResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())
+            .lineToLinearHeading(Pose2d(58.5, 12.0.switchColor, 270.0.switchColorAngle.toRadians))
             .build()
     }
 }
