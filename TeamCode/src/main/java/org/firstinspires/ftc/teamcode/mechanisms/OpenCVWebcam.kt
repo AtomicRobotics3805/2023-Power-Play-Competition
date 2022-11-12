@@ -66,7 +66,7 @@ object OpenCVWebcam : Subsystem {
 
 }
 
-public class PowerPlayPipeline : OpenCvPipeline() {
+class PowerPlayPipeline : OpenCvPipeline() {
 
     enum class SleeveColor {
         RED,
@@ -124,7 +124,7 @@ public class PowerPlayPipeline : OpenCvPipeline() {
 
         return greenMat
     }
-    public fun getSleeveColor(): SleeveColor{
+    fun getSleeveColor(): SleeveColor{
         color = if (blueTargetValue > redTargetValue && blueTargetValue > greenTargetValue) {
             SleeveColor.BLUE
         } else if (greenTargetValue > redTargetValue) {
