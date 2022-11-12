@@ -42,9 +42,9 @@ class DriverControlled(
     override val requirements: List<Subsystem> = arrayListOf(),
     override val interruptible: Boolean = true,
     private val pov: POV = POV.ROBOT_CENTRIC,
-    private val reverseStrafe: Boolean = false,
-    private val reverseStraight: Boolean = true,
-    private val reverseTurn: Boolean = false
+    private val reverseStrafe: Boolean = true,
+    private val reverseStraight: Boolean = false,
+    private val reverseTurn: Boolean = true
 ) : Command() {
 
     enum class POV {

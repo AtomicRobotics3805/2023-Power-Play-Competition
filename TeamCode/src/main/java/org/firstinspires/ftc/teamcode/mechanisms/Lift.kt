@@ -22,9 +22,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.atomicrobotics.cflib.Constants.opMode
 import com.atomicrobotics.cflib.Command
+import com.atomicrobotics.cflib.CommandScheduler
+import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.subsystems.PowerMotor
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.subsystems.MotorToPosition
+import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
+import com.atomicrobotics.cflib.utilCommands.CustomCommand
+import com.atomicrobotics.cflib.utilCommands.OptionCommand
 
 /**
  * This class is an example of a lift controlled by a single motor. Unlike the Intake example object, it can use
@@ -54,13 +59,15 @@ object Lift : Subsystem {
     @JvmField
     var INTAKE_POSITION = 0.0 // in
     @JvmField
-    var STACK_5 = 8.0 // in
+    var STACK_5 = 5.0 // in (NOT YET TESTED)
     @JvmField
-    var STACK_4 = 6.75 // in (NOT YET CORRECT)
+    var STACK_4 = 3.75 // in (NOT YET TESTED)
     @JvmField
-    var STACK_3 = 5.5 // in (NOT YET CORRECT)
+    var STACK_3 = 2.5 // in (NOT YET TESTED)
     @JvmField
-    var STACK_2 = 4.25 // in
+    var STACK_2 = 1.25 // in (NOT YET TESTED)
+    @JvmField
+    var ABOVE_STACK = 14.0
 
     // Motor Information
     @JvmField
@@ -101,9 +108,18 @@ object Lift : Subsystem {
         get() = MotorToPosition(liftMotor, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
     val toLevel2: Command
         get() = MotorToPosition(liftMotor, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+    val aboveStack: Command
+        get() = MotorToPosition(liftMotor, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
 
+
+    var conesLeftOnStack = 5
+    val toNextStack: Command
+        get() = sequential {
+            +OptionCommand("THIS IS A TERRIBLE WORKAROUND, DON'T USE THIS.", { conesLeftOnStack }, Pair(5, toLevel5), Pair(4, toLevel4), Pair(3, toLevel3), Pair(2, toLevel2), Pair(1, toIntake))
+            +CustomCommand(_start = { conesLeftOnStack-- })
+        }
     // motor
-    lateinit var liftMotor: DcMotorEx
+        lateinit var liftMotor: DcMotorEx
 
     /**
      * Initializes the liftMotor, resets its encoders, sets the mode to RUN_USING_ENCODER, and sets the direction to the

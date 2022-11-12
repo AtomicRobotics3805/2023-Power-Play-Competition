@@ -16,7 +16,9 @@
 */
 package org.firstinspires.ftc.teamcode.drive
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.control.PIDCoefficients
+import com.atomicrobotics.cflib.driving.DriverControlled
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import com.atomicrobotics.cflib.driving.MecanumDriveConstants
@@ -31,7 +33,8 @@ import com.atomicrobotics.cflib.trajectories.toRadians
  * The current values for these constants are what we used for Trio (our main competition robot)
  * during the 2021-22 Freight Frenzy season.
  */
-@Suppress("ObjectPropertyName")
+@Suppress("ObjectPropertyName", "RedundantQualifierName")
+@Config
 object CompetitionMecanumDriveConstants : MecanumDriveConstants {
 
     // These are motor constants that should be listed online for your motors.
@@ -59,11 +62,11 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * feedback, which adjusts motor movements mid-trajectory)
      */
     @JvmField
-    var _kV = 0.013
+    var _kV = 0.018
     @JvmField
-    var _kA = 0.0025
+    var _kA = 0.0021
     @JvmField
-    var _kStatic = 0.01
+    var _kStatic = 0.088
 
     /*
      * These constants are tied to your robot's hardware. You should be able to find them just by
@@ -74,7 +77,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _GEAR_RATIO = 1.0 // output (wheel) speed / input (motor) speed
     @JvmField
-    var _TRACK_WIDTH = 12.25 // in, the distance between center of left and right drive wheels
+    var _TRACK_WIDTH = 13.22 // in, the distance between center of left and right drive wheels
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -86,9 +89,9 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * angular values are in radians.
      */
     @JvmField
-    var _MAX_VEL = 52.0
+    var _MAX_VEL = 30.0
     @JvmField
-    var _MAX_ACCEL = 52.0
+    var _MAX_ACCEL = 30.0
     @JvmField
     var _MAX_ANG_VEL = 245.4.toRadians
     @JvmField
@@ -103,7 +106,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * is meant to increase left/right speed.
      */
     @JvmField
-    var _LATERAL_MULTIPLIER = 1.0
+    var _LATERAL_MULTIPLIER = 1.39534883721
     @JvmField
     var _DRIFT_MULTIPLIER = 1.0
     @JvmField
@@ -117,11 +120,11 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
     @JvmField
-    var _HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
+    var _HEADING_PID = PIDCoefficients(5.0, 0.0, 0.0)
 
     // used during TeleOp to make precise movements
     @JvmField
-    var _DRIVER_SPEEDS = listOf(0.1, 0.4, 1.0)
+    var _DRIVER_SPEEDS = listOf(1.0, 0.5, 0.2)
 
     // these are the directions (forward or reverse) for each motor
     @JvmField
@@ -146,6 +149,18 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     // the vertical  direction the hub is mounted
     @JvmField
     var _VERTICAL_AXIS = AxisDirection.POS_X
+
+    @JvmField
+    var _POV = DriverControlled.POV.ROBOT_CENTRIC
+
+    @JvmField
+    var _REVERSE_STRAFE = true
+
+    @JvmField
+    var _REVERSE_STRAIGHT = false
+
+    @JvmField
+    var _REVERSE_TURN = true
 
     override val TICKS_PER_REV: Double
         get() = _TICKS_PER_REV
@@ -205,4 +220,12 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
         get() = _DRIVER_SPEEDS
     override val VERTICAL_AXIS: AxisDirection
         get() = _VERTICAL_AXIS
+    override val POV: DriverControlled.POV
+        get() = _POV
+    override val REVERSE_STRAFE: Boolean
+        get() = _REVERSE_STRAFE
+    override val REVERSE_STRAIGHT: Boolean
+        get() = _REVERSE_STRAIGHT
+    override val REVERSE_TURN: Boolean
+        get() = _REVERSE_TURN
 }

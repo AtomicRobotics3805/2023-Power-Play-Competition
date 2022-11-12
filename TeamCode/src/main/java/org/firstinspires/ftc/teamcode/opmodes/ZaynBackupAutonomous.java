@@ -47,7 +47,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name="Power Play Backup OpMode", group="Linear Opmode")
-
 public class ZaynBackupAutonomous extends LinearOpMode {
 
     enum EndLocation{

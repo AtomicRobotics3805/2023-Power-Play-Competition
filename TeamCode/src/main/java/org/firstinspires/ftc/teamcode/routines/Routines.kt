@@ -37,35 +37,64 @@ object Routines {
 //            +TelemetryCommand(999.9, "Estimated Position") { drive.localizer.poseEstimate.toString() }
 //            +TelemetryCommand(999.9, "Parallel Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).parallelEncoder.currentPosition.toString() }
 //            +TelemetryCommand(999.9, "Perpendicular Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).perpendicularEncoder.currentPosition.toString() }
-            +Claw.close
-            +Arm.toForward
         }
 
-    val lowJunctionScoreParkInTerminal: Command
+    val highJunctionScoreLeft : Command
         get() = sequential {
             +parallel {
-                +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.awayStartToLowJunction)
+                +Claw.close
+                +Arm.toForward
             }
-            // Score the preloaded cone onto the low junction
+            +Delay(1.0)
+            +drive.followTrajectory(CompetitionTrajectoryFactory.startToSignalLeft)
+            +ColorSensor.detect
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.signalToHighJunction)
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(1.0)
+            +Lift.toIntake
+        }
+
+    val lowJunctionScoreParkInSignalZoneRight: Command
+        get() = sequential {
+            +parallel {
+                +Claw.close
+                +Arm.toForward
+            }
+            +Delay(1.0)
+            +parallel {
+                +Lift.toLow
+                +drive.followTrajectory(CompetitionTrajectoryFactory.startToLowJunction)
+            }
             +Claw.open
             +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.awayLowJunctionToTerminal)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToSignalRight)
                 +Lift.toIntake
             }
+            +ColorSensor.detect
+            +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.BLUE }, { CommandScheduler.scheduleCommand(blueRoutine) })
+            +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.RED }, { CommandScheduler.scheduleCommand(redRoutine) })
+            +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.GREEN }, { CommandScheduler.scheduleCommand(greenRoutine) })
         }
 
-    val lowJunctionScoreParkInSignalZoneRed: Command
+    val lowJunctionScoreParkInSignalZoneLeft: Command
         get() = sequential {
             +parallel {
+                +Claw.close
+                +Arm.toForward
+            }
+            +Delay(1.0)
+            +parallel {
                 +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.awayStartToLowJunction)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.startToLowJunction)
             }
             +Claw.open
             +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.awayLowJunctionToAwaySignalRed)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToSignalLeft)
                 +Lift.toIntake
             }
             +ColorSensor.detect
@@ -84,16 +113,62 @@ object Routines {
 
     val blueRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.awaySignalResultBlue)
+            +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultBlue)
         }
 
     val redRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.e5SignalResultRed)
+            +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultRed)
         }
 
     val greenRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.e5SignalResultGreen)
+            +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultGreen)
+        }
+
+    val stackCycleBlue: Command
+        get() = sequential {
+            +parallel {
+                +Claw.open
+                +Lift.toLevel5
+                +Arm.toForward
+            }
+            +Claw.close
+            +Delay(0.25)
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toMiddle
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(0.25)
+            +parallel {
+                +Arm.toForward
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+                +Lift.toLevel4
+            }
+            +Claw.close
+            +Delay(0.25)
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toMiddle
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(0.25)
+            +parallel {
+                +Arm.toForward
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
         }
 }
