@@ -130,11 +130,6 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
         BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_X);
 
-        //LF.setDirection(DcMotor.Direction.REVERSE);
-        //RF.setDirection(DcMotor.Direction.FORWARD);
-        //LB.setDirection(DcMotor.Direction.REVERSE);
-        //RB.setDirection(DcMotor.Direction.FORWARD);
-
         LF.setDirection(DcMotor.Direction.FORWARD);
         RF.setDirection(DcMotor.Direction.REVERSE);
         LB.setDirection(DcMotor.Direction.FORWARD);
@@ -155,26 +150,26 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         if (opModeIsActive()) {
             //closeClaw();
             forward(0, 15);
-            turn(Direction.RIGHT, -20);
+            turn(-20);
             sleep(500);
             endLocation = readSensor();
             //raise(liftLow);
             //openClaw();
             //lower();
             if (endLocation == EndLocation.LEFT){
-                turn(Direction.LEFT, 0);
+                turn(0);
                 forward(0, 10.0);
-                turn(Direction.LEFT, 90);
+                turn(0);
                 forward(90, 18.0);
             }
             else if (endLocation == EndLocation.MIDDLE){
-                turn(Direction.LEFT, 0);
+                turn(0);
                 forward(0, 10.0);
             }
             else {
-                turn(Direction.LEFT, 0);
+                turn(0);
                 forward(0, 10.0);
-                turn(Direction.RIGHT, -92);
+                turn(-92);
                 forward(-90, 18.0);
             }
         }
@@ -211,7 +206,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         double encoderPosition = (targetPosition / circumferenceDW) * encoderCountDW;
         do {
             angle = getAngles();
-            //speed = Range.clip(0.0005 * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
+            //speed = Range.clip(K * (Math.abs(encoderPosition)-Math.abs(average)), 0, 1);
             speed = 0.3;
             error = K * (angle - targetAngle);
             LF.setPower(speed + error);
@@ -234,14 +229,14 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         deadWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void turn (Direction direction, double targetAngle){
+    public void turn (double targetAngle){
 
         LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        if (direction == Direction.RIGHT){
+        if (targetAngle < 0){
             LF.setPower(0.4);
             RF.setPower(-0.4);
             LB.setPower(0.4);
@@ -250,16 +245,18 @@ public class ZaynBackupAutonomous extends LinearOpMode {
                 angle = getAngles();
                 telemetry.addData("Robot Angle", angle);
                 telemetry.update();
-            } while (opModeIsActive() && (angle) > (targetAngle));
+            } while (opModeIsActive() && angle > targetAngle);
         }
-        else{
+        else if (targetAngle > 0){
             LF.setPower(-0.4);
             RF.setPower(0.4);
             LB.setPower(-0.4);
             RB.setPower(0.4);
             do {
                 angle = getAngles();
-            } while (opModeIsActive() && (angle) < (targetAngle));
+            } while (opModeIsActive() && angle < targetAngle);
+        }
+        else {
         }
 
         LF.setPower(0);
