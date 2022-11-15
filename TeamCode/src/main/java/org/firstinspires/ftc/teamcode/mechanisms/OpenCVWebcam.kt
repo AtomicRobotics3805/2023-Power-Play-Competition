@@ -32,7 +32,7 @@ object OpenCVWebcam : Subsystem {
     var detectedColor = PowerPlayPipeline.SleeveColor.UNDETECTED
 
     val color: PowerPlayPipeline.SleeveColor
-        get() = pipeline.getSleeveColor()
+        get() = pipeline.color
 
     val detect: DetectCommand
         get() = DetectCommand()
@@ -52,7 +52,6 @@ object OpenCVWebcam : Subsystem {
                 }
 
                 override fun onError(errorCode: Int) {
-
                 }
             })
         }
@@ -69,69 +68,55 @@ object OpenCVWebcam : Subsystem {
 class PowerPlayPipeline : OpenCvPipeline() {
 
     enum class SleeveColor {
-        RED,
-        GREEN,
-        BLUE,
+        YELLOW,
+        CYAN,
+        MAGENTA,
         UNDETECTED
     }
 
-    var greenMat = Mat()
-    var blueMat = Mat()
-    var redMatNegative = Mat()
-    var redMatPositive = Mat()
+    private val YELLOW = Scalar(255.0, 255.0, 0.0)
+    private val CYAN = Scalar(0.0, 255.0, 255.0)
+    private val MAGENTA = Scalar(255.0, 0.0, 255.0)
 
-    var color : SleeveColor = SleeveColor.UNDETECTED
+    public var color : SleeveColor = SleeveColor.UNDETECTED
 
-    var redTargetValue = 0.0
-    var greenTargetValue = 0.0
-    var blueTargetValue = 0.0
-
-    var ROI = Rect(Point(0.0, 1400.0), Point(300.0, 1100.0))
+    var pointA = Point(0.0, 1400.0)
+    var pointB = Point(300.0, 1100.0)
+    var ROI = Rect(pointA,pointB)
 
     override fun processFrame(input : Mat): Mat? {
-        Imgproc.cvtColor(input, redMatNegative, Imgproc.COLOR_RGB2HSV)
-        Imgproc.cvtColor(input, redMatPositive, Imgproc.COLOR_RGB2HSV)
-        Imgproc.cvtColor(input, greenMat, Imgproc.COLOR_RGB2HSV)
-        Imgproc.cvtColor(input, blueMat, Imgproc.COLOR_RGB2HSV)
-
-        val LowHSVRedNegative = Scalar(245.0, 50.0, 70.0)
-        val HighHSVRedNegative = Scalar(255.0, 255.0, 255.0)
-        val LowHSVRedPositive = Scalar(0.0, 50.0, 70.0)
-        val HighHSVRedPositive = Scalar(20.0, 255.0, 255.0)
-        val LowHSVGreen = Scalar(40.0, 50.0, 70.0)
-        val HighHSVGreen = Scalar(90.0, 255.0, 255.0)
-        val LowHSVBlue = Scalar(100.0, 50.0, 70.0)
-        val HighHSVBlue = Scalar(200.0, 255.0, 255.0)
-
-        Core.inRange(redMatPositive, LowHSVRedNegative, HighHSVRedNegative, redMatPositive)
-        Core.inRange(redMatNegative, LowHSVRedPositive, HighHSVRedPositive, redMatNegative)
-        Core.inRange(greenMat, LowHSVGreen, HighHSVGreen, greenMat)
-        Core.inRange(blueMat, LowHSVBlue, HighHSVBlue, blueMat)
-
-        val redTargetPositive: Mat = redMatPositive.submat(ROI)
-        val redTargetNegative: Mat = redMatNegative.submat(ROI)
-        val greenTarget: Mat = greenMat.submat(ROI)
-        val blueTarget: Mat = blueMat.submat(ROI)
-
-        redTargetValue = Core.sumElems(redTargetPositive).`val`[0] / ROI.area() / 255 + Core.sumElems(redTargetNegative).`val`[0] / ROI.area() / 255
-        greenTargetValue = Core.sumElems(greenTarget).`val`[0] / ROI.area() / 255
-        blueTargetValue = Core.sumElems(blueTarget).`val`[0] / ROI.area() / 255
-
-        redTargetPositive.release()
-        redTargetNegative.release()
-        greenTarget.release()
-        blueTarget.release()
-
-        return greenMat
-    }
-    fun getSleeveColor(): SleeveColor{
-        color = if (blueTargetValue > redTargetValue && blueTargetValue > greenTargetValue) {
-            SleeveColor.BLUE
-        } else if (greenTargetValue > redTargetValue) {
-            SleeveColor.GREEN
+        val mat = input.submat(ROI)
+        val sumColors = Core.sumElems(mat)
+        val minColor = Math.min(sumColors.`val`[0], Math.min(sumColors.`val`[1], sumColors.`val`[2]))
+        if (sumColors.`val`[0] == minColor) {
+            color = SleeveColor.CYAN
+            Imgproc.rectangle(
+                    input,
+                    pointA,
+                    pointB,
+                    CYAN,
+                    3
+            )
+        } else if (sumColors.`val`[1] == minColor) {
+            color = SleeveColor.MAGENTA
+            Imgproc.rectangle(
+                    input,
+                    pointA,
+                    pointB,
+                    MAGENTA,
+                    3
+            )
         } else {
-            SleeveColor.RED
+            color = SleeveColor.YELLOW
+            Imgproc.rectangle(
+                    input,
+                    pointA,
+                    pointB,
+                    YELLOW,
+                    3
+            )
         }
-        return color;
+
+        return mat
     }
 }
