@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFac
 class StackCycleLeftTest : AutonomousOpMode(
     Constants.Color.BLUE,
     CompetitionTrajectoryFactory,
-    { Routines.stackCycleBlue },
+    { Routines.twoConeStackCycleBlue },
     null,
     MecanumDrive(
         CompetitionMecanumDriveConstants,

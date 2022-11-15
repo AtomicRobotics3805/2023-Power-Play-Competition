@@ -126,12 +126,36 @@ object Routines {
             +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultGreen)
         }
 
-    val stackCycleBlue: Command
+    val scorePreloadInHighJunctionToStartStackRoutine: Command
         get() = sequential {
             +parallel {
-                +Claw.open
-                +Lift.toLevel5
+                +Claw.close
                 +Arm.toForward
+            }
+            +Delay(1.0)
+            +parallel {
+                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunction)
+                +Lift.toHigh
+                +Arm.toRight
+            }
+            +Claw.open
+            +Delay(0.25)
+
+        }
+
+    val fiftyPointRoutine: Command
+        get() = sequential {
+            +ColorSensor.detect
+            +scorePreloadInHighJunctionToStartStackRoutine
+            +stackRoutine
+        }
+
+    val stackRoutine: Command
+        get() = sequential {
+            +parallel {
+                +Arm.toForward
+                +Lift.toLevel5
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
             }
             +Claw.close
             +Delay(0.25)
@@ -140,7 +164,7 @@ object Routines {
                     +Delay(0.5)
                     +parallel {
                         +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                        +Arm.toMiddle
+                        +Arm.toHighJunction
                     }
                 }
                 +Lift.toHigh
@@ -159,7 +183,59 @@ object Routines {
                     +Delay(0.5)
                     +parallel {
                         +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                        +Arm.toMiddle
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(0.25)
+            +parallel {
+                +Arm.toForward
+                +Lift.toIntake
+                +highJunctionToSignalResult
+            }
+        }
+
+    val highJunctionToSignalResult: Command
+        get() = sequential {
+            +ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.BLUE}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToBlueResult))}, {CommandScheduler.scheduleCommand(ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.GREEN}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToGreenResult))}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToRedResult))}))})
+        }
+
+    val twoConeStackCycleBlue: Command
+        get() = sequential {
+            +parallel {
+                +Claw.open
+                +Lift.toLevel5
+                +Arm.toForward
+            }
+            +Claw.close
+            +Delay(0.25)
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toRight
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +Delay(0.25)
+            +parallel {
+                +Arm.toForward
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+                +Lift.toLevel4
+            }
+            +Claw.close
+            +Delay(0.25)
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toRight
                     }
                 }
                 +Lift.toHigh

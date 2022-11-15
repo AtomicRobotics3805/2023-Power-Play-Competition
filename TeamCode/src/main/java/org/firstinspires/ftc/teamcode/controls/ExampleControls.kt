@@ -49,7 +49,7 @@ object ExampleControls : Controls() {
         gamepad2.dpadLeft.pressedCommand = { Lift.toLow }
         gamepad2.dpadRight.pressedCommand = { Lift.toMedium }
         gamepad2.dpadUp.pressedCommand = { Lift.toHigh }
-        gamepad2.x.pressedCommand = { Arm.toMiddle }
+        gamepad2.x.pressedCommand = { Arm.toRight }
         gamepad2.y.pressedCommand = { Arm.toBack }
         gamepad2.b.pressedCommand = { Arm.toForward }
         gamepad2.a.toggleCommands = listOf({ Claw.open }, { Claw.close })
