@@ -6,7 +6,6 @@ import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import com.qualcomm.robotcore.hardware.NormalizedRGBA
-import com.qualcomm.robotcore.util.ElapsedTime
 
 @Config
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
