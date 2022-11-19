@@ -40,13 +40,13 @@ object Arm : Subsystem {
     @JvmField
     var FORWARD = 0.99
     @JvmField
-    var RIGHT = 0.0
+    var LEFT = 0.0
     @JvmField
     var BACK = 0.3
     @JvmField
-    var LEFT = 0.65
+    var RIGHT = 0.65
     @JvmField
-    var TIME = 3.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
+    var TIME = 1.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
 
     // commands
     val toForward: Command

@@ -20,10 +20,8 @@ import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
-import org.firstinspires.ftc.teamcode.mechanisms.Arm
-import org.firstinspires.ftc.teamcode.mechanisms.Claw
-import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
-import org.firstinspires.ftc.teamcode.mechanisms.Lift
+import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
+import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 /**
@@ -131,21 +129,19 @@ object Routines {
             +parallel {
                 +Claw.close
                 +Arm.toForward
-            }
-            +Delay(1.0)
-            +parallel {
                 +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunction)
                 +Lift.toHigh
-                +Arm.toRight
+                +sequential {
+                    +Delay(0.5)
+                    +Arm.toRight
+                }
             }
             +Claw.open
-            +Delay(0.25)
-
         }
 
     val fiftyPointRoutine: Command
         get() = sequential {
-            +ColorSensor.detect
+            +OpenCVWebcam.detect
             +scorePreloadInHighJunctionToStartStackRoutine
             +stackRoutine
         }
@@ -154,11 +150,13 @@ object Routines {
         get() = sequential {
             +parallel {
                 +Arm.toForward
-                +Lift.toLevel5
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel5
+                }
                 +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
             }
             +Claw.close
-            +Delay(0.25)
             +parallel {
                 +sequential {
                     +Delay(0.5)
@@ -170,14 +168,15 @@ object Routines {
                 +Lift.toHigh
             }
             +Claw.open
-            +Delay(0.25)
             +parallel {
                 +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel4
+                }
                 +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-                +Lift.toLevel4
             }
             +Claw.close
-            +Delay(0.25)
             +parallel {
                 +sequential {
                     +Delay(0.5)
@@ -189,17 +188,22 @@ object Routines {
                 +Lift.toHigh
             }
             +Claw.open
-            +Delay(0.25)
             +parallel {
                 +Arm.toForward
-                +Lift.toIntake
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toIntake
+                }
                 +highJunctionToSignalResult
             }
         }
 
     val highJunctionToSignalResult: Command
         get() = sequential {
-            +ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.BLUE}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToBlueResult))}, {CommandScheduler.scheduleCommand(ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.GREEN}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToGreenResult))}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToRedResult))}))})
+            //+ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.BLUE}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToMagentaResult))}, {CommandScheduler.scheduleCommand(ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.GREEN}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult))}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult))}))})
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToMagentaResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)) })
         }
 
     val twoConeStackCycleBlue: Command

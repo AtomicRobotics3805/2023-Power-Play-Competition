@@ -24,6 +24,8 @@ package com.atomicrobotics.cflib.subsystems
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.util.ElapsedTime
 import com.atomicrobotics.cflib.Command
+import com.atomicrobotics.cflib.CommandScheduler
+import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import kotlin.math.abs
 
 /**
@@ -54,6 +56,9 @@ class MoveServo(private val servo: Servo,
      */
     override fun start() {
         positionDif = abs(position - servo.position)
+        if(positionDif == 0.0) {
+            positionDif = 1.0
+        }
         servo.position = position
         timer.reset()
     }

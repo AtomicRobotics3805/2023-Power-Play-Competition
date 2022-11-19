@@ -89,13 +89,13 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * angular values are in radians.
      */
     @JvmField
-    var _MAX_VEL = 30.0
+    var _MAX_VEL = 26.0
     @JvmField
-    var _MAX_ACCEL = 30.0
+    var _MAX_ACCEL = 25.0
     @JvmField
-    var _MAX_ANG_VEL = 245.4.toRadians
+    var _MAX_ANG_VEL = 120.0.toRadians
     @JvmField
-    var _MAX_ANG_ACCEL = 245.4.toRadians
+    var _MAX_ANG_ACCEL = 120.0.toRadians
 
     /*
      * These values are used solely with Mecanum Drives to adjust the kinematics functions that

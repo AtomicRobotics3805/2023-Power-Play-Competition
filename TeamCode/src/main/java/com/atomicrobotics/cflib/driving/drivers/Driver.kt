@@ -190,7 +190,6 @@ abstract class Driver(
         TelemetryController.telemetry.addData("x", poseEstimate.x)
         TelemetryController.telemetry.addData("y", poseEstimate.y)
         TelemetryController.telemetry.addData("heading", poseEstimate.heading)
-        TelemetryController.telemetry.update()
         fieldOverlay.setStroke("#3F51B5")
         DashboardUtil.drawRobot(fieldOverlay, poseEstimate)
         DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory)

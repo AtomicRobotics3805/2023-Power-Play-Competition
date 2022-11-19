@@ -42,7 +42,7 @@ fun main() {
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToRedResult)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)
             }
         },
         Constants.Color.BLUE
