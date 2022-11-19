@@ -41,24 +41,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.mechanisms.PowerPlayPipeline;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name="Power Play Backup OpMode", group="Linear Opmode")
 public class ZaynBackupAutonomous extends LinearOpMode {
-
-    enum EndLocation{
-        LEFT,
-        MIDDLE,
-        RIGHT
-    }
-
-    enum Direction{
-        RIGHT,
-        LEFT
-    }
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -74,6 +69,8 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
     BNO055IMU imu;
     NormalizedColorSensor colorSensor = null;
+    OpenCvWebcam camera;
+    PowerPlayPipeline pipeline;
 
     double angle;
 
@@ -101,6 +98,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
     final double clawClosed = 0.4;
 
     int gain = 20;
+    int endLocation;
     double error;
     double average;
     double speed;
@@ -110,8 +108,18 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId",
+                "id",
+                hardwareMap.appContext.getPackageName()
+        );
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
+
+        pipeline = new PowerPlayPipeline();
+
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         LF  = hardwareMap.get(DcMotor.class, "LF");
         RF = hardwareMap.get(DcMotor.class, "RF");
@@ -141,27 +149,21 @@ public class ZaynBackupAutonomous extends LinearOpMode {
 
         imu.initialize(parameters);
 
-        EndLocation endLocation;
-
         waitForStart();
         runtime.reset();
 
         if (opModeIsActive()) {
-            //closeClaw();
             forward(0, 15);
             turn(-20);
             sleep(500);
-            endLocation = readSensor();
-            //raise(liftLow);
-            //openClaw();
-            //lower();
-            if (endLocation == EndLocation.LEFT){
+            endLocation = readCamera();
+            if (endLocation == 1){
                 turn(0);
                 forward(0, 10.0);
                 turn(0);
                 forward(90, 18.0);
             }
-            else if (endLocation == EndLocation.MIDDLE){
+            else if (endLocation == 2){
                 turn(0);
                 forward(0, 10.0);
             }
@@ -178,6 +180,29 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         return Math.toDegrees(imu.getAngularOrientation().firstAngle);
     }
 
+    public int readCamera(){
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                pipeline = new PowerPlayPipeline();
+                camera.setPipeline(pipeline);
+                camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
+                sleep(5000);
+                endLocation = pipeline.getParkingZone();
+                camera.stopStreaming();
+            }
+            @Override
+            public void onError(int errorCode)
+            {
+                telemetry.addData("Camera Status", "failed to open");
+                telemetry.update();
+            }
+        });
+        return endLocation;
+    }
+    /*
     public EndLocation readSensor(){
         EndLocation endLocation = EndLocation.LEFT;
         colorSensor.setGain(gain);
@@ -194,6 +219,7 @@ public class ZaynBackupAutonomous extends LinearOpMode {
         }
         return endLocation;
     }
+    */
 
     public void forward(double targetAngle, double targetPosition){
 

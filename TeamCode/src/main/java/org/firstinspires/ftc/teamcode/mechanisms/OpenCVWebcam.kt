@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.mechanisms
 
 import com.acmerobotics.dashboard.config.Config
 import com.atomicrobotics.cflib.Command
+import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.utilCommands.CustomCommand
+import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
@@ -110,5 +112,15 @@ class PowerPlayPipeline : OpenCvPipeline() {
         }
 
         return mat
+    }
+
+    fun getParkingZone(): Int {
+        return if (color == SleeveColor.YELLOW) {
+            1
+        } else if (color == SleeveColor.CYAN) {
+            2
+        } else {
+            3
+        }
     }
 }
