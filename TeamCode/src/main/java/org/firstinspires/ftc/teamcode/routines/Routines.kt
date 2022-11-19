@@ -37,23 +37,6 @@ object Routines {
 //            +TelemetryCommand(999.9, "Perpendicular Encoder") { (drive.localizer as TwoWheelOdometryLocalizer).perpendicularEncoder.currentPosition.toString() }
         }
 
-    val highJunctionScoreLeft : Command
-        get() = sequential {
-            +parallel {
-                +Claw.close
-                +Arm.toForward
-            }
-            +Delay(1.0)
-            +drive.followTrajectory(CompetitionTrajectoryFactory.startToSignalLeft)
-            +ColorSensor.detect
-            +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.signalToHighJunction)
-                +Lift.toHigh
-            }
-            +Claw.open
-            +Delay(1.0)
-            +Lift.toIntake
-        }
 
     val lowJunctionScoreParkInSignalZoneRight: Command
         get() = sequential {
