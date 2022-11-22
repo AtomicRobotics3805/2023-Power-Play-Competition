@@ -125,6 +125,7 @@ object Routines {
     val fiftyPointRoutine: Command
         get() = sequential {
             +OpenCVWebcam.detect
+            +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
             +scorePreloadInHighJunctionToStartStackRoutine
             +stackRoutine
         }
@@ -151,26 +152,26 @@ object Routines {
                 +Lift.toHigh
             }
             +Claw.open
-            +parallel {
-                +Arm.toForward
-                +sequential {
-                    +Delay(0.5)
-                    +Lift.toLevel4
-                }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-            }
-            +Claw.close
-            +parallel {
-                +sequential {
-                    +Delay(0.5)
-                    +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                        +Arm.toHighJunction
-                    }
-                }
-                +Lift.toHigh
-            }
-            +Claw.open
+//            +parallel {
+//                +Arm.toForward
+//                +sequential {
+//                    +Delay(0.5)
+//                    +Lift.toLevel4
+//                }
+//                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+//            }
+//            +Claw.close
+//            +parallel {
+//                +sequential {
+//                    +Delay(0.5)
+//                    +parallel {
+//                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+//                        +Arm.toHighJunction
+//                    }
+//                }
+//                +Lift.toHigh
+//            }
+//            +Claw.open
             +parallel {
                 +Arm.toForward
                 +sequential {

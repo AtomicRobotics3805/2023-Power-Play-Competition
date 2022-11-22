@@ -58,12 +58,18 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             Constants.drive = drive
             // initialize trajectories & start positions
             trajectoryFactory.initialize()
+            telemetry.addLine("Trajectory Factory Initialized")
+            telemetry.update()
             // this both registers & initializes the subsystems
             CommandScheduler.registerSubsystems(TelemetryController, drive, *subsystems)
+            telemetry.addLine("Trajectory Factory Initialized")
+            telemetry.update()
             // if there is a routine that's supposed to be performed on init, then do it
             if (initRoutine != null) CommandScheduler.scheduleCommand(initRoutine.invoke())
             // wait for start
             while (!isStarted && !isStopRequested) {
+                telemetry.addLine("Waiting for start")
+                telemetry.update()
                 CommandScheduler.run()
             }
             // do the main routine
@@ -74,10 +80,13 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             }
         } catch (e: Exception) {
             // we have to catch the exception so that we can still cancel and unregister
-            TelemetryController.telemetry.addLine("Error Occurred!")
-            TelemetryController.telemetry.addLine(e.message)
-            // have to update telemetry since CommandScheduler won't call it anymore
-            TelemetryController.periodic()
+//            TelemetryController.telemetry.addLine("Error Occurred!")
+//            TelemetryController.telemetry.addLine(e.message)
+//            // have to update telemetry since CommandScheduler won't call it anymore
+//            TelemetryController.periodic()
+            telemetry.addLine("Error Occurred!")
+            telemetry.addLine(e.message)
+            telemetry.update()
         } finally {
             // cancels all commands and unregisters all gamepads & subsystems
             CommandScheduler.cancelAll()

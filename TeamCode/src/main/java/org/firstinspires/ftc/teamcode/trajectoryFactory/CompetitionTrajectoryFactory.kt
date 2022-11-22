@@ -92,7 +92,7 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
         centeredStartPose = Pose2d(35.5, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
 
-        stackToHighJunction = Constants.drive.trajectoryBuilder(highJunctionToStack.end())
+        stackToHighJunction = Constants.drive.trajectoryBuilder(Pose2d(62.0, 12.0.switchColor, 0.0.switchColorAngle.toRadians))
             .lineTo(Vector2d(26.75, 13.0.switchColor))
             .build()
         highJunctionToStack = Constants.drive.trajectoryBuilder(stackToHighJunction.end())

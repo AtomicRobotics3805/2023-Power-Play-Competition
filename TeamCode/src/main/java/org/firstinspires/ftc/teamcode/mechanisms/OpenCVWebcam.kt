@@ -74,8 +74,8 @@ class PowerPlayPipeline : OpenCvPipeline() {
 
     public var color : SleeveColor = SleeveColor.UNDETECTED
 
-    var pointA = Point(0.0, 1400.0)
-    var pointB = Point(300.0, 1100.0)
+    var pointA = Point(100.0, 1300.0)
+    var pointB = Point(200.0, 1200.0)
     var ROI = Rect(pointA,pointB)
 
     override fun processFrame(input : Mat): Mat? {
