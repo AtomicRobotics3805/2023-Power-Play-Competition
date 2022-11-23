@@ -18,6 +18,7 @@ package org.firstinspires.ftc.teamcode.routines
 
 import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
+import com.atomicrobotics.cflib.subsystems.DisplayRobot
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
@@ -123,11 +124,14 @@ object Routines {
         }
 
     val fiftyPointRoutine: Command
-        get() = sequential {
-            +OpenCVWebcam.detect
+        get() = parallel {
+            +sequential {
+                +OpenCVWebcam.detect
+                +scorePreloadInHighJunctionToStartStackRoutine
+                +stackRoutine
+            }
             +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
-            +scorePreloadInHighJunctionToStartStackRoutine
-            +stackRoutine
+            +DisplayRobot(14.5, 15.0)
         }
 
     val stackRoutine: Command
@@ -152,26 +156,86 @@ object Routines {
                 +Lift.toHigh
             }
             +Claw.open
-//            +parallel {
-//                +Arm.toForward
-//                +sequential {
-//                    +Delay(0.5)
-//                    +Lift.toLevel4
-//                }
-//                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-//            }
-//            +Claw.close
-//            +parallel {
-//                +sequential {
-//                    +Delay(0.5)
-//                    +parallel {
-//                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-//                        +Arm.toHighJunction
-//                    }
-//                }
-//                +Lift.toHigh
-//            }
-//            +Claw.open
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel4
+                }
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel3
+                }
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel2
+                }
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toIntake
+                }
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
             +parallel {
                 +Arm.toForward
                 +sequential {

@@ -36,7 +36,7 @@ import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
  *
  * This class is currently broken. We are working to resolve the issue.
  */
-@Config
+
 class MecanumDriveWheelLocalizer(
     private val drive: MecanumDrive,
     private val useExternalHeading: Boolean = true

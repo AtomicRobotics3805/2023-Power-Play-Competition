@@ -46,7 +46,6 @@ import java.util.*
  * the one used in the Constants file.
  */
 @Suppress("unused")
-@Config
 class TankDrive(constants: TankDriveConstants,
                 localizer: SubsystemLocalizer,
                 startPose: () -> Pose2d = { Pose2d() }

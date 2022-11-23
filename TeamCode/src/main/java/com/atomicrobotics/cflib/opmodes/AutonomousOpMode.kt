@@ -58,18 +58,14 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             Constants.drive = drive
             // initialize trajectories & start positions
             trajectoryFactory.initialize()
-            telemetry.addLine("Trajectory Factory Initialized")
-            telemetry.update()
             // this both registers & initializes the subsystems
             CommandScheduler.registerSubsystems(TelemetryController, drive, *subsystems)
-            telemetry.addLine("Trajectory Factory Initialized")
-            telemetry.update()
             // if there is a routine that's supposed to be performed on init, then do it
             if (initRoutine != null) CommandScheduler.scheduleCommand(initRoutine.invoke())
             // wait for start
             while (!isStarted && !isStopRequested) {
-                telemetry.addLine("Waiting for start")
-                telemetry.update()
+                TelemetryController.telemetry.addLine("Ready to start!")
+                TelemetryController.periodic()
                 CommandScheduler.run()
             }
             // do the main routine
