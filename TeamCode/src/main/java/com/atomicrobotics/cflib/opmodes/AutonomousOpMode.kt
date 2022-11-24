@@ -43,7 +43,7 @@ import com.atomicrobotics.cflib.trajectories.TrajectoryFactory
  */
 @Suppress("unused")
 abstract class AutonomousOpMode(private val color: Constants.Color,
-                                private val trajectoryFactory: TrajectoryFactory,
+                                private val trajectoryFactory: TrajectoryFactory?,
                                 private val mainRoutine: (() -> Command),
                                 private val initRoutine: (() -> Command)? = null,
                                 private val drive: Driver,
@@ -57,7 +57,7 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             Constants.color = color
             Constants.drive = drive
             // initialize trajectories & start positions
-            trajectoryFactory.initialize()
+            trajectoryFactory?.initialize()
             // this both registers & initializes the subsystems
             CommandScheduler.registerSubsystems(TelemetryController, drive, *subsystems)
             // if there is a routine that's supposed to be performed on init, then do it

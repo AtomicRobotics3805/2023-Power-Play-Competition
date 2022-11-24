@@ -67,11 +67,11 @@ open class Turn(
     override fun start() {
         if (turnType == TurnType.ABSOLUTE) {
             angle -= drive.poseEstimate.heading
+            if (angle > 180.0.toRadians)
+                angle -= 360.0.toRadians
+            if (angle < (-180.0).toRadians)
+                angle += 360.0.toRadians
         }
-        if (angle > 180.0.toRadians)
-            angle -= 360.0.toRadians
-        if (angle < (-180.0).toRadians)
-            angle += 360.0.toRadians
         turnProfile = generateSimpleMotionProfile(
             MotionState(drive.poseEstimate.heading, 0.0, 0.0, 0.0),
             MotionState(drive.poseEstimate.heading + angle, 0.0, 0.0, 0.0),
