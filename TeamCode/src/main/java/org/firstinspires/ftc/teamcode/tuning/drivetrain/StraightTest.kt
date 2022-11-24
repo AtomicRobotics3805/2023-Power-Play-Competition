@@ -1,16 +1,16 @@
-package org.firstinspires.ftc.teamcode.main.testing.tuning.drivetrain
+package org.firstinspires.ftc.teamcode.tuning.drivetrain
 
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.atomicrobotics.cflib.*
+import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
+import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
+import com.atomicrobotics.cflib.trajectories.ParallelTrajectory
+import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.teamcode.commandFramework.*
-import org.firstinspires.ftc.teamcode.commandFramework.driving.drivers.MecanumDrive
-import org.firstinspires.ftc.teamcode.commandFramework.driving.localizers.TwoWheelOdometryLocalizer
-import org.firstinspires.ftc.teamcode.commandFramework.trajectories.ParallelTrajectory
-import org.firstinspires.ftc.teamcode.commandFramework.utilCommands.TelemetryCommand
-import org.firstinspires.ftc.teamcode.main.subsystems.drive.DriveConstants
-import org.firstinspires.ftc.teamcode.main.subsystems.drive.OdometryConstants
+import org.firstinspires.ftc.teamcode.tuning.constants.TuningMecanumDriveConstants
+import org.firstinspires.ftc.teamcode.tuning.constants.TuningOdometryConstants
 
 /*
  * This is a simple routine to test translational drive capabilities.
