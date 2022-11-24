@@ -1,6 +1,6 @@
 @file:Suppress("PropertyName")
 
-package org.firstinspires.ftc.teamcode.tuning
+package org.firstinspires.ftc.teamcode.tuning.drivetrain
 
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.util.epsilonEquals
