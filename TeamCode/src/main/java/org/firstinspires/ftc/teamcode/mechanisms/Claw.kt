@@ -20,6 +20,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.Servo
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants
+import com.atomicrobotics.cflib.hardware.ServoEx
 import com.atomicrobotics.cflib.subsystems.MoveServo
 import com.atomicrobotics.cflib.subsystems.Subsystem
 
@@ -46,17 +47,17 @@ object Claw : Subsystem {
 
     // commands
     val open: Command
-        get() = MoveServo(clawServo, OPEN_POSITION, TIME, listOf(this), false)
+        get() = MoveServo(clawServo, OPEN_POSITION, listOf(this), false)
     val close: Command
-        get() = MoveServo(clawServo, CLOSE_POSITION, TIME, listOf(this), false)
+        get() = MoveServo(clawServo, CLOSE_POSITION, listOf(this), false)
 
     // servo
-    private lateinit var clawServo: Servo
+    private val clawServo = ServoEx(NAME, null, TIME)
 
     /**
      * Initializes the clawServo.
      */
     override fun initialize() {
-        clawServo = Constants.opMode.hardwareMap.get(Servo::class.java, NAME)
+        clawServo.initialize()
     }
 }

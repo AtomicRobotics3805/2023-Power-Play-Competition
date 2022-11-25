@@ -17,6 +17,7 @@
 package com.atomicrobotics.cflib.driving
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients
+import com.atomicrobotics.cflib.hardware.MotorEx
 import com.atomicrobotics.cflib.roadrunner.AxisDirection
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
 
@@ -26,15 +27,14 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients
 @Suppress("PropertyName")
 interface DriveConstants {
 
-    val TICKS_PER_REV: Double
-    val MAX_RPM: Double
+    val MOTOR_TYPE: MotorEx.MotorType
+    val TOTAL_GEAR_RATIO: Double
     val MOTOR_VEL_PID: PIDFCoefficients
     val IS_RUN_USING_ENCODER: Boolean
     val kV: Double
     val kA: Double
     val kStatic: Double
     val WHEEL_RADIUS: Double
-    val GEAR_RATIO: Double
     val TRACK_WIDTH: Double
     val MAX_VEL: Double
     val MAX_ACCEL: Double
@@ -64,14 +64,14 @@ interface DriveConstants {
      * Converts encoder ticks to inches
      */
     fun encoderTicksToInches(ticks: Double): Double {
-        return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV
+        return WHEEL_RADIUS * 2 * Math.PI * ticks / (TOTAL_GEAR_RATIO * MOTOR_TYPE.TICKS_PER_REVOLUTION)
     }
 
     /**
      * Converts revs per minute to inches per second
      */
     fun rpmToVelocity(rpm: Double): Double {
-        return rpm * GEAR_RATIO * 2 * Math.PI * WHEEL_RADIUS / 60.0
+        return rpm * 2 * Math.PI * WHEEL_RADIUS / 60.0
     }
 
     /**

@@ -20,6 +20,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.Servo
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants
+import com.atomicrobotics.cflib.hardware.ServoEx
 import com.atomicrobotics.cflib.subsystems.MoveServo
 import com.atomicrobotics.cflib.subsystems.Subsystem
 
@@ -50,21 +51,21 @@ object Arm : Subsystem {
 
     // commands
     val toForward: Command
-        get() = MoveServo(armServo, FORWARD, TIME, listOf(this), true)
+        get() = MoveServo(armServo, FORWARD, listOf(this), true)
     val toRight: Command
-        get() = MoveServo(armServo, RIGHT, TIME, listOf(this), true)
+        get() = MoveServo(armServo, RIGHT, listOf(this), true)
     val toBack: Command
-        get() = MoveServo(armServo, BACK, TIME, listOf(this), true)
+        get() = MoveServo(armServo, BACK,listOf(this), true)
     val toHighJunction: Command
-        get() = MoveServo(armServo, if(Constants.color == Constants.Color.RED) LEFT else RIGHT, TIME, listOf(this), true)
+        get() = MoveServo(armServo, if(Constants.color == Constants.Color.RED) LEFT else RIGHT, listOf(this), true)
 
     // servo
-    private lateinit var armServo: Servo
+    private val armServo = ServoEx(NAME, null, TIME)
 
     /**
      * Initializes the clawServo.
      */
     override fun initialize() {
-        armServo = Constants.opMode.hardwareMap.get(Servo::class.java, NAME)
+        armServo.initialize()
     }
 }

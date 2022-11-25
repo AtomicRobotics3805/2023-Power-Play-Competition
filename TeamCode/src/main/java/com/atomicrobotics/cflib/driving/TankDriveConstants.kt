@@ -16,6 +16,7 @@
 */
 package com.atomicrobotics.cflib.driving
 
+import com.atomicrobotics.cflib.hardware.MotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 
 @Suppress("PropertyName")

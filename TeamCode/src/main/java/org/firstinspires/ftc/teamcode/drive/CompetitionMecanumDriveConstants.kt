@@ -22,6 +22,7 @@ import com.atomicrobotics.cflib.driving.DriverControlled
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import com.atomicrobotics.cflib.driving.MecanumDriveConstants
+import com.atomicrobotics.cflib.hardware.MotorEx
 import com.atomicrobotics.cflib.roadrunner.AxisDirection
 import com.atomicrobotics.cflib.trajectories.toRadians
 
@@ -39,9 +40,9 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
 
     // These are motor constants that should be listed online for your motors.
     @JvmField
-    var _TICKS_PER_REV = 537.7 // 5203 312 RPM Yellow Jacket
+    var _MOTOR_TYPE = MotorEx.MotorType.MODERN_ROBOTICS_MATRIX
     @JvmField
-    var _MAX_RPM = 312.0
+    var _TOTAL_GEAR_RATIO = 19.2 // (input (axle speed) / output (wheel speed)) * motor ratio
 
     /*
      * Set runUsingEncoder to true to enable built-in hub velocity control using drive encoders.
@@ -52,7 +53,9 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * from DriveVelocityPIDTuner.
      */
     @JvmField
-    var _MOTOR_VEL_PID = PIDFCoefficients(0.0, 0.0, 0.0, getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV))
+    var _MOTOR_VEL_PID = PIDFCoefficients(0.0, 0.0, 0.0, getMotorVelocityF(
+        MOTOR_TYPE.RPM / (60 * MOTOR_TYPE.TICKS_PER_REVOLUTION * TOTAL_GEAR_RATIO)
+    ))
     @JvmField
     var _IS_RUN_USING_ENCODER = false
 
@@ -74,8 +77,6 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      */
     @JvmField
     var _WHEEL_RADIUS = 1.8898 // in
-    @JvmField
-    var _GEAR_RATIO = 1.0 // output (wheel) speed / input (motor) speed
     @JvmField
     var _TRACK_WIDTH = 13.22 // in, the distance between center of left and right drive wheels
 
@@ -162,10 +163,10 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _REVERSE_TURN = true
 
-    override val TICKS_PER_REV: Double
-        get() = _TICKS_PER_REV
-    override val MAX_RPM: Double
-        get() = _MAX_RPM
+    override val MOTOR_TYPE: MotorEx.MotorType
+        get() = _MOTOR_TYPE
+    override val TOTAL_GEAR_RATIO: Double
+        get() = _TOTAL_GEAR_RATIO
     override val MOTOR_VEL_PID: PIDFCoefficients
         get() = _MOTOR_VEL_PID
     override val IS_RUN_USING_ENCODER: Boolean
@@ -178,8 +179,6 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
         get() = _kStatic
     override val WHEEL_RADIUS: Double
         get() = _WHEEL_RADIUS
-    override val GEAR_RATIO: Double
-        get() = _GEAR_RATIO
     override val TRACK_WIDTH: Double
         get() = _TRACK_WIDTH
     override val MAX_VEL: Double

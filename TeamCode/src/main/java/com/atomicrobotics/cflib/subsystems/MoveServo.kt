@@ -25,6 +25,7 @@ import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.util.ElapsedTime
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.CommandScheduler
+import com.atomicrobotics.cflib.hardware.ServoEx
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import kotlin.math.abs
 
@@ -40,26 +41,25 @@ import kotlin.math.abs
  * @param interruptible whether this command can be interrupted or not
  */
 @Suppress("unused")
-class MoveServo(private val servo: Servo,
+class MoveServo(private val servo: ServoEx,
                 private val position: Double,
-                private val maxTime: Double,
                 override val requirements: List<Subsystem> = arrayListOf(),
                 override val interruptible: Boolean = true) : Command() {
 
     private var positionDif = 0.0
     private val timer = ElapsedTime()
     override val _isDone: Boolean
-        get() = timer.seconds() > positionDif * maxTime
+        get() = timer.seconds() > positionDif * servo.speed
 
     /**
      * Calculates the difference in position, moves the servo, and resets the timer
      */
     override fun start() {
-        positionDif = abs(position - servo.position)
+        positionDif = abs(position - servo.servo.position)
         if(positionDif == 0.0) {
             positionDif = 1.0
         }
-        servo.position = position
+        servo.servo.position = position
         timer.reset()
     }
 }
