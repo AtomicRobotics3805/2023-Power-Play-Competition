@@ -17,6 +17,7 @@
 package com.atomicrobotics.cflib.trajectories
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder
@@ -24,6 +25,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation
 import com.atomicrobotics.cflib.Constants.Color.BLUE
 import com.atomicrobotics.cflib.Constants.color
+import kotlin.math.cos
+import kotlin.math.sin
 
 val Double.inchesToMm get() = this * 25.4
 val Double.mmToInches get() = this / 25.4
@@ -39,3 +42,9 @@ fun Pose2d(matrix: OpenGLMatrix) = Pose2d(
     Orientation.getOrientation(matrix, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES)
         .thirdAngle.toDouble().toRadians
 )
+fun Pose2d.addRotated(vector: Vector2d) =
+    Pose2d(
+        this.x + cos(this.heading) * vector.x + sin(this.heading) * vector.y,
+        this.y + cos(this.heading) * vector.y + sin(this.heading) * vector.x,
+        this.heading
+    )
