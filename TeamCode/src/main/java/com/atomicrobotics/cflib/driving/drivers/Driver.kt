@@ -53,7 +53,7 @@ import java.util.*
 abstract class Driver(
     val constants: DriveConstants,
     val localizer: com.atomicrobotics.cflib.driving.localizers.SubsystemLocalizer,
-    private val startPose: () -> Pose2d
+    val startPose: () -> Pose2d
 ) : Subsystem {
 
     protected val POSE_HISTORY_LIMIT = 100
