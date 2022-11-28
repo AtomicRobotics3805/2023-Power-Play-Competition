@@ -46,12 +46,12 @@ class MotorPIDTuner : LinearOpMode() {
         CommandScheduler.registerSubsystems(TelemetryController)
         TelemetryController.telemetry.addLine("Initializing")
         TelemetryController.telemetry.update()
+        var tuningMotor = false
         motor = hardwareMap.get(DcMotorEx::class.java, NAME)
         TelemetryController.telemetry.addLine("Ready to Start")
         TelemetryController.telemetry.update()
         waitForStart()
         while (opModeIsActive()) {
-            var tuningMotor = false
             if (gamepad.a.pressed) {
                 CommandScheduler.cancelAll()
                 CommandScheduler.scheduleCommand(moveMotor)
