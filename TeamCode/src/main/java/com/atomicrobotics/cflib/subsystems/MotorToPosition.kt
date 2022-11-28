@@ -22,6 +22,7 @@ import com.qualcomm.robotcore.util.Range
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
+import com.qualcomm.robotcore.hardware.PIDCoefficients
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -47,18 +48,22 @@ open class MotorToPosition(
     override val requirements: List<Subsystem> = arrayListOf(),
     override val interruptible: Boolean = true,
     protected val minError: Int = 15,
-    protected val kP: Double = 0.005
+    protected val coefficients: PIDCoefficients = PIDCoefficients(0.005, 0.0, 0.0),
+    protected val maxI: Double? = null,
+    protected val finish: Boolean = true
 ) : Command() {
 
     protected val timer = ElapsedTime()
+    protected var lastTime: Double = 0.0
     protected val positions: MutableList<Int> = mutableListOf()
     protected val savesPerSecond = 10.0
     protected var saveTimes: MutableList<Double> = mutableListOf()
     protected val minimumChangeForStall = 20.0
     protected var error: Int = 0
-    protected var direction: Double = 0.0
+    protected var lastError: Int = 0
+    protected var i: Double = 0.0
     override val _isDone: Boolean
-        get() = abs(error) < minError
+        get() = abs(error) < minError && finish
 
     /**
      * Sets the motor's mode to RUN_USING_ENCODER, sets the error to the difference between the target and current
@@ -66,8 +71,6 @@ open class MotorToPosition(
      */
     override fun start() {
         motor.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        error = targetPosition - motor.currentPosition
-        direction = sign(error.toDouble())
     }
 
     /**
@@ -75,9 +78,20 @@ open class MotorToPosition(
      */
     override fun execute() {
         error = targetPosition - motor.currentPosition
-        direction = sign(error.toDouble())
-        val power = kP * abs(error) * speed * direction
+        if (lastTime != 0.0) {
+            if (maxI == null) {
+                i += error * (timer.seconds() - lastTime)
+            } else {
+                i = Range.clip(i + error * (timer.seconds() - lastTime), -maxI, maxI)
+            }
+        }
+        val power = (coefficients.p * error +
+                coefficients.i * i +
+                coefficients.d * (error - lastError) / (timer.seconds() - lastTime)
+                ) * speed
         motor.power = Range.clip(power, -min(speed, 1.0), min(speed, 1.0))
+        lastTime = timer.seconds()
+        lastError = error
         cancelIfStalled()
     }
 
