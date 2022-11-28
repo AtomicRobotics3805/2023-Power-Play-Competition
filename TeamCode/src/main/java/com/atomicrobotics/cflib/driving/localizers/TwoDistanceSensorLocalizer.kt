@@ -54,12 +54,12 @@ class DistanceSensorLocalizer(val constants: DistanceSensorLocalizerConstants) :
             val newPose = Pose2d(xPosition, yPosition, drive.rawExternalHeading)
             if (timer != null) {
                 _poseVelocity = (newPose - _poseEstimate) / timer!!.seconds()
-                _poseEstimate = newPose
                 timer!!.reset()
             }
             else {
                 timer = ElapsedTime()
             }
+            _poseEstimate = newPose
         }
         else {
             _poseVelocity = null
