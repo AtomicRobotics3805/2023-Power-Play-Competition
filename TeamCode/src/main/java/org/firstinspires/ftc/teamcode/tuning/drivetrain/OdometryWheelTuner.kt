@@ -9,6 +9,7 @@ import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.Constants.drive
 import com.atomicrobotics.cflib.Constants.opMode
+import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.driving.Turn
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
@@ -46,9 +47,14 @@ class OdometryWheelTuner : AutonomousOpMode(
             CommandScheduler.scheduleCommand(drive.turn(
                 (opMode as OdometryWheelTuner).TURN_NUMBER * 2 * PI, Turn.TurnType.RELATIVE
                 ))
+            opMode.telemetry.addLine("Started Command")
+            opMode.telemetry.update()
         }
 
         override fun execute() {
+            TelemetryController.telemetry.addLine("Running")
+            TelemetryController.telemetry.addData("Pose Velocity", drive.poseVelocity.toString())
+            TelemetryController.telemetry.update()
             // if the robot is not turning, starts a timer
             if (drive.poseVelocity != null && drive.poseVelocity!!.heading epsilonEquals 0.0) {
                 timer = ElapsedTime()

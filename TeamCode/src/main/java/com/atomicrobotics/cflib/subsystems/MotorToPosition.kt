@@ -16,13 +16,14 @@
 */
 package com.atomicrobotics.cflib.subsystems
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients
+import com.acmerobotics.roadrunner.control.PIDFController
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.ElapsedTime
 import com.qualcomm.robotcore.util.Range
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
-import com.qualcomm.robotcore.hardware.PIDCoefficients
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -49,7 +50,6 @@ open class MotorToPosition(
     override val interruptible: Boolean = true,
     protected val minError: Int = 15,
     protected val coefficients: PIDCoefficients = PIDCoefficients(0.005, 0.0, 0.0),
-    protected val maxI: Double? = null,
     protected val finish: Boolean = true
 ) : Command() {
 
@@ -58,12 +58,10 @@ open class MotorToPosition(
     protected val positions: MutableList<Int> = mutableListOf()
     protected val savesPerSecond = 10.0
     protected var saveTimes: MutableList<Double> = mutableListOf()
-    protected val minimumChangeForStall = 20.0
-    protected var error: Int = 0
-    protected var lastError: Int = 0
-    protected var i: Double = 0.0
+    protected val minimumChangeForStall = 5.0
+    protected var controller = PIDFController(coefficients)
     override val _isDone: Boolean
-        get() = abs(error) < minError && finish
+        get() = abs(targetPosition - motor.currentPosition) < minError && finish
 
     /**
      * Sets the motor's mode to RUN_USING_ENCODER, sets the error to the difference between the target and current
@@ -71,27 +69,16 @@ open class MotorToPosition(
      */
     override fun start() {
         motor.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        controller.targetPosition = targetPosition.toDouble()
     }
 
     /**
      * Updates the error and direction, then calculates and sets the motor power
      */
     override fun execute() {
-        error = targetPosition - motor.currentPosition
-        if (lastTime != 0.0) {
-            if (maxI == null) {
-                i += error * (timer.seconds() - lastTime)
-            } else {
-                i = Range.clip(i + error * (timer.seconds() - lastTime), -maxI, maxI)
-            }
-        }
-        val power = (coefficients.p * error +
-                coefficients.i * i +
-                coefficients.d * (error - lastError) / (timer.seconds() - lastTime)
-                ) * speed
+        val power = controller.update(motor.currentPosition.toDouble()) * speed
         motor.power = Range.clip(power, -min(speed, 1.0), min(speed, 1.0))
         lastTime = timer.seconds()
-        lastError = error
         cancelIfStalled()
     }
 

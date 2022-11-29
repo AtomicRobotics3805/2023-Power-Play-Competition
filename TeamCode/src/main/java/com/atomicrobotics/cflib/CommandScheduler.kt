@@ -16,8 +16,10 @@
 */
 package com.atomicrobotics.cflib
 
+import com.atomicrobotics.cflib.CommandScheduler.scheduleCommand
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
+import java.util.*
 
 /**
  * This class runs commands, updates subsystems, and manages Gamepad-related commands. The important
@@ -42,6 +44,8 @@ object CommandScheduler {
      */
     // exercise is healthy (and fun!)
     fun run() {
+        TelemetryController.telemetry.addLine("Started Running CommandScheduler")
+        TelemetryController.periodic()
         if (!Constants.opMode.isStopRequested) {
             updateGamepads()
             updateSubsystems()
@@ -64,6 +68,8 @@ object CommandScheduler {
         else {
             cancelAll()
         }
+        TelemetryController.telemetry.addLine("Finished Running CommandScheduler")
+        TelemetryController.periodic()
     }
 
     /**
@@ -125,10 +131,13 @@ object CommandScheduler {
      * Initializes every command in the commandsToSchedule list.
      */
     private fun scheduleCommands() {
-        for(command in commandsToSchedule) {
+        val actualCommandsToSchedule = ArrayList(commandsToSchedule)
+        commandsToSchedule.clear()
+        Constants.opMode.telemetry.addLine("test")
+        Constants.opMode.telemetry.update()
+        for (command in actualCommandsToSchedule) {
             initCommand(command)
         }
-        commandsToSchedule.clear()
     }
 
     /**

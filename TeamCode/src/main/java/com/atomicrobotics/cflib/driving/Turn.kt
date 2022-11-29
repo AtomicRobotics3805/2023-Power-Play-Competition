@@ -24,8 +24,12 @@ import com.acmerobotics.roadrunner.profile.MotionState
 import com.qualcomm.robotcore.util.ElapsedTime
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants.drive
+import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.trajectories.toRadians
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.sign
 
 /**
  * This command tells the robot to turn to a certain angle in radians. Depending on turnType, the angle can be either
@@ -60,24 +64,28 @@ open class Turn(
 
     private lateinit var turnProfile: MotionProfile
     private val startPose = drive.poseEstimate
+    private var turnsCompleted = 0
+    private var lastHeading = 0.0
 
     /**
      * Makes sure the robot doesn't turn more than 180 degrees, then sets up the turnProfile and resets the timer
      */
     override fun start() {
         if (turnType == TurnType.ABSOLUTE) {
-            angle -= drive.poseEstimate.heading
             if (angle > 180.0.toRadians)
                 angle -= 360.0.toRadians
             if (angle < (-180.0).toRadians)
                 angle += 360.0.toRadians
+        } else {
+            angle += drive.poseEstimate.heading
         }
         turnProfile = generateSimpleMotionProfile(
             MotionState(drive.poseEstimate.heading, 0.0, 0.0, 0.0),
-            MotionState(drive.poseEstimate.heading + angle, 0.0, 0.0, 0.0),
+            MotionState(angle, 0.0, 0.0, 0.0),
             MAX_VEL,
             MAX_ACCEL
         )
+        lastHeading = drive.poseEstimate.heading
         timer.reset()
     }
 
@@ -85,18 +93,25 @@ open class Turn(
      * Calculates and sets the new drive signal
      */
     override fun execute() {
+        TelemetryController.telemetry.addLine("Turning")
+        TelemetryController.telemetry.addData("Target Angle", angle)
+        TelemetryController.telemetry.addData("Heading + Turns Completed", drive.poseEstimate.heading + turnsCompleted * 2 * PI)
         val t = timer.seconds()
         val targetState = turnProfile[t]
         drive.turnController.targetPosition = targetState.x
-        val correction = drive.turnController.update(drive.poseEstimate.heading)
+        if (abs(lastHeading - drive.poseEstimate.heading) > 180.0.toRadians) {
+            turnsCompleted += sign(lastHeading - drive.poseEstimate.heading).toInt()
+        }
+        lastHeading = drive.poseEstimate.heading
+        val correction = drive.turnController.update(
+            drive.poseEstimate.heading + turnsCompleted * 2 * PI
+        )
         val targetOmega = targetState.v
         val targetAlpha = targetState.a
-        drive.setDriveSignal(
-            DriveSignal(
+        drive.setDriveSignal(DriveSignal(
                 Pose2d(0.0, 0.0, targetOmega + correction),
                 Pose2d(0.0, 0.0, targetAlpha)
-            )
-        )
+        ))
     }
 
     /**

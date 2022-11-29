@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.tuning.mechanisms
 
+import com.acmerobotics.roadrunner.control.PIDCoefficients
 import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.subsystems.MotorToPosition
 import com.atomicrobotics.cflib.subsystems.PowerMotor
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.PIDCoefficients
 
 /**
  * Untested
