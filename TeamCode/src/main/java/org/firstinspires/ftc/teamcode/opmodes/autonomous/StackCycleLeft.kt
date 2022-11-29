@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes
+package org.firstinspires.ftc.teamcode.opmodes.autonomous
 
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
@@ -11,8 +11,9 @@ import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
-@Autonomous(name = "Stack Cycle Test (Driver's Left)")
-class StackCycleLeftTest : AutonomousOpMode(
+
+@Autonomous(name = "3-Cone Stack Cycle & Park (Driver's Left)")
+class StackCycleLeft : AutonomousOpMode(
     Constants.Color.BLUE,
     CompetitionTrajectoryFactory,
     { Routines.fiftyPointRoutine },
