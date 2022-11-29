@@ -44,6 +44,7 @@ class FollowTrajectory(
      */
     override fun start() {
         drive.follower.followTrajectory(trajectory.trajectory)
+        drive.trajectory = trajectory
     }
 
     /**
@@ -55,5 +56,6 @@ class FollowTrajectory(
 
     override fun end(interrupted: Boolean) {
         drive.setDriveSignal(DriveSignal())
+        drive.trajectory = null
     }
 }

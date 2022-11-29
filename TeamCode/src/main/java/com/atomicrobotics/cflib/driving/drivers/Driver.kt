@@ -182,8 +182,5 @@ abstract class Driver(
      */
     override fun periodic() {
         localizer.update()
-        TelemetryController.telemetry.addData("x", poseEstimate.x)
-        TelemetryController.telemetry.addData("y", poseEstimate.y)
-        TelemetryController.telemetry.addData("heading", poseEstimate.heading)
     }
 }

@@ -64,8 +64,6 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             if (initRoutine != null) CommandScheduler.scheduleCommand(initRoutine.invoke())
             // wait for start
             while (!isStarted && !isStopRequested) {
-                TelemetryController.telemetry.addLine("Ready to start!")
-                TelemetryController.periodic()
                 CommandScheduler.run()
             }
             // do the main routine

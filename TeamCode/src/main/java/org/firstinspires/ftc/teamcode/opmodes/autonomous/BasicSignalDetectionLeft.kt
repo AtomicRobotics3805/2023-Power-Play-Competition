@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes
+package org.firstinspires.ftc.teamcode.opmodes.autonomous
 
 import com.atomicrobotics.cflib.Constants
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 @Autonomous(name = "Score Preload & Detect Signal (Driver's left)")
-class SignalDetectionLeft : AutonomousOpMode(
+class BasicSignalDetectionLeft : AutonomousOpMode(
     Constants.Color.BLUE,
     CompetitionTrajectoryFactory,
     { Routines.lowJunctionScoreParkInSignalZoneLeft },
