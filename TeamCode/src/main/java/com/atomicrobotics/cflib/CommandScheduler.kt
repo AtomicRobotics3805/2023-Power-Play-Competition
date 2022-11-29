@@ -45,7 +45,11 @@ object CommandScheduler {
         if (!Constants.opMode.isStopRequested) {
             updateGamepads()
             updateSubsystems()
+            Constants.opMode.telemetry.addLine("About to Schedule")
+            Constants.opMode.telemetry.update()
             scheduleCommands()
+            Constants.opMode.telemetry.addLine("Just Scheduled")
+            Constants.opMode.telemetry.update()
             cancelCommands()
             for (command in runningCommands) {
                 try {
@@ -71,7 +75,11 @@ object CommandScheduler {
      * @param command the command to be scheduled
      */
     fun scheduleCommand(command: Command) {
+        Constants.opMode.telemetry.addLine("Scheduling Command")
+        Constants.opMode.telemetry.update()
         commandsToSchedule += command
+        Constants.opMode.telemetry.addLine("Finished Scheduling Command")
+        Constants.opMode.telemetry.update()
     }
 
     /**

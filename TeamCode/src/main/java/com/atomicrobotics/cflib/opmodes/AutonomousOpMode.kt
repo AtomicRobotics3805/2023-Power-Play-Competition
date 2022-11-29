@@ -16,14 +16,14 @@
 */
 package com.atomicrobotics.cflib.opmodes
 
+import com.atomicrobotics.cflib.*
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.atomicrobotics.cflib.Command
-import com.atomicrobotics.cflib.CommandScheduler
-import com.atomicrobotics.cflib.Constants
-import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.driving.drivers.Driver
+import com.atomicrobotics.cflib.subsystems.MotorToPosition
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.trajectories.TrajectoryFactory
+import org.firstinspires.ftc.teamcode.mechanisms.Lift
+import org.firstinspires.ftc.teamcode.routines.Routines
 
 /**
  * All Competition Autonomous OpModes should inherit from this class. It performs several tasks that
@@ -69,9 +69,26 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
                 CommandScheduler.run()
             }
             // do the main routine
-            CommandScheduler.scheduleCommand(mainRoutine.invoke())
+            TelemetryController.telemetry.addLine("MotorToPosition Command")
+            TelemetryController.periodic()
+            MotorToPosition(Lift.liftMotor, 0, 1.0, listOf(Lift))
+            TelemetryController.telemetry.addLine("Complicated MotorToPosition Command")
+            TelemetryController.periodic()
+            MotorToPosition(
+                Lift.liftMotor, (Lift.HIGH_JUNCTION * Lift.COUNTS_PER_INCH).toInt(),
+                Lift.SPEED, listOf(Lift))
+            TelemetryController.telemetry.addLine("Lift.toHigh")
+            TelemetryController.periodic()
+            Lift.toHigh
+            TelemetryController.telemetry.addLine("Scheduling routine")
+            TelemetryController.periodic()
+            CommandScheduler.scheduleCommand(Routines.fiftyPointRoutine)
+            TelemetryController.telemetry.addLine("Scheduled")
+            TelemetryController.periodic()
             // wait for stop
             while (opModeIsActive()) {
+                telemetry.addLine("Running")
+                telemetry.update()
                 CommandScheduler.run()
             }
         } catch (e: Exception) {

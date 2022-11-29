@@ -79,7 +79,7 @@ object Lift : Subsystem {
     private const val PULLEY_WIDTH = 2 // in
     private const val COUNTS_PER_REV = 28 * 19.2 // NeveRest 20 orbital (really 19.2 ratio, not 20)
     private const val DRIVE_GEAR_REDUCTION = 1.0 // higher value means that driven gear is slower
-    private const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (PULLEY_WIDTH * Math.PI)
+    const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (PULLEY_WIDTH * Math.PI)
 
     // manual control
     val start: Command

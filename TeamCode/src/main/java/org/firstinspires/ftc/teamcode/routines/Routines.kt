@@ -18,11 +18,14 @@ package org.firstinspires.ftc.teamcode.routines
 
 import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
-import com.atomicrobotics.cflib.subsystems.DisplayRobot
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
-import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
-import org.firstinspires.ftc.teamcode.mechanisms.*
+import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
+import org.firstinspires.ftc.teamcode.mechanisms.Arm
+import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import org.firstinspires.ftc.teamcode.mechanisms.Lift
+import org.firstinspires.ftc.teamcode.mechanisms.OpenCVWebcam
+import org.firstinspires.ftc.teamcode.mechanisms.PowerPlayPipeline
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 /**
@@ -124,14 +127,11 @@ object Routines {
         }
 
     val fiftyPointRoutine: Command
-        get() = parallel {
-            +sequential {
-                +OpenCVWebcam.detect
-                +scorePreloadInHighJunctionToStartStackRoutine
-                +stackRoutine
-            }
-            +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
-            +DisplayRobot(14.5, 15.0)
+        get() = sequential {
+            +OpenCVWebcam.detect
+            +scorePreloadInHighJunctionToStartStackRoutine
+            +stackRoutine
+            //+DisplayRobot(14.5, 15.0)
         }
 
     val stackRoutine: Command
