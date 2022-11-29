@@ -8,6 +8,7 @@ import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants.drive
 import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.roadrunner.DashboardUtil
+import com.atomicrobotics.cflib.roadrunner.DashboardUtil.drawRobot
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -20,8 +21,6 @@ class DisplayRobot(
 ) : Command() {
 
     override val _isDone = false
-    override val requirements: List<Subsystem>
-        get() = listOf(drive)
     override val interruptible = false
 
     val pathHistory = mutableListOf<Path>()
@@ -30,7 +29,7 @@ class DisplayRobot(
 
     override fun execute() {
         // saves the robot's actual and target position history
-        if (drive.poseEstimate != actualPoseHistory.last()) {
+        if (actualPoseHistory.size < 1 || drive.poseEstimate != actualPoseHistory.last()) {
             actualPoseHistory.add(drive.poseEstimate)
             if (drive.trajectory != null) {
                 targetPoseHistory.add(drive.trajectory!!.trajectory[drive.follower.elapsedTime()])
@@ -39,53 +38,57 @@ class DisplayRobot(
         // caps the size of the poseHistory lists
         if (poseHistoryLimit > -1 && actualPoseHistory.size > poseHistoryLimit) {
             actualPoseHistory.removeFirst()
+        }
+        if (poseHistoryLimit > -1 && targetPoseHistory.size > poseHistoryLimit) {
             targetPoseHistory.removeFirst()
         }
         // saves the robot's path history
-        if (drive.trajectory != null && !pathHistory.contains(drive.trajectory!!.trajectory.path)) {
+        if (drive.trajectory != null &&
+            (pathHistory.isEmpty() || !pathHistory.contains(drive.trajectory!!.trajectory.path))) {
             pathHistory.add(drive.trajectory!!.trajectory.path)
         }
         val fieldOverlay = TelemetryController.packet.fieldOverlay()
         TelemetryController.telemetry.addData("x", drive.poseEstimate.x)
         TelemetryController.telemetry.addData("y", drive.poseEstimate.y)
         TelemetryController.telemetry.addData("heading", drive.poseEstimate.heading)
-        // draws the robot and its actual position history
-        fieldOverlay.setStroke("#3F51B5") // blue
-        drawRobot(fieldOverlay, drive.poseEstimate)
-        DashboardUtil.drawPoseHistory(fieldOverlay, actualPoseHistory)
-        // draws a line pointing where the robot is looking
-        drawHeadingLine(fieldOverlay, drive.poseEstimate)
+
+        // draws the robot's paths
+        fieldOverlay.setStroke("#D4232340") // red, quarter alpha
+        for (path in pathHistory) {
+            DashboardUtil.drawSampledPath(fieldOverlay, path)
+        }
+
         // draws the target robot position and its target position history
         fieldOverlay.setStroke("#28D436") // green
         if (drive.trajectory != null) {
             drawRobot(fieldOverlay, drive.trajectory!!.trajectory[drive.follower.elapsedTime()])
         }
         DashboardUtil.drawPoseHistory(fieldOverlay, targetPoseHistory)
-        // draws the robot's paths
-        fieldOverlay.setStroke("#D4232380") // red, half alpha
-        for (path in pathHistory) {
-            DashboardUtil.drawSampledPath(fieldOverlay, path)
-        }
+
+        // draws the robot and its actual position history
+        fieldOverlay.setStroke("#3F51B5") // blue
+        drawRobot(fieldOverlay, drive.poseEstimate)
+        DashboardUtil.drawPoseHistory(fieldOverlay, actualPoseHistory)
+
+        // draws a line pointing where the robot is looking
+        fieldOverlay.setStroke("#db03fc40") // purple, quarter alpha
+        drawHeadingLine(fieldOverlay, drive.poseEstimate)
     }
 
     fun drawHeadingLine(canvas: Canvas, pose: Pose2d) {
-        val start = Vector2d(
-            pose.x + cos(pose.heading) * length,
-            pose.y - sin(pose.heading) * length
-        )
         val end = Vector2d(
-            start.x + cos(pose.heading) * headingLineLength,
-            start.x - sin(pose.heading) * headingLineLength
+            pose.x + cos(pose.heading) * headingLineLength,
+            pose.y - sin(pose.heading) * headingLineLength
         )
-        canvas.strokeLine(start.x, start.y, end.x, end.y)
+        canvas.strokeLine(pose.x, pose.y, end.x, end.y)
     }
 
     fun drawRobot(canvas: Canvas, pose: Pose2d) {
         val corners = listOf(
-            Vector2d(-width / 2, -length / 2),
-            Vector2d(-width / 2, length / 2),
-            Vector2d(width / 2, length / 2),
-            Vector2d(width / 2, -length / 2)
+            Vector2d(-length / 2, -width / 2),
+            Vector2d(-length / 2, width / 2),
+            Vector2d(length / 2, width / 2),
+            Vector2d(length / 2, -width / 2)
         )
         val xPoints = DoubleArray(4)
         val yPoints = DoubleArray(4)
