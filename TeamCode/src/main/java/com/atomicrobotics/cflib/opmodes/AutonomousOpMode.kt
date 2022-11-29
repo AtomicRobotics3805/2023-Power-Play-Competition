@@ -64,6 +64,8 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             if (initRoutine != null) CommandScheduler.scheduleCommand(initRoutine.invoke())
             // wait for start
             while (!isStarted && !isStopRequested) {
+                TelemetryController.telemetry.addLine("Ready to start!")
+                TelemetryController.periodic()
                 CommandScheduler.run()
             }
             // do the main routine
@@ -74,10 +76,13 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
             }
         } catch (e: Exception) {
             // we have to catch the exception so that we can still cancel and unregister
-            TelemetryController.telemetry.addLine("Error Occurred!")
-            TelemetryController.telemetry.addLine(e.message)
-            // have to update telemetry since CommandScheduler won't call it anymore
-            TelemetryController.periodic()
+//            TelemetryController.telemetry.addLine("Error Occurred!")
+//            TelemetryController.telemetry.addLine(e.message)
+//            // have to update telemetry since CommandScheduler won't call it anymore
+//            TelemetryController.periodic()
+            telemetry.addLine("Error Occurred!")
+            telemetry.addLine(e.message)
+            telemetry.update()
         } finally {
             // cancels all commands and unregisters all gamepads & subsystems
             CommandScheduler.cancelAll()

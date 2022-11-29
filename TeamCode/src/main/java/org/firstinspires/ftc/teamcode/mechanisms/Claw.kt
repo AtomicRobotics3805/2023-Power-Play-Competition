@@ -42,13 +42,13 @@ object Claw : Subsystem {
     @JvmField
     var CLOSE_POSITION = 0.42
     @JvmField
-    var TIME = 3.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
+    var TIME = 1.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
 
     // commands
     val open: Command
-        get() = MoveServo(clawServo, OPEN_POSITION, TIME, listOf(this), true)
+        get() = MoveServo(clawServo, OPEN_POSITION, TIME, listOf(this), false)
     val close: Command
-        get() = MoveServo(clawServo, CLOSE_POSITION, TIME, listOf(this), true)
+        get() = MoveServo(clawServo, CLOSE_POSITION, TIME, listOf(this), false)
 
     // servo
     private lateinit var clawServo: Servo

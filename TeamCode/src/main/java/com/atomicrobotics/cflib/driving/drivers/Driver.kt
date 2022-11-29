@@ -182,17 +182,8 @@ abstract class Driver(
      */
     override fun periodic() {
         localizer.update()
-        poseHistory.add(poseEstimate)
-        if (POSE_HISTORY_LIMIT > -1 && poseHistory.size > POSE_HISTORY_LIMIT) {
-            poseHistory.removeFirst()
-        }
-        val fieldOverlay = TelemetryController.packet.fieldOverlay()
         TelemetryController.telemetry.addData("x", poseEstimate.x)
         TelemetryController.telemetry.addData("y", poseEstimate.y)
         TelemetryController.telemetry.addData("heading", poseEstimate.heading)
-        TelemetryController.telemetry.update()
-        fieldOverlay.setStroke("#3F51B5")
-        DashboardUtil.drawRobot(fieldOverlay, poseEstimate)
-        DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory)
     }
 }

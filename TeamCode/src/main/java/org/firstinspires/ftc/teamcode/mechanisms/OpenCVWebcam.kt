@@ -5,6 +5,7 @@ import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.subsystems.Subsystem
+import com.atomicrobotics.cflib.utilCommands.CustomCommand
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.opencv.core.*
@@ -14,6 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvCameraRotation
 import org.openftc.easyopencv.OpenCvPipeline
 import org.openftc.easyopencv.OpenCvWebcam
+import kotlin.properties.Delegates
 
 @Config
 @Suppress("Unused", "MemberVisibilityCanBePrivate")
@@ -21,12 +23,8 @@ object OpenCVWebcam : Subsystem {
 
     @JvmField
     var NAME = "Webcam 1"
-    @JvmField
-    var cameraMonitorViewId: Int = Constants.opMode.hardwareMap.appContext.getResources().getIdentifier(
-            "cameraMonitorViewId",
-            "id",
-            Constants.opMode.hardwareMap.appContext.getPackageName()
-    )
+
+    private var cameraMonitorViewId = 0
 
     private lateinit var camera: OpenCvWebcam
     private lateinit var pipeline: PowerPlayPipeline
@@ -36,39 +34,29 @@ object OpenCVWebcam : Subsystem {
     val color: PowerPlayPipeline.SleeveColor
         get() = pipeline.color
 
-    val detect: DetectCommand
-        get() = DetectCommand()
-
-    class DetectCommand : Command(){
-        override val _isDone: Boolean
-            get() = detectedColor != PowerPlayPipeline.SleeveColor.UNDETECTED
-
-        override fun start(){
-            detectedColor = PowerPlayPipeline.SleeveColor.UNDETECTED
-        }
-
-        override fun execute(){
-            camera.openCameraDeviceAsync(object : AsyncCameraOpenListener {
-                override fun onOpened() {
-                    camera.startStreaming(1920, 1080, OpenCvCameraRotation.SIDEWAYS_LEFT)
-                }
-
-                override fun onError(errorCode: Int) {
-                }
-            })
-        }
-
-        override fun end(interrupted:Boolean){
-            CommandScheduler.scheduleCommand(TelemetryCommand(10.0, "Color is", detectedColor.toString()))
-        }
-    }
+    val detect: Command
+        get() = CustomCommand({true}, { detectedColor = color })
 
     override fun initialize(){
+        cameraMonitorViewId  = Constants.opMode.hardwareMap.appContext.resources.getIdentifier(
+            "cameraMonitorViewId",
+            "id",
+            Constants.opMode.hardwareMap.appContext.packageName
+        )
         pipeline = PowerPlayPipeline()
-        camera = OpenCvCameraFactory.getInstance().createWebcam(Constants.opMode.hardwareMap.get<WebcamName>(WebcamName::class.java, "Webcam 1"), cameraMonitorViewId)
+        camera = OpenCvCameraFactory.getInstance().createWebcam(Constants.opMode.hardwareMap.get(WebcamName::class.java, NAME), cameraMonitorViewId)
         camera.setPipeline(pipeline)
+        camera.openCameraDeviceAsync(CameraOpenListener)
     }
+    object CameraOpenListener: AsyncCameraOpenListener {
+        override fun onOpened() {
+            camera.startStreaming(1920, 1080, OpenCvCameraRotation.SIDEWAYS_LEFT)
+        }
 
+        override fun onError(errorCode: Int) {
+            throw RuntimeException("Camera error occurred: $errorCode")
+        }
+    }
 }
 
 class PowerPlayPipeline : OpenCvPipeline() {
@@ -86,8 +74,8 @@ class PowerPlayPipeline : OpenCvPipeline() {
 
     public var color : SleeveColor = SleeveColor.UNDETECTED
 
-    var pointA = Point(0.0, 1400.0)
-    var pointB = Point(300.0, 1100.0)
+    var pointA = Point(100.0, 1300.0)
+    var pointB = Point(200.0, 1200.0)
     var ROI = Rect(pointA,pointB)
 
     override fun processFrame(input : Mat): Mat? {

@@ -48,7 +48,6 @@ import java.util.*
  * that as the one used in the Constants file.
  */
 @Suppress("unused")
-@Config
 class MecanumDrive(val mecanumDriveConstants: MecanumDriveConstants,
                    localizer: SubsystemLocalizer,
                    startPose: () -> Pose2d = { Pose2d() }
