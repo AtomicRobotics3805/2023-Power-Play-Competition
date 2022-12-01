@@ -219,46 +219,6 @@ object Routines {
                 +Arm.toForward
                 +sequential {
                     +Delay(0.5)
-                    +Lift.toLevel2
-                }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-            }
-            +Claw.close
-            +parallel {
-                +sequential {
-                    +Delay(0.5)
-                    +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                        +Arm.toHighJunction
-                    }
-                }
-                +Lift.toHigh
-            }
-            +Claw.open
-            +parallel {
-                +Arm.toForward
-                +sequential {
-                    +Delay(0.5)
-                    +Lift.toIntake
-                }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-            }
-            +Claw.close
-            +parallel {
-                +sequential {
-                    +Delay(0.5)
-                    +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                        +Arm.toHighJunction
-                    }
-                }
-                +Lift.toHigh
-            }
-            +Claw.open
-            +parallel {
-                +Arm.toForward
-                +sequential {
-                    +Delay(0.5)
                     +Lift.toIntake
                 }
                 +highJunctionToSignalResult

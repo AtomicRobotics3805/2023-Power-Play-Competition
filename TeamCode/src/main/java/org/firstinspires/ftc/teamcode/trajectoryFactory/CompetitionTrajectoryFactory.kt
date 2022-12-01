@@ -128,17 +128,18 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
             .build()
 
 
-        stackToHighJunction = Constants.drive.trajectoryBuilder(Pose2d(62.0, 13.0.switchColor, 0.0.switchColorAngle.toRadians))
+        stackToHighJunction = Constants.drive.trajectoryBuilder(Pose2d(62.0, 14.0.switchColor, 0.0.switchColorAngle.toRadians))
             .lineTo(Vector2d(27.0, 12.5.switchColor))
             .build()
         highJunctionToStack = Constants.drive.trajectoryBuilder(stackToHighJunction.end())
-            .lineTo(Vector2d(62.0, 13.0.switchColor))
+            .lineTo(Vector2d(62.0, 14.0.switchColor))
             .build()
 
 
 
 
         centerStartToHighJunction = Constants.drive.trajectoryBuilder(centeredStartPose)
+            .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .splineToConstantHeading(Vector2d(27.0, 13.5.switchColor), 180.0.switchColorAngle.toRadians)
             .build()

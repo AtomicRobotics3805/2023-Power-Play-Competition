@@ -77,8 +77,8 @@ class DisplayRobot(
 
     fun drawHeadingLine(canvas: Canvas, pose: Pose2d) {
         val end = Vector2d(
-            pose.x + cos(pose.heading) * headingLineLength,
-            pose.y - sin(pose.heading) * headingLineLength
+            pose.x - cos(pose.heading) * headingLineLength,
+            pose.y + sin(pose.heading) * headingLineLength
         )
         canvas.strokeLine(pose.x, pose.y, end.x, end.y)
     }
