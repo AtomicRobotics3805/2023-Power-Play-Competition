@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
-@Disabled
 @Autonomous(name = "Score Preload & Detect Signal w/ Camera (Driver's left)")
 class BetterSignalDetectionLeft : AutonomousOpMode(
     Constants.Color.BLUE,

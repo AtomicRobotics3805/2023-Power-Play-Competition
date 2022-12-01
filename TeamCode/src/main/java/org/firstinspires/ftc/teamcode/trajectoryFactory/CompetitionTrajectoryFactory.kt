@@ -70,7 +70,7 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
         // start positions
         legalStartPose = Pose2d(33.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
 
-        centeredStartPose = Pose2d(36.5, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
+        centeredStartPose = Pose2d(35.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
 
         // trajectories
         startToLowJunction = Constants.drive.trajectoryBuilder(legalStartPose)
@@ -140,7 +140,7 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
         centerStartToHighJunction = Constants.drive.trajectoryBuilder(centeredStartPose)
             .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
-            .splineToConstantHeading(Vector2d(27.0, 12.0.switchColor), 180.0.switchColorAngle.toRadians)
+            .splineToConstantHeading(Vector2d(27.0, 13.5.switchColor), 180.0.switchColorAngle.toRadians)
             .build()
 
         highJunctionToMagentaResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())

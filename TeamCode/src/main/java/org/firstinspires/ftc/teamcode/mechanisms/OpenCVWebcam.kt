@@ -54,7 +54,7 @@ object OpenCVWebcam : Subsystem {
         }
 
         override fun onError(errorCode: Int) {
-            throw RuntimeException("Camera error occurred: $errorCode")
+            CommandScheduler.scheduleCommand(TelemetryCommand(30.0, "Camera Disconnected"))
         }
     }
 }
@@ -72,7 +72,7 @@ class PowerPlayPipeline : OpenCvPipeline() {
     private val CYAN = Scalar(0.0, 255.0, 255.0)
     private val MAGENTA = Scalar(255.0, 0.0, 255.0)
 
-    public var color : SleeveColor = SleeveColor.UNDETECTED
+    var color : SleeveColor = SleeveColor.UNDETECTED
 
     var pointA = Point(100.0, 1300.0)
     var pointB = Point(200.0, 1200.0)

@@ -87,21 +87,23 @@ object Routines {
         }
 
     val lowJunctionScoreParkInSignalZoneUsingCamera: Command
-        get() = sequential {
-            +OpenCVWebcam.detect
-            +parallel {
-                +Claw.close
-                +Arm.toForward
-                +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToLowJunction)
+        get() = parallel {
+            +sequential {
+                +OpenCVWebcam.detect
+                +parallel {
+                    +Claw.close
+                    +Arm.toForward
+                    +Lift.toLow
+                    +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToLowJunction)
+                }
+                +Claw.open
+                +Lift.toIntake
+                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToCyanResult)) })
+                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToMagentaResult)) })
+                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToYellowResult)) })
             }
-            +Claw.open
-            +Lift.toIntake
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToCyanResult)) })
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToMagentaResult)) })
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToYellowResult)) })
+            +DisplayRobot(14.5, 15.0)
         }
-
 
     // Color sensor value
 
