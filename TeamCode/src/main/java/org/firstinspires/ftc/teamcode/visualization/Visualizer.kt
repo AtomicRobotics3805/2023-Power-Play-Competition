@@ -36,13 +36,9 @@ fun main() {
         15.0,
         {
             sequential {
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToLowJunction)
 
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToCyanResult)
             }
         },
         Constants.Color.BLUE

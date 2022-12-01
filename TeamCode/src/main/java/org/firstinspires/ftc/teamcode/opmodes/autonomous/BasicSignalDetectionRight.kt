@@ -6,6 +6,7 @@ import com.atomicrobotics.cflib.opmodes.AutonomousOpMode
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.mechanisms.Claw
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
+@Disabled
 @Autonomous(name = "Score Preload & Detect Signal (Driver's Right)")
 class BasicSignalDetectionRight : AutonomousOpMode(
     Constants.Color.RED,

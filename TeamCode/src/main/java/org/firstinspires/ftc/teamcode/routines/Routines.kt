@@ -22,6 +22,7 @@ import com.atomicrobotics.cflib.subsystems.DisplayRobot
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
+import org.apache.commons.math3.analysis.function.Pow
 import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
@@ -83,6 +84,22 @@ object Routines {
             +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.BLUE }, { CommandScheduler.scheduleCommand(blueRoutine) })
             +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.RED }, { CommandScheduler.scheduleCommand(redRoutine) })
             +ConditionalCommand({ ColorSensor.color == ColorSensor.SleeveColor.GREEN }, { CommandScheduler.scheduleCommand(greenRoutine) })
+        }
+
+    val lowJunctionScoreParkInSignalZoneUsingCamera: Command
+        get() = sequential {
+            +OpenCVWebcam.detect
+            +parallel {
+                +Claw.close
+                +Arm.toForward
+                +Lift.toLow
+                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToLowJunction)
+            }
+            +Claw.open
+            +Lift.toIntake
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToCyanResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToMagentaResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToYellowResult)) })
         }
 
 
