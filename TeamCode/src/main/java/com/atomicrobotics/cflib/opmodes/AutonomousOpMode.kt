@@ -24,6 +24,7 @@ import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.driving.drivers.Driver
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.trajectories.TrajectoryFactory
+import org.firstinspires.ftc.teamcode.mechanisms.OpenCVWebcam
 
 /**
  * All Competition Autonomous OpModes should inherit from this class. It performs several tasks that

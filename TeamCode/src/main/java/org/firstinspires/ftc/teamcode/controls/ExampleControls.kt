@@ -52,6 +52,7 @@ object ExampleControls : Controls() {
         gamepad2.x.pressedCommand = { Arm.toRight }
         gamepad2.y.pressedCommand = { Arm.toBack }
         gamepad2.b.pressedCommand = { Arm.toForward }
+        gamepad2.leftBumper.pressedCommand = { Arm.toLeft }
         gamepad2.a.toggleCommands = listOf({ Claw.open }, { Claw.close })
     }
 }

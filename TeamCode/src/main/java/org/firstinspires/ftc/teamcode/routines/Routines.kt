@@ -109,7 +109,7 @@ object Routines {
 
     val teleOpStartRoutine: Command
         get() = sequential {
-
+            +DisplayRobot(14.5, 15.0)
         }
 
     val blueRoutine: Command
@@ -136,7 +136,7 @@ object Routines {
                 +Lift.toHigh
                 +sequential {
                     +Delay(0.5)
-                    +Arm.toRight
+                    +Arm.toHighJunction
                 }
             }
             +Claw.open
@@ -146,6 +146,7 @@ object Routines {
         get() = parallel {
             +sequential {
                 +OpenCVWebcam.detect
+                //+testRoutine
                 +scorePreloadInHighJunctionToStartStackRoutine
                 +stackRoutine
             }
@@ -199,26 +200,6 @@ object Routines {
                 +Arm.toForward
                 +sequential {
                     +Delay(0.5)
-                    +Lift.toLevel3
-                }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
-            }
-            +Claw.close
-            +parallel {
-                +sequential {
-                    +Delay(0.5)
-                    +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
-                        +Arm.toHighJunction
-                    }
-                }
-                +Lift.toHigh
-            }
-            +Claw.open
-            +parallel {
-                +Arm.toForward
-                +sequential {
-                    +Delay(0.5)
                     +Lift.toIntake
                 }
                 +highJunctionToSignalResult
@@ -231,6 +212,7 @@ object Routines {
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToMagentaResult)) })
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.UNDETECTED }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
         }
 
     val twoConeStackCycleBlue: Command

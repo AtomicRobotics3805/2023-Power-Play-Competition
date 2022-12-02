@@ -89,7 +89,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
      * angular values are in radians.
      */
     @JvmField
-    var _MAX_VEL = 26.0
+    var _MAX_VEL = 27.0
     @JvmField
     var _MAX_ACCEL = 25.0
     @JvmField

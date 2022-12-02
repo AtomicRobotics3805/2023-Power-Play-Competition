@@ -48,6 +48,10 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
     lateinit var highJunctionToStack: ParallelTrajectory
     lateinit var stackToHighJunction: ParallelTrajectory
 
+    lateinit var highJunctionToStackRight: ParallelTrajectory
+    lateinit var stackToHighJunctionRight: ParallelTrajectory
+    lateinit var centerStartToHighJunctionRight: ParallelTrajectory
+
     lateinit var centerStartToHighJunction: ParallelTrajectory
 
     lateinit var centerStartToLowJunction: ParallelTrajectory
@@ -129,29 +133,39 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
 
         stackToHighJunction = Constants.drive.trajectoryBuilder(Pose2d(62.0, 14.0.switchColor, 0.0.switchColorAngle.toRadians))
-            .lineTo(Vector2d(27.0, 12.5.switchColor))
+            .lineTo(Vector2d(25.5, 13.0.switchColor))
             .build()
         highJunctionToStack = Constants.drive.trajectoryBuilder(stackToHighJunction.end())
-            .lineTo(Vector2d(62.0, 14.0.switchColor))
+            .lineTo(Vector2d(62.0, 13.5.switchColor))
             .build()
 
-
+        stackToHighJunctionRight = Constants.drive.trajectoryBuilder(Pose2d(62.0, 14.0.switchColor, 0.0.switchColorAngle.toRadians))
+            .lineTo(Vector2d(25.5, 13.0.switchColor))
+            .build()
+        highJunctionToStackRight = Constants.drive.trajectoryBuilder(stackToHighJunction.end())
+            .lineTo(Vector2d(62.0, 13.5.switchColor))
+            .build()
+        centerStartToHighJunctionRight = Constants.drive.trajectoryBuilder(centeredStartPose)
+            .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToConstantHeading(Vector2d(25.5, 12.0.switchColor), 180.0.switchColorAngle.toRadians)
+            .build()
 
 
         centerStartToHighJunction = Constants.drive.trajectoryBuilder(centeredStartPose)
             .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
-            .splineToConstantHeading(Vector2d(27.0, 13.5.switchColor), 180.0.switchColorAngle.toRadians)
+            .splineToConstantHeading(Vector2d(25.5, 12.0.switchColor), 180.0.switchColorAngle.toRadians)
             .build()
 
         highJunctionToMagentaResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())
-            .lineToLinearHeading(Pose2d(12.0, 12.0.switchColor, 270.0.switchColorAngle.toRadians))
+            .lineToLinearHeading(Pose2d(12.0, 14.0.switchColor, 270.0.switchColorAngle.toRadians))
             .build()
         highJunctionToCyanResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())
-            .lineToLinearHeading(Pose2d(35.5, 12.0.switchColor, 270.0.switchColorAngle.toRadians))
+            .lineToLinearHeading(Pose2d(35.5, 14.0.switchColor, 270.0.switchColorAngle.toRadians))
             .build()
         highJunctionToYellowResult = Constants.drive.trajectoryBuilder(centerStartToHighJunction.end())
-            .lineToLinearHeading(Pose2d(58.5, 12.0.switchColor, 270.0.switchColorAngle.toRadians))
+            .lineToLinearHeading(Pose2d(58.5, 14.0.switchColor, 270.0.switchColorAngle.toRadians))
             .build()
 
 
