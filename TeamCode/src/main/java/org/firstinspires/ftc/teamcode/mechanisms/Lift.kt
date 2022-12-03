@@ -49,7 +49,7 @@ object Lift : Subsystem {
 
     // Lift Positions
     @JvmField
-    var HIGH_JUNCTION = 34.0 // in
+    var HIGH_JUNCTION = 33.0 // in
     @JvmField
     var MEDIUM_JUNCTION = 25.0 // in
     @JvmField
