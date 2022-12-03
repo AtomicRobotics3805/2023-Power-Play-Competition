@@ -34,7 +34,6 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
     lateinit var legalStartPose: Pose2d
     lateinit var centeredStartPose: Pose2d
 
-
     // Low Junction -> Signal -> Park (26 Point: 23 auto points, 3 endgame points)
     lateinit var startToLowJunction: ParallelTrajectory
     lateinit var lowJunctionToSignalLeft: ParallelTrajectory
@@ -124,18 +123,18 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
 
 
-        stackToHighJunctionLeft = Constants.drive.trajectoryBuilder(Pose2d(62.0, 14.0.switchColor, 0.0.switchColorAngle.toRadians))
+        stackToHighJunctionLeft = Constants.drive.trajectoryBuilder(Pose2d(60.0, 13.5.switchColor, 0.0.switchColorAngle.toRadians))
             .lineTo(Vector2d(25.5, 13.0.switchColor))
             .build()
         highJunctionToStackLeft = Constants.drive.trajectoryBuilder(stackToHighJunctionLeft.end())
-            .lineTo(Vector2d(62.0, 13.5.switchColor))
+            .lineTo(Vector2d(60.0, 13.5.switchColor))
             .build()
 
-        stackToHighJunctionRight = Constants.drive.trajectoryBuilder(Pose2d(64.0, 10.5.switchColor, 0.0.switchColorAngle.toRadians))
+        stackToHighJunctionRight = Constants.drive.trajectoryBuilder(Pose2d(63.0, 10.5.switchColor, 0.0.switchColorAngle.toRadians))
             .lineTo(Vector2d(29.5, 9.0.switchColor))
             .build()
         highJunctionToStackRight = Constants.drive.trajectoryBuilder(stackToHighJunctionRight.end())
-            .lineTo(Vector2d(64.0, 10.5.switchColor))
+            .lineTo(Vector2d(63.0, 10.5.switchColor))
             .build()
         centerStartToHighJunctionRight = Constants.drive.trajectoryBuilder(centeredStartPose)
             .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
