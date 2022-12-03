@@ -22,7 +22,6 @@ import com.atomicrobotics.cflib.subsystems.DisplayRobot
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
-import org.apache.commons.math3.analysis.function.Pow
 import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
@@ -162,7 +161,7 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel5
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
             }
             +Claw.close
             +parallel {
@@ -182,7 +181,7 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel4
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
             }
             +Claw.close
             +parallel {
@@ -238,7 +237,7 @@ object Routines {
             +Delay(0.25)
             +parallel {
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
                 +Lift.toLevel4
             }
             +Claw.close
@@ -257,7 +256,7 @@ object Routines {
             +Delay(0.25)
             +parallel {
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStack)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
             }
         }
 }
