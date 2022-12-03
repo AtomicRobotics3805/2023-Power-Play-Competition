@@ -186,7 +186,7 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel5
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.startHighJunctionToStackLeft)
             }
             +Claw.close
             +parallel {
@@ -258,7 +258,7 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel5
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackRight)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.startHighJunctionToStackRight)
             }
             +Claw.close
             +parallel {
