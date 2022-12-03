@@ -127,11 +127,23 @@ object Routines {
         }
 
     val scorePreloadInHighJunctionToStartStackRoutine: Command
-        get() = sequential {
+        get() = if(Constants.color == Constants.Color.BLUE) sequential {
             +parallel {
                 +Claw.close
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunction)
+                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionLeft)
+                +Lift.toHigh
+                +sequential {
+                    +Delay(0.5)
+                    +Arm.toHighJunction
+                }
+            }
+            +Claw.open
+        } else sequential {
+            +parallel {
+                +Claw.close
+                +Arm.toForward
+                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionRight)
                 +Lift.toHigh
                 +sequential {
                     +Delay(0.5)
@@ -142,12 +154,21 @@ object Routines {
         }
 
     val fiftyPointRoutine: Command
-        get() = parallel {
+        get() = if(Constants.color == Constants.Color.BLUE) parallel {
             +sequential {
                 +OpenCVWebcam.detect
                 //+testRoutine
                 +scorePreloadInHighJunctionToStartStackRoutine
                 +stackRoutine
+            }
+            +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
+            +DisplayRobot(14.5, 15.0)
+        } else parallel {
+            +sequential {
+                +OpenCVWebcam.detect
+                //+testRoutine
+                +scorePreloadInHighJunctionToStartStackRoutine
+                +stackRoutineRight
             }
             +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
             +DisplayRobot(14.5, 15.0)
@@ -168,7 +189,7 @@ object Routines {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toHighJunction
                     }
                 }
@@ -188,7 +209,59 @@ object Routines {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toIntake
+                }
+                +highJunctionToSignalResult
+            }
+        }
+
+    val stackRoutineRight: Command
+        get() = sequential {
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel5
+                }
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackRight)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionRight)
+                        +Arm.toHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +Claw.open
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel4
+                }
+                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackRight)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionRight)
                         +Arm.toHighJunction
                     }
                 }
@@ -227,7 +300,7 @@ object Routines {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toRight
                     }
                 }
@@ -246,7 +319,7 @@ object Routines {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toRight
                     }
                 }

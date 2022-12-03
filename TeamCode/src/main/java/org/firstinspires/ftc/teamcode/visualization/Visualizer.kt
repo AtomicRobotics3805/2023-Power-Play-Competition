@@ -36,12 +36,15 @@ fun main() {
         15.0,
         {
             sequential {
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionRight)
 
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToCyanResult)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackRight)
+
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionRight)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)
             }
         },
-        Constants.Color.BLUE
+        Constants.Color.RED
     ))
     MeepMeepVisualizer.run(CompetitionTrajectoryFactory)
 }
