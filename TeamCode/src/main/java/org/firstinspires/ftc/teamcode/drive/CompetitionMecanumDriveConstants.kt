@@ -91,7 +91,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _MAX_VEL = 30.0
     @JvmField
-    var _MAX_ACCEL = 25.0
+    var _MAX_ACCEL = 30.0
     @JvmField
     var _MAX_ANG_VEL = 120.0.toRadians
     @JvmField

@@ -20,8 +20,10 @@ import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.Servo
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.Constants
+import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.subsystems.MoveServo
 import com.atomicrobotics.cflib.subsystems.Subsystem
+import com.atomicrobotics.cflib.utilCommands.Delay
 
 /**
  * This class is an example of a claw controlled by a single servo. Its first two commands, open and close, which each
@@ -42,11 +44,14 @@ object Claw : Subsystem {
     @JvmField
     var CLOSE_POSITION = 0.42
     @JvmField
-    var TIME = 1.0 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
+    var TIME = 0.7 // the number of seconds required to move the servo from 0.0 to 1.0 (not necessarily OPEN to CLOSE)
 
     // commands
     val open: Command
-        get() = MoveServo(clawServo, OPEN_POSITION, TIME, listOf(this), false)
+        get() = sequential {
+            +Delay(0.4)
+            +MoveServo(clawServo, OPEN_POSITION, TIME, listOf(Claw), false)
+        }
     val close: Command
         get() = MoveServo(clawServo, CLOSE_POSITION, TIME, listOf(this), false)
 
