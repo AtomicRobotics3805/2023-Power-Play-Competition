@@ -20,6 +20,15 @@ import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryConstants
 
 class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     @JvmField
+    var _PARALLEL_X = 0.075 // in; forward offset of the parallel wheel
+    @JvmField
+    var _PARALLEL_Y = -4.6 // in; left offset of the parallel wheel
+    @JvmField
+    var _PERPENDICULAR_X = -6.05 // in; forward offset of the perpendicular wheel
+    @JvmField
+    var _PERPENDICULAR_Y = -2.2 // in; left offset of the perpendicular wheel
+    /*
+    @JvmField
     var _PARALLEL_X = -4.5 // in; forward offset of the parallel wheel
     @JvmField
     var _PARALLEL_Y = 1.5 // in; left offset of the parallel wheel
@@ -27,6 +36,7 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     var _PERPENDICULAR_X = -5.0 // in; forward offset of the perpendicular wheel
     @JvmField
     var _PERPENDICULAR_Y = -2.0 // in; left offset of the perpendicular wheel
+    */
 /*
     // (0, 0) is (7.625in, 7.25in)
     // 7.625-5.875
@@ -44,9 +54,9 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     @JvmField
     var _PERPENDICULAR_NAME = "LF"
     @JvmField
-    var _TICKS_PER_REV = 8192.0 // REV through bore encoder
+    var _TICKS_PER_REV = 2400.0 // Way better encoders
     @JvmField
-    var _WHEEL_RADIUS = 0.688975 // rotacaster wheels // in
+    var _WHEEL_RADIUS = 1.5 // rotacaster wheels // in
     @JvmField
     var _GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
     @JvmField
@@ -54,9 +64,9 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     @JvmField
     var _PERPENDICULAR_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
-    var _X_MULTIPLIER = 1.012712019
+    var _X_MULTIPLIER = 1.0
     @JvmField
-    var _Y_MULTIPLIER = 1.008686388
+    var _Y_MULTIPLIER = 1.0
     @JvmField
     var _CORRECTED_VELOCITY = true
 

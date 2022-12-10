@@ -22,12 +22,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.atomicrobotics.cflib.Constants.opMode
 import com.atomicrobotics.cflib.Command
-import com.atomicrobotics.cflib.CommandScheduler
+import com.atomicrobotics.cflib.parallel
 import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.subsystems.PowerMotor
 import com.atomicrobotics.cflib.subsystems.Subsystem
 import com.atomicrobotics.cflib.subsystems.MotorToPosition
-import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.CustomCommand
 import com.atomicrobotics.cflib.utilCommands.OptionCommand
 
@@ -45,7 +44,8 @@ object Lift : Subsystem {
 
     // configurable constants
     @JvmField
-    var NAME = "lift"
+    var NAME_1 = "lift1"
+    var NAME_2 = "lift2"
 
     // Lift Positions
     @JvmField
@@ -71,45 +71,88 @@ object Lift : Subsystem {
 
     // Motor Information
     @JvmField
-    var DIRECTION = DcMotorSimple.Direction.FORWARD
+    var DIRECTION_1 = DcMotorSimple.Direction.REVERSE
     @JvmField
-    var SPEED = 1.0
+    var DIRECTION_2 = DcMotorSimple.Direction.FORWARD
+    @JvmField
+    var SPEED_1 = 1.0
+    @JvmField
+    var SPEED_2 = 1.0
 
     // unconfigurable constants
-    private const val PULLEY_WIDTH = 2 // in
-    private const val COUNTS_PER_REV = 28 * 19.2 // NeveRest 20 orbital (really 19.2 ratio, not 20)
-    private const val DRIVE_GEAR_REDUCTION = 1.0 // higher value means that driven gear is slower
+    private const val PULLEY_WIDTH = 0.7 // in
+    private const val COUNTS_PER_REV = 28 * 3.700000000 // NeveRest 20 orbital (really 19.2 ratio, not 20)
+    private const val DRIVE_GEAR_REDUCTION = 1.000000000 // higher value means that driven gear is slower
     private const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (PULLEY_WIDTH * Math.PI)
 
     // manual control
     val start: Command
-        get() = PowerMotor(liftMotor, SPEED, requirements = listOf(this))
+        get() = parallel {
+            +PowerMotor(liftMotor_1, SPEED_1, requirements = listOf(this@Lift))
+            +PowerMotor(liftMotor_1, SPEED_1, requirements = listOf(this@Lift))
+        }
     val reverse: Command
-        get() = PowerMotor(liftMotor, -SPEED, requirements = listOf(this))
+        get() = parallel {
+            +PowerMotor(liftMotor_1, -SPEED_1, requirements = listOf(this@Lift))
+            +PowerMotor(liftMotor_1, -SPEED_1, requirements = listOf(this@Lift))
+        }
     val stop: Command
-        get() = PowerMotor(liftMotor, 0.0, requirements = listOf(this))
+        get() = parallel {
+            +PowerMotor(liftMotor_1, 0.0, requirements = listOf(this@Lift))
+            +PowerMotor(liftMotor_1, 0.0, requirements = listOf(this@Lift))
+        }
 
     // preset positions
     val toHigh: Command
-        get() = MotorToPosition(liftMotor, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toMedium: Command
-        get() = MotorToPosition(liftMotor, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toLow: Command
-        get() = MotorToPosition(liftMotor, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toGround: Command
-        get() = MotorToPosition(liftMotor, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toIntake: Command
-        get() = MotorToPosition(liftMotor, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toLevel5: Command
-        get() = MotorToPosition(liftMotor, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toLevel4: Command
-        get() = MotorToPosition(liftMotor, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toLevel3: Command
-        get() = MotorToPosition(liftMotor, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val toLevel2: Command
-        get() = MotorToPosition(liftMotor, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
     val aboveStack: Command
-        get() = MotorToPosition(liftMotor, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED, listOf(this))
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
 
 
     var conesLeftOnStack = 5
@@ -119,16 +162,21 @@ object Lift : Subsystem {
             +CustomCommand(_start = { conesLeftOnStack-- })
         }
     // motor
-        lateinit var liftMotor: DcMotorEx
+    lateinit var liftMotor_1: DcMotorEx
+    lateinit var liftMotor_2: DcMotorEx
 
     /**
      * Initializes the liftMotor, resets its encoders, sets the mode to RUN_USING_ENCODER, and sets the direction to the
      * DIRECTION variable.
      */
     override fun initialize() {
-        liftMotor = opMode.hardwareMap.get(DcMotorEx::class.java, NAME)
-        liftMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        liftMotor.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        liftMotor.direction = DIRECTION
+        liftMotor_1 = opMode.hardwareMap.get(DcMotorEx::class.java, NAME_1)
+        liftMotor_1.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        liftMotor_1.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        liftMotor_1.direction = DIRECTION_1
+        liftMotor_2 = opMode.hardwareMap.get(DcMotorEx::class.java, NAME_2)
+        liftMotor_2.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        liftMotor_2.mode = DcMotor.RunMode.RUN_USING_ENCODER
+        liftMotor_2.direction = DIRECTION_2
     }
 }

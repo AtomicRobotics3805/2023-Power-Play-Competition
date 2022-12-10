@@ -157,7 +157,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     var _REVERSE_STRAFE = true
 
     @JvmField
-    var _REVERSE_STRAIGHT = false
+    var _REVERSE_STRAIGHT = true
 
     @JvmField
     var _REVERSE_TURN = true

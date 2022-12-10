@@ -38,7 +38,7 @@ object Claw : Subsystem {
 
     // configurable constants
     @JvmField
-    var NAME = "claw"
+    var NAME = "claw" // Control Port 1
     @JvmField
     var OPEN_POSITION = 0.8
     @JvmField
