@@ -32,7 +32,4 @@ class ExampleTeleOpMode : TeleOpMode(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants()),
     ) { Constants.endPose ?: Pose2d() },
-    Lift,
-    Arm,
-    Claw
 )

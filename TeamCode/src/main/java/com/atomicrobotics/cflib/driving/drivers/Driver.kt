@@ -139,7 +139,8 @@ abstract class Driver(
      * @param reversed whether the robot should start the trajectory going in reverse
      */
     fun trajectoryBuilder(startPose: Pose2d, reversed: Boolean = false) =
-        ParallelTrajectoryBuilder(TrajectoryBuilder(startPose, reversed, velConstraint, accelConstraint))
+        ParallelTrajectoryBuilder(
+            TrajectoryBuilder(startPose, reversed, velConstraint, accelConstraint))
     /**
      * Overloaded function, returns a TrajectoryBuilder with a certain start position & heading
      * @param startPose the position of the robot on the field at the start of the trajectory

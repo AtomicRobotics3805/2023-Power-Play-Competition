@@ -158,7 +158,7 @@ object Routines {
         }
 
     val fiftyPointRoutine: Command
-        get() = if(Constants.color == Constants.Color.BLUE) parallel {
+        get() = if(/*Constants.color == Constants.Color.BLUE*/true) parallel {
             +sequential {
                 +OpenCVWebcam.detect
                 //+testRoutine

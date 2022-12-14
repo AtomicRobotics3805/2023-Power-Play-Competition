@@ -38,7 +38,7 @@ fun main() {
             sequential {
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionLeft)
 
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.startHighJunctionToStackLeft)
 
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
                 +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)

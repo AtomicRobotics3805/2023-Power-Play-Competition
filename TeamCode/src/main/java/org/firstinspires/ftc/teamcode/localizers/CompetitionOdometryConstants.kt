@@ -50,23 +50,23 @@ class CompetitionOdometryConstants() : TwoWheelOdometryConstants {
     var _PERPENDICULAR_Y = -1.375 // in; left offset of the perpendicular wheel
  */
     @JvmField
-    var _PARALLEL_NAME = "LB"
+    var _PARALLEL_NAME = "LB" // 0
     @JvmField
-    var _PERPENDICULAR_NAME = "LF"
+    var _PERPENDICULAR_NAME = "LF" // 1
     @JvmField
     var _TICKS_PER_REV = 2400.0 // Way better encoders
     @JvmField
-    var _WHEEL_RADIUS = 1.5 // rotacaster wheels // in
+    var _WHEEL_RADIUS = 1.5 // tetrix wheels // in
     @JvmField
     var _GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
     @JvmField
     var _PARALLEL_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
-    var _PERPENDICULAR_REVERSED = false // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
+    var _PERPENDICULAR_REVERSED = true // DO NOT MESS THIS UP!!!!! IT BROKE EVERYTHING!!!
     @JvmField
-    var _X_MULTIPLIER = 1.0
+    var _X_MULTIPLIER = 1.016949153
     @JvmField
-    var _Y_MULTIPLIER = 1.0
+    var _Y_MULTIPLIER = 1.020408163
     @JvmField
     var _CORRECTED_VELOCITY = true
 
