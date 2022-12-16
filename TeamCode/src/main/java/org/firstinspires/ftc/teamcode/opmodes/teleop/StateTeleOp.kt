@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 
-@TeleOp
-class FieldCentricTest : TeleOpMode(
+@TeleOp(name="State TeleOp")
+class StateTeleOp : TeleOpMode(
     ExampleControls,
     drive = MecanumDrive (
         CompetitionMecanumDriveConstants,

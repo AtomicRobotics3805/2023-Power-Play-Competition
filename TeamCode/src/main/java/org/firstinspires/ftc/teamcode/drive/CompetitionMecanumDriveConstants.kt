@@ -128,7 +128,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
 
     // used during TeleOp to make precise movements
     @JvmField
-    var _DRIVER_SPEEDS = listOf(1.0, 0.5, 0.2)
+    var _DRIVER_SPEEDS = listOf(1.0, 0.9, 0.5)
 
     // these are the directions (forward or reverse) for each motor
     @JvmField

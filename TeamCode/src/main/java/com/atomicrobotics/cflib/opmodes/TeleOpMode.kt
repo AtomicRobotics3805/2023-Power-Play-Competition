@@ -74,6 +74,8 @@ abstract class TeleOpMode(private val controls: Controls,
             while (!isStarted && !isStopRequested) {
                 CommandScheduler.run()
             }
+            // register the driverControlled command
+            controls.registerDriverControlled()
             // commands have to be registered after the subsystems are registered
             controls.registerCommands()
             // if there's a routine that's supposed to be performed on play, do it

@@ -33,16 +33,12 @@ import org.firstinspires.ftc.teamcode.mechanisms.Lift
  * If you used the line above, then whenever you pressed the a button on gamepad1 it would move the
  * lift to the high position.
  */
-object ExampleControls : Controls() {
+object ExampleControls : Controls(Constants.opMode.gamepad1) {
 
     /**
      * Registers commands on the gamepads.
      */
     override fun registerCommands() {
-        // gamepad 1
-        // this first command is a little bit different because it doesn't get activated by pressing
-        // a button - rather, it's always active
-        CommandScheduler.scheduleCommand(Constants.drive.driverControlled(Constants.opMode.gamepad1))
 //        gamepad1.a.pressedCommand = { Constants.drive.switchSpeed() }
 //        // gamepad 2
 //        gamepad2.dpadDown.pressedCommand = { Lift.toIntake }
@@ -52,7 +48,7 @@ object ExampleControls : Controls() {
 //        gamepad2.x.pressedCommand = { Arm.toRight }
 //        gamepad2.y.pressedCommand = { Arm.toBack }
 //        gamepad2.b.pressedCommand = { Arm.toForward }
-//        gamepad2.leftBumper.pressedCommand = { Arm.toLeft }
+        gamepad2.leftBumper.pressedCommand = { Arm.toLeft }
 //        gamepad2.a.toggleCommands = listOf({ Claw.open }, { Claw.close })
     }
 }

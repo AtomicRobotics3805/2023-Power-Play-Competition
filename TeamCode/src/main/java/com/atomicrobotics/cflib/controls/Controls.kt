@@ -19,6 +19,7 @@ package com.atomicrobotics.cflib.controls
 import com.atomicrobotics.cflib.CommandScheduler
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.GamepadEx
+import com.qualcomm.robotcore.hardware.Gamepad
 
 /**
  * This class manages the controls for TeleOp OpModes. In your project, you should create your own
@@ -29,11 +30,20 @@ import com.atomicrobotics.cflib.GamepadEx
  * gamepad1.a.startCommand = Lift.toHigh
  * If you used the line above, then whenever you pressed the "a" button on gamepad1 it would move
  * the lift to the high position.
+ *
+ * @param gamepad which gamepad should be the main driver gamepad
  */
-abstract class Controls {
+abstract class Controls(var gamepad: Gamepad) {
 
     protected lateinit var gamepad1: GamepadEx
     protected lateinit var gamepad2: GamepadEx
+
+    /**
+     * Schedules the driver controlled command using the gamepad specified in the constructor.
+     */
+    fun registerDriverControlled() {
+        CommandScheduler.scheduleCommand(Constants.drive.driverControlled(gamepad))
+    }
 
     /**
      * Registers gamepad1 and gamepad2 with the CommandScheduler so that the CommandScheduler can

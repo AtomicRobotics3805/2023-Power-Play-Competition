@@ -51,6 +51,8 @@ class GamepadEx(private val gamepad: Gamepad) {
     val controls = listOf(a, b, x, y, dpadUp, dpadDown, dpadLeft, dpadRight,
         leftBumper, rightBumper, leftTrigger, rightTrigger, leftStick, rightStick)
 
+    var secondButtonPressed = false
+
     /**
      * Updates each of the buttons with their corresponding values from the Qualcomm gamepad. The
      * reason why we cannot loop through the controls list and update them that way is because each
@@ -106,6 +108,7 @@ class GamepadEx(private val gamepad: Gamepad) {
      */
     class Button(private val name: String = "Unknown Button") {
 
+        var isSecondButton = false
         var down = false
         var pressed = false
         var released = false
@@ -113,6 +116,9 @@ class GamepadEx(private val gamepad: Gamepad) {
         var pressedCommand: (() -> Command)? = null
         var releasedCommand: (() -> Command)? = null
         var toggleCommands: List<() -> Command>? = null
+        var secondaryPressedCommand: (() -> Command)? = null
+        var secondaryReleasedCommand: (() -> Command)? = null
+        var secondaryToggleCommands: List<() -> Command>? = null
 
         /**
          * Updates whether the trigger was just pressed, just released, and whether it's being held
@@ -126,18 +132,24 @@ class GamepadEx(private val gamepad: Gamepad) {
             released = !value && down
             down = value
             // Run the associated commands
-            if (pressed && toggleCommands != null && toggleCommands!!.isNotEmpty()) {
-                if (toggleState >= toggleCommands!!.size) {
-                    toggleState = 0
+            if(!isSecondButton) {
+                if (pressed && toggleCommands != null && toggleCommands!!.isNotEmpty()) {
+                    if (toggleState >= toggleCommands!!.size) {
+                        toggleState = 0
+                    }
+                    CommandScheduler.scheduleCommand(toggleCommands!![toggleState].invoke())
+                    toggleState++
                 }
-                CommandScheduler.scheduleCommand(toggleCommands!![toggleState].invoke())
-                toggleState++
-            }
-            if (pressed && pressedCommand != null) {
-                CommandScheduler.scheduleCommand(pressedCommand!!.invoke())
-            }
-            if (released && releasedCommand != null) {
-                CommandScheduler.scheduleCommand(releasedCommand!!.invoke())
+                if (pressed && pressedCommand != null) {
+                    CommandScheduler.scheduleCommand(pressedCommand!!.invoke())
+                }
+                if (released && releasedCommand != null) {
+                    CommandScheduler.scheduleCommand(releasedCommand!!.invoke())
+                }
+            } else {
+                if (pressed) {
+
+                }
             }
         }
 
@@ -165,7 +177,7 @@ class GamepadEx(private val gamepad: Gamepad) {
      */
     class Trigger(private val name: String = "Unknown Trigger") {
         val down: Boolean
-            get() = amount != 0.0f
+            get() = amount > tolerance
         var pressed = false
         var released = false
         var amount = 0.0f
@@ -173,6 +185,7 @@ class GamepadEx(private val gamepad: Gamepad) {
         var pressedCommand: (() -> Command)? = null
         var releasedCommand: (() -> Command)? = null
         var toggleCommands: List<() -> Command>? = null
+        var tolerance: Float = 0.1f
 
         /**
          * Updates whether the trigger was just pressed, just released, and how much it's being held
@@ -181,8 +194,8 @@ class GamepadEx(private val gamepad: Gamepad) {
          * @param value how much the trigger is being pressed down
          */
         fun update(value: Float) {
-            pressed = value != 0.0f && !down
-            released = value == 0.0f && down
+            pressed = value > tolerance && !down
+            released = value > tolerance && down
             amount = value
             // Run the associated commands
             if (pressed && toggleCommands != null && toggleCommands!!.isNotEmpty()) {

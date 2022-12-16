@@ -119,6 +119,13 @@ abstract class Driver(
             driverSpeedIndex = 0
     })
 
+    fun setSpeed(index: Int): Command = CustomCommand(_start = {
+        if(index >= constants.DRIVER_SPEEDS.size) {
+            throw IndexOutOfBoundsException("The index provided was out of the specified range")
+        }
+        driverSpeedIndex = index
+    })
+
     /**
      * Drives the robot along a pre-built trajectory
      * @param trajectory the trajectory to follow, use trajectoryBuilder() to get this
