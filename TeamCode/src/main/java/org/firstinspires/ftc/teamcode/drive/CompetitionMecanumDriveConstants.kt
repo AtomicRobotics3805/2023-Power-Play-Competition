@@ -111,6 +111,10 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     var _DRIFT_MULTIPLIER = 1.0
     @JvmField
     var _DRIFT_TURN_MULTIPLIER = 1.0
+    @JvmField
+    var _BACKWARD_DRIFT_MULTIPLIER = 1.035
+    @JvmField
+    var _RIGHT_DRIFT_MULTIPLIER = 1.035
 
     /*
      * These coefficients are used to adjust your location and heading when they don't match up with
@@ -120,7 +124,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
     @JvmField
-    var _HEADING_PID = PIDCoefficients(5.0, 0.0, 0.0)
+    var _HEADING_PID = PIDCoefficients(6.0, 0.0, 0.0)
 
     // used during TeleOp to make precise movements
     @JvmField
@@ -151,7 +155,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     var _VERTICAL_AXIS = AxisDirection.POS_X
 
     @JvmField
-    var _POV = DriverControlled.POV.ROBOT_CENTRIC
+    var _POV = DriverControlled.POV.FIELD_CENTRIC
 
     @JvmField
     var _REVERSE_STRAFE = true
@@ -196,6 +200,10 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
         get() = _DRIFT_MULTIPLIER
     override val DRIFT_TURN_MULTIPLIER: Double
         get() = _DRIFT_TURN_MULTIPLIER
+    override val BACKWARD_DRIFT_MULTIPLIER
+        get() = _BACKWARD_DRIFT_MULTIPLIER
+    override val RIGHT_DRIFT_MULTIPLIER
+        get() = _RIGHT_DRIFT_MULTIPLIER
     override val LEFT_FRONT_DIRECTION: DcMotorSimple.Direction
         get() = _LEFT_FRONT_DIRECTION
     override val LEFT_BACK_DIRECTION: DcMotorSimple.Direction

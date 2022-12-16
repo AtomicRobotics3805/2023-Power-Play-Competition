@@ -61,11 +61,10 @@ class DriverControlled(
     override fun execute() {
         val drivePower: Pose2d
         if (pov != POV.ROBOT_CENTRIC) {
-            val angle: Double = if (gamepad.left_stick_x != 0.0f)
-                atan(gamepad.left_stick_y / gamepad.left_stick_x).toDouble()
-            else 90.0.toRadians
+            val angle: Double = atan2((if(reverseStraight) -gamepad.left_stick_y else gamepad.left_stick_y), (if(reverseStrafe) -gamepad.left_stick_x else gamepad.left_stick_x)).toDouble()
 
-            var adjustedAngle = angle - drive.poseEstimate.heading
+            var adjustedAngle = angle + drive.poseEstimate.heading
+
             if (pov == POV.DRIVER_CENTRIC) {
                 if (color == Constants.Color.BLUE) {
                     adjustedAngle -= 90.0.toRadians
@@ -76,8 +75,8 @@ class DriverControlled(
             }
             val totalPower = sqrt(gamepad.left_stick_y.pow(2) + gamepad.left_stick_x.pow(2))
             drivePower = Pose2d(
-                if (reverseStraight) -1 else { 1 } * totalPower * sin(adjustedAngle),
-                if (reverseStrafe) -1 else { 1 } * totalPower * cos(adjustedAngle),
+                totalPower * sin(adjustedAngle),
+                totalPower * cos(adjustedAngle),
                 if (reverseTurn) -1 else { 1 } * (gamepad.right_stick_x).toDouble()
             )
         }

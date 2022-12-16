@@ -43,16 +43,16 @@ object ExampleControls : Controls() {
         // this first command is a little bit different because it doesn't get activated by pressing
         // a button - rather, it's always active
         CommandScheduler.scheduleCommand(Constants.drive.driverControlled(Constants.opMode.gamepad1))
-        gamepad1.a.pressedCommand = { Constants.drive.switchSpeed() }
-        // gamepad 2
-        gamepad2.dpadDown.pressedCommand = { Lift.toIntake }
-        gamepad2.dpadLeft.pressedCommand = { Lift.toLow }
-        gamepad2.dpadRight.pressedCommand = { Lift.toMedium }
-        gamepad2.dpadUp.pressedCommand = { Lift.toHigh }
-        gamepad2.x.pressedCommand = { Arm.toRight }
-        gamepad2.y.pressedCommand = { Arm.toBack }
-        gamepad2.b.pressedCommand = { Arm.toForward }
-        gamepad2.leftBumper.pressedCommand = { Arm.toLeft }
-        gamepad2.a.toggleCommands = listOf({ Claw.open }, { Claw.close })
+//        gamepad1.a.pressedCommand = { Constants.drive.switchSpeed() }
+//        // gamepad 2
+//        gamepad2.dpadDown.pressedCommand = { Lift.toIntake }
+//        gamepad2.dpadLeft.pressedCommand = { Lift.toLow }
+//        gamepad2.dpadRight.pressedCommand = { Lift.toMedium }
+//        gamepad2.dpadUp.pressedCommand = { Lift.toHigh }
+//        gamepad2.x.pressedCommand = { Arm.toRight }
+//        gamepad2.y.pressedCommand = { Arm.toBack }
+//        gamepad2.b.pressedCommand = { Arm.toForward }
+//        gamepad2.leftBumper.pressedCommand = { Arm.toLeft }
+//        gamepad2.a.toggleCommands = listOf({ Claw.open }, { Claw.close })
     }
 }

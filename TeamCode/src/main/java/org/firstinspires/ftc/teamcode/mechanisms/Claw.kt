@@ -49,7 +49,6 @@ object Claw : Subsystem {
     // commands
     val open: Command
         get() = sequential {
-            +Delay(0.4)
             +MoveServo(clawServo, OPEN_POSITION, TIME, listOf(Claw), false)
         }
     val close: Command

@@ -24,6 +24,8 @@ interface MecanumDriveConstants : DriveConstants {
     val LATERAL_MULTIPLIER: Double
     val DRIFT_MULTIPLIER: Double
     val DRIFT_TURN_MULTIPLIER: Double
+    val BACKWARD_DRIFT_MULTIPLIER: Double
+    val RIGHT_DRIFT_MULTIPLIER: Double
     val LEFT_FRONT_DIRECTION: DcMotorSimple.Direction
     val LEFT_BACK_DIRECTION: DcMotorSimple.Direction
     val RIGHT_FRONT_DIRECTION: DcMotorSimple.Direction

@@ -53,12 +53,18 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
 
     override fun runOpMode() {
         try {
+            telemetry.addLine("Setting constants")
+            telemetry.update()
             // setting constants
             Constants.opMode = this
             Constants.color = color
             Constants.drive = drive
+            telemetry.addLine("Initializing Trajectory Factory")
+            telemetry.update()
             // initialize trajectories & start positions
-                trajectoryFactory.initialize()
+            trajectoryFactory.initialize()
+            telemetry.addLine("Initializing TelemetryController")
+            telemetry.update()
             // this both registers & initializes the subsystems
             CommandScheduler.registerSubsystems(TelemetryController, drive, *subsystems)
             // if there is a routine that's supposed to be performed on init, then do it
@@ -76,11 +82,6 @@ abstract class AutonomousOpMode(private val color: Constants.Color,
                 CommandScheduler.run()
             }
         } catch (e: Exception) {
-            // we have to catch the exception so that we can still cancel and unregister
-//            TelemetryController.telemetry.addLine("Error Occurred!")
-//            TelemetryController.telemetry.addLine(e.message)
-//            // have to update telemetry since CommandScheduler won't call it anymore
-//            TelemetryController.periodic()
             telemetry.addLine("Error Occurred!")
             telemetry.addLine(e.message)
             telemetry.update()

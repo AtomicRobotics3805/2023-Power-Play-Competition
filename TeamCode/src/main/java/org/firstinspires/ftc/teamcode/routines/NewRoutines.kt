@@ -6,13 +6,19 @@ import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.teamcode.mechanisms.*
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 import com.atomicrobotics.cflib.Constants.drive
+import com.atomicrobotics.cflib.utilCommands.CustomCommand
+import com.qualcomm.robotcore.util.ElapsedTime
 
 object NewRoutines {
-    val threePlusOne : Command
+
+    var timer = ElapsedTime()
+
+    val threePlusOneLeft : Command
         get() = parallel {
+            +CustomCommand(_start = { timer.reset() })
+            +TelemetryCommand(30.0, "Runtime") { timer.time().toString() }
             +sequential {
                 +OpenCVWebcam.detect
                 +preloadToStack
@@ -34,7 +40,7 @@ object NewRoutines {
                     +Arm.toHighJunction
                 }
             }
-            +Claw.open
+            +score
         }
 
     val threeConeStack : Command
@@ -45,60 +51,60 @@ object NewRoutines {
                     +Delay(0.5)
                     +Lift.toLevel5
                 }
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.startToHighJunction)
+                +drive.followTrajectory(NewTrajectoryFactory.startHighJunctionToStack)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
                         +Arm.toHighJunction
                     }
                 }
                 +Lift.toHigh
             }
-            +Claw.open
+            +score
             +parallel {
                 +Arm.toForward
                 +sequential {
                     +Delay(0.5)
                     +Lift.toLevel4
                 }
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
+                +drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
                         +Arm.toHighJunction
                     }
                 }
                 +Lift.toHigh
             }
-            +Claw.open
+            +score
             +parallel {
                 +Arm.toForward
                 +sequential {
                     +Delay(0.5)
                     +Lift.toLevel3
                 }
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
+                +drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                        +drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
                         +Arm.toHighJunction
                     }
                 }
                 +Lift.toHigh
             }
-            +Claw.open
+            +score
             +parallel {
                 +Arm.toForward
                 +sequential {
@@ -112,12 +118,18 @@ object NewRoutines {
     val highJunctionToSignalResult: Command
         get() = sequential {
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(
-                drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
+                drive.followTrajectory(NewTrajectoryFactory.highJunctionToCyanResult)) })
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(
-                drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToMagentaResult)) })
+                drive.followTrajectory(NewTrajectoryFactory.highJunctionToMagentaResult)) })
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(
-                drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)) })
+                drive.followTrajectory(NewTrajectoryFactory.highJunctionToYellowResult)) })
             +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.UNDETECTED }, { CommandScheduler.scheduleCommand(
-                drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
+                drive.followTrajectory(NewTrajectoryFactory.highJunctionToCyanResult)) })
+        }
+
+    val score: Command
+        get() = parallel {
+            +Claw.open
+            +Lift.slightlyLower
         }
 }

@@ -1,25 +1,47 @@
 package org.firstinspires.ftc.teamcode.trajectoryFactory
 
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.atomicrobotics.cflib.Constants
-import com.atomicrobotics.cflib.Constants.drive as d
 import com.atomicrobotics.cflib.trajectories.*
+import com.atomicrobotics.cflib.Constants.drive as d
 
+@Config
 object NewTrajectoryFactory : TrajectoryFactory() {
-
-    fun tb(startPose: Pose2d, reversed: Boolean = false) = d.trajectoryBuilder(startPose, reversed)
-    fun tb(startPose: Pose2d, startHeading: Double) = d.trajectoryBuilder(startPose, startHeading)
-
     // POSES
-    lateinit var startPose : Pose2d
-    lateinit var stackLocation: Pose2d
-    lateinit var stackHighJunctionLocation : Pose2d
-    lateinit var preloadHighJunctionLocation : Pose2d
+    // Left side
+    //@JvmField
+    var startPoseLeft = Pose2d()
+    //@JvmField
+    var stackLocationLeft = Pose2d()
+    //@JvmField
+    var stackHighJunctionLocationLeft = Pose2d()
+    //@JvmField
+    var preloadHighJunctionLocationLeft = Pose2d()
 
-    lateinit var cyanLocation : Pose2d
-    lateinit var magentaLocation : Pose2d
-    lateinit var yellowLocation : Pose2d
+    //@JvmField
+    var cyanLocationLeft = Pose2d()
+    //@JvmField
+    var magentaLocationLeft = Pose2d()
+    //@JvmField
+    var yellowLocationLeft = Pose2d()
+
+    // Right side
+    //@JvmField
+    var startPoseRight = Pose2d()
+    //@JvmField
+    var stackLocationRight = Pose2d()
+    //@JvmField
+    var stackHighJunctionLocationRight = Pose2d()
+    //@JvmField
+    var preloadHighJunctionLocationRight = Pose2d()
+
+    //@JvmField
+    var cyanLocationRight = Pose2d()
+    //@JvmField
+    var magentaLocationRight = Pose2d()
+    //@JvmField
+    var yellowLocationRight = Pose2d()
 
     // TRAJECTORIES
     lateinit var startToHighJunction : ParallelTrajectory
@@ -33,42 +55,66 @@ object NewTrajectoryFactory : TrajectoryFactory() {
 
     override fun initialize() {
         super.initialize()
-
         // POSES
-        startPose = Pose2d(35.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
-        stackLocation = Pose2d(61.0, 13.5.switchColor, 0.0.switchColorAngle.toRadians)
-        stackHighJunctionLocation = Pose2d(27.0, 14.0.switchColor, 0.0.switchColorAngle.toRadians)
-        preloadHighJunctionLocation = Pose2d(61.0, 13.5.switchColor, 0.0.switchColorAngle.toRadians)
+        // Left side
+        startPoseLeft = Pose2d(35.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
+        stackLocationLeft = Pose2d(61.5, 12.25.switchColor, 0.0.switchColorAngle.toRadians)
+        stackHighJunctionLocationLeft = Pose2d(27.0, 12.5.switchColor, 0.0.switchColorAngle.toRadians)
+        preloadHighJunctionLocationLeft = Pose2d(27.0, 11.0.switchColor, 0.0.switchColorAngle.toRadians)
 
-        cyanLocation = Pose2d(35.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
-        magentaLocation = Pose2d(12.0.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
-        yellowLocation = Pose2d(58.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        cyanLocationLeft = Pose2d(35.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        magentaLocationLeft = Pose2d(12.0.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        yellowLocationLeft = Pose2d(58.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+
+        // Right side
+        startPoseRight = Pose2d(35.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
+        stackLocationRight = Pose2d(59.5, 12.25.switchColor, 0.0.switchColorAngle.toRadians)
+        stackHighJunctionLocationRight = Pose2d(26.5, 10.5.switchColor, 0.0.switchColorAngle.toRadians)
+        preloadHighJunctionLocationRight = Pose2d(27.0, 9.0.switchColor, 0.0.switchColorAngle.toRadians)
+
+        cyanLocationRight = Pose2d(35.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        magentaLocationRight = Pose2d(12.0.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        yellowLocationRight = Pose2d(58.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
 
         // TRAJECTORIES
-        startToHighJunction = tb(startPose)
+        startToHighJunction = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(startPoseLeft)
             .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
-            .splineToConstantHeading(preloadHighJunctionLocation.vec(), 180.0.switchColorAngle.toRadians)
+            .splineToConstantHeading(preloadHighJunctionLocationLeft.vec(), 180.0.switchColorAngle.toRadians)
+            .build() else d.trajectoryBuilder(startPoseRight)
+            .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToConstantHeading(preloadHighJunctionLocationRight.vec(), 180.0.switchColorAngle.toRadians)
             .build()
-
-        startHighJunctionToStack = tb(preloadHighJunctionLocation)
-            .lineTo(stackLocation.vec())
+        startHighJunctionToStack = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(preloadHighJunctionLocationLeft)
+            .lineTo(stackLocationLeft.vec())
+            .build() else d.trajectoryBuilder(preloadHighJunctionLocationRight)
+            .lineTo(stackLocationRight.vec())
             .build()
-        highJunctionToStack = tb(stackHighJunctionLocation)
-            .lineTo(stackLocation.vec())
+        highJunctionToStack = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(stackHighJunctionLocationLeft)
+            .lineTo(stackLocationLeft.vec())
+            .build() else d.trajectoryBuilder(stackHighJunctionLocationRight)
+            .lineTo(stackLocationRight.vec())
             .build()
-        stackToHighJunction = tb(stackLocation)
-            .lineTo(stackHighJunctionLocation.vec())
+        stackToHighJunction = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(stackLocationLeft)
+            .lineTo(stackHighJunctionLocationLeft.vec())
+            .build() else d.trajectoryBuilder(stackLocationRight)
+            .lineTo(stackHighJunctionLocationRight.vec())
             .build()
-
-        highJunctionToCyanResult = tb(stackHighJunctionLocation)
-            .lineToLinearHeading(cyanLocation)
+        highJunctionToCyanResult = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(stackHighJunctionLocationLeft)
+            .lineToLinearHeading(cyanLocationLeft)
+            .build() else d.trajectoryBuilder(stackHighJunctionLocationRight)
+            .lineToLinearHeading(cyanLocationRight)
             .build()
-        highJunctionToMagentaResult = tb(stackHighJunctionLocation)
-            .lineToLinearHeading(magentaLocation)
+        highJunctionToMagentaResult = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(stackHighJunctionLocationLeft)
+            .lineToLinearHeading(magentaLocationLeft)
+            .build() else d.trajectoryBuilder(stackHighJunctionLocationRight)
+            .lineToLinearHeading(magentaLocationRight)
             .build()
-        highJunctionToYellowResult = tb(stackHighJunctionLocation)
-            .lineToLinearHeading(yellowLocation)
+        highJunctionToYellowResult = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(stackHighJunctionLocationLeft)
+            .lineToLinearHeading(yellowLocationLeft)
+            .build() else d.trajectoryBuilder(stackHighJunctionLocationRight)
+            .lineToLinearHeading(yellowLocationRight)
             .build()
     }
 }

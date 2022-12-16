@@ -49,7 +49,7 @@ object Lift : Subsystem {
 
     // Lift Positions
     @JvmField
-    var HIGH_JUNCTION = 33.0 // in
+    var HIGH_JUNCTION = 30.5 // in
     @JvmField
     var MEDIUM_JUNCTION = 25.0 // in
     @JvmField
@@ -59,15 +59,17 @@ object Lift : Subsystem {
     @JvmField
     var INTAKE_POSITION = 0.0 // in
     @JvmField
-    var STACK_5 = 5.0 // in (NOT YET TESTED)
+    var STACK_5 = 5.0 // in
     @JvmField
-    var STACK_4 = 3.75 // in (NOT YET TESTED)
+    var STACK_4 = 3.75 // in
     @JvmField
-    var STACK_3 = 2.5 // in (NOT YET TESTED)
+    var STACK_3 = 2.5 // in
     @JvmField
-    var STACK_2 = 1.25 // in (NOT YET TESTED)
+    var STACK_2 = 1.25 // in
     @JvmField
-    var ABOVE_STACK = 14.0
+    var ABOVE_STACK = 14.0 // in
+    @JvmField
+    var SLIGHTLY_LOWER = 27.0 // in
 
     // Motor Information
     @JvmField
@@ -152,6 +154,11 @@ object Lift : Subsystem {
         get() = parallel {
             +MotorToPosition(liftMotor_1, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
             +MotorToPosition(liftMotor_2, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
+        }
+    val slightlyLower: Command
+        get() = parallel {
+            +MotorToPosition(liftMotor_1, (SLIGHTLY_LOWER * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift))
+            +MotorToPosition(liftMotor_2, (SLIGHTLY_LOWER * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift))
         }
 
 

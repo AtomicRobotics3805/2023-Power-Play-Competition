@@ -25,6 +25,7 @@ import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 
 fun main() {
     MeepMeepVisualizer.addRobot(MeepMeepRobot(
@@ -36,15 +37,19 @@ fun main() {
         15.0,
         {
             sequential {
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionLeft)
-
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.startHighJunctionToStackLeft)
-
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
-                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.startToHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.startHighJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToCyanResult)
             }
         },
         Constants.Color.BLUE
     ))
-    MeepMeepVisualizer.run(CompetitionTrajectoryFactory)
+    MeepMeepVisualizer.run(NewTrajectoryFactory)
 }

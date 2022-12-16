@@ -15,11 +15,13 @@
 
 package com.atomicrobotics.cflib.driving.localizers
 
-import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.localization.TwoTrackingWheelLocalizer
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.atomicrobotics.cflib.Constants
+import com.atomicrobotics.cflib.Constants.drive
+import com.atomicrobotics.cflib.TelemetryController
+import com.atomicrobotics.cflib.driving.MecanumDriveConstants
 import com.atomicrobotics.cflib.roadrunner.Encoder
 
 
@@ -37,6 +39,9 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
 
     lateinit var perpendicularEncoder: Encoder
     lateinit var parallelEncoder: Encoder
+
+    var lastWheelPosition = arrayListOf(0.0, 0.0)
+    var wheelPositionChange = arrayListOf(0.0, 0.0)
 
     /**
      * Initializes the encoders & sets their direction
@@ -71,10 +76,22 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
      * @return list of how much each wheel has turned in inches
      */
     override fun getWheelPositions(): List<Double> {
-        return listOf(
-            encoderTicksToInches(parallelEncoder.currentPosition.toDouble()) * constants.X_MULTIPLIER,
-            encoderTicksToInches(perpendicularEncoder.currentPosition.toDouble()) * constants.Y_MULTIPLIER
+        wheelPositionChange[0] += if(parallelEncoder.currentPosition.toDouble() - lastWheelPosition[0] < 0)
+            ((drive.constants as MecanumDriveConstants).BACKWARD_DRIFT_MULTIPLIER - 1.0) *
+                    (parallelEncoder.currentPosition.toDouble() - lastWheelPosition[0]) else 0.0
+        wheelPositionChange[1] += if(perpendicularEncoder.currentPosition.toDouble() - lastWheelPosition[1] < 0)
+            ((drive.constants as MecanumDriveConstants).RIGHT_DRIFT_MULTIPLIER - 1.0) *
+                    (perpendicularEncoder.currentPosition.toDouble() - lastWheelPosition[1]) else 0.0
+        //TelemetryController.telemetry.addData("Current Position", parallelEncoder.currentPosition)
+        //TelemetryController.telemetry.addData("Last Position", lastWheelPosition)
+        //TelemetryController.telemetry.addData("Wheel Position Change", wheelPositionChange)
+        val list = listOf(
+            encoderTicksToInches(parallelEncoder.currentPosition.toDouble() + wheelPositionChange[0]) * constants.X_MULTIPLIER,
+            encoderTicksToInches(perpendicularEncoder.currentPosition.toDouble() + wheelPositionChange[1]) * constants.Y_MULTIPLIER
         )
+        lastWheelPosition[0] = parallelEncoder.currentPosition.toDouble()
+        lastWheelPosition[1] = perpendicularEncoder.currentPosition.toDouble()
+        return list
     }
 
     /**
@@ -87,13 +104,13 @@ class TwoWheelOdometryLocalizer(val constants: TwoWheelOdometryConstants) : TwoT
         //  compensation method
         return if (constants.CORRECTED_VELOCITY) {
             listOf(
-                encoderTicksToInches(perpendicularEncoder.correctedVelocity) * constants.X_MULTIPLIER,
-                encoderTicksToInches(parallelEncoder.correctedVelocity) * constants.Y_MULTIPLIER
+                encoderTicksToInches(perpendicularEncoder.correctedVelocity) * constants.Y_MULTIPLIER,
+                if(encoderTicksToInches(parallelEncoder.correctedVelocity) * constants.X_MULTIPLIER < 0) encoderTicksToInches(parallelEncoder.correctedVelocity) * constants.X_MULTIPLIER * (drive.constants as MecanumDriveConstants).BACKWARD_DRIFT_MULTIPLIER else encoderTicksToInches(parallelEncoder.correctedVelocity) * constants.X_MULTIPLIER
             )
         } else {
             listOf(
-                encoderTicksToInches(perpendicularEncoder.rawVelocity) * constants.X_MULTIPLIER,
-                encoderTicksToInches(parallelEncoder.rawVelocity) * constants.Y_MULTIPLIER
+                encoderTicksToInches(perpendicularEncoder.rawVelocity) * constants.Y_MULTIPLIER,
+                if(encoderTicksToInches(parallelEncoder.rawVelocity) * constants.X_MULTIPLIER < 0) encoderTicksToInches(parallelEncoder.rawVelocity) * constants.X_MULTIPLIER * (drive.constants as MecanumDriveConstants).BACKWARD_DRIFT_MULTIPLIER else encoderTicksToInches(parallelEncoder.rawVelocity) * constants.X_MULTIPLIER
             )
         }
     }

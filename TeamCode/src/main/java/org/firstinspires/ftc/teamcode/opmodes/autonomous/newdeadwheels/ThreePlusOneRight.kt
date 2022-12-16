@@ -12,20 +12,18 @@ import org.firstinspires.ftc.teamcode.mechanisms.Claw
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.mechanisms.OpenCVWebcam
 import org.firstinspires.ftc.teamcode.routines.NewRoutines
-import org.firstinspires.ftc.teamcode.routines.Routines
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 
 @Autonomous(name = "3+1 and Park (Driver's Right)")
 class ThreePlusOneRight : AutonomousOpMode(
     Constants.Color.RED,
     NewTrajectoryFactory,
-    { NewRoutines.threePlusOne },
+    { NewRoutines.threePlusOneLeft },
     null,
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { NewTrajectoryFactory.startPose },
+    ) { NewTrajectoryFactory.startPoseLeft },
     Arm,
     Claw,
     Lift,
