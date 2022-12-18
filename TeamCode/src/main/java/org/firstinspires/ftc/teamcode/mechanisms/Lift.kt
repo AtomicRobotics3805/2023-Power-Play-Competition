@@ -22,6 +22,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.atomicrobotics.cflib.Constants.opMode
 import com.atomicrobotics.cflib.Command
+import com.atomicrobotics.cflib.TelemetryController
 import com.atomicrobotics.cflib.parallel
 import com.atomicrobotics.cflib.sequential
 import com.atomicrobotics.cflib.subsystems.PowerMotor
@@ -49,7 +50,7 @@ object Lift : Subsystem {
 
     // Lift Positions
     @JvmField
-    var HIGH_JUNCTION = 30.5 // in
+    var HIGH_JUNCTION = 32.5 // in
     @JvmField
     var MEDIUM_JUNCTION = 25.0 // in
     @JvmField
@@ -185,5 +186,14 @@ object Lift : Subsystem {
         liftMotor_2.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         liftMotor_2.mode = DcMotor.RunMode.RUN_USING_ENCODER
         liftMotor_2.direction = DIRECTION_2
+    }
+
+    override fun inUsePeriodic() {
+        TelemetryController.telemetry.addData("Lift Motor 1 Position (ticks)", liftMotor_1.currentPosition)
+        TelemetryController.telemetry.addData("Lift Motor 2 Position (ticks)", liftMotor_2.currentPosition)
+        TelemetryController.telemetry.addData("Lift Motor 1 Height (in)", liftMotor_1.currentPosition / COUNTS_PER_INCH)
+        TelemetryController.telemetry.addData("Lift Motor 2 Height (in)", liftMotor_2.currentPosition / COUNTS_PER_INCH)
+        TelemetryController.telemetry.addData("Lift Motor 1 Power", liftMotor_1.power)
+        TelemetryController.telemetry.addData("Lift Motor 2 Power", liftMotor_2.power)
     }
 }

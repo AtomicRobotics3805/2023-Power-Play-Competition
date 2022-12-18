@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 object NewRoutines {
 
     var timer = ElapsedTime()
+    var lastTime = 0.0
 
     val threePlusOneLeft : Command
         get() = parallel {
@@ -36,10 +37,11 @@ object NewRoutines {
                 +drive.followTrajectory(NewTrajectoryFactory.startToHighJunction)
                 +Lift.toHigh
                 +sequential {
-                    +Delay(0.5)
+                    +Delay(1.0)
                     +Arm.toHighJunction
                 }
             }
+            +Delay(0.3)
             +score
         }
 
@@ -108,11 +110,13 @@ object NewRoutines {
             +parallel {
                 +Arm.toForward
                 +sequential {
-                    +Delay(0.5)
+                    +Delay(1.0)
                     +Lift.toIntake
                 }
                 +highJunctionToSignalResult
             }
+            +CustomCommand(_start = { lastTime = timer.seconds() })
+            +TelemetryCommand(30.0, "Final Time") { lastTime.toString() }
         }
 
     val highJunctionToSignalResult: Command
@@ -128,8 +132,11 @@ object NewRoutines {
         }
 
     val score: Command
-        get() = parallel {
-            +Claw.open
-            +Lift.slightlyLower
+        get() = sequential {
+            +Delay(0.4)
+            +parallel {
+                +Claw.open
+                +Lift.slightlyLower
+            }
         }
 }

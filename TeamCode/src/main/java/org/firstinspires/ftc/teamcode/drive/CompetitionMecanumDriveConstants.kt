@@ -114,7 +114,7 @@ object CompetitionMecanumDriveConstants : MecanumDriveConstants {
     @JvmField
     var _BACKWARD_DRIFT_MULTIPLIER = 1.035
     @JvmField
-    var _RIGHT_DRIFT_MULTIPLIER = 1.035
+    var _RIGHT_DRIFT_MULTIPLIER = 1.0
 
     /*
      * These coefficients are used to adjust your location and heading when they don't match up with

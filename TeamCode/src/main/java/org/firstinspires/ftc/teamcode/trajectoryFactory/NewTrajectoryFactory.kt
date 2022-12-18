@@ -58,9 +58,9 @@ object NewTrajectoryFactory : TrajectoryFactory() {
         // POSES
         // Left side
         startPoseLeft = Pose2d(35.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
-        stackLocationLeft = Pose2d(61.5, 12.25.switchColor, 0.0.switchColorAngle.toRadians)
-        stackHighJunctionLocationLeft = Pose2d(27.0, 12.5.switchColor, 0.0.switchColorAngle.toRadians)
-        preloadHighJunctionLocationLeft = Pose2d(27.0, 11.0.switchColor, 0.0.switchColorAngle.toRadians)
+        stackLocationLeft = Pose2d(61.0, 12.25.switchColor, 0.0.switchColorAngle.toRadians)
+        stackHighJunctionLocationLeft = Pose2d(27.0, 13.25.switchColor, 0.0.switchColorAngle.toRadians)
+        preloadHighJunctionLocationLeft = Pose2d(27.0, 12.0.switchColor, 0.0.switchColorAngle.toRadians)
 
         cyanLocationLeft = Pose2d(35.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
         magentaLocationLeft = Pose2d(12.0.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
@@ -68,13 +68,13 @@ object NewTrajectoryFactory : TrajectoryFactory() {
 
         // Right side
         startPoseRight = Pose2d(35.0, 62.75.switchColor, 270.0.switchColorAngle.toRadians)
-        stackLocationRight = Pose2d(59.5, 12.25.switchColor, 0.0.switchColorAngle.toRadians)
+        stackLocationRight = Pose2d(59.0, 12.25.switchColor, 0.0.switchColorAngle.toRadians)
         stackHighJunctionLocationRight = Pose2d(26.5, 10.5.switchColor, 0.0.switchColorAngle.toRadians)
-        preloadHighJunctionLocationRight = Pose2d(27.0, 9.0.switchColor, 0.0.switchColorAngle.toRadians)
+        preloadHighJunctionLocationRight = Pose2d(26.0, 9.0.switchColor, 0.0.switchColorAngle.toRadians)
 
-        cyanLocationRight = Pose2d(35.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
-        magentaLocationRight = Pose2d(12.0.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
-        yellowLocationRight = Pose2d(58.5.flipAlongX36, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        cyanLocationRight = Pose2d(33.5, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        magentaLocationRight = Pose2d(10.0, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
+        yellowLocationRight = Pose2d(58.5, 14.0.switchColor, 270.0.switchColorAngle.toRadians)
 
         // TRAJECTORIES
         startToHighJunction = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(startPoseLeft)
@@ -82,8 +82,8 @@ object NewTrajectoryFactory : TrajectoryFactory() {
             .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .splineToConstantHeading(preloadHighJunctionLocationLeft.vec(), 180.0.switchColorAngle.toRadians)
             .build() else d.trajectoryBuilder(startPoseRight)
-            .splineToSplineHeading(Pose2d(35.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
-            .splineToSplineHeading(Pose2d(35.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(34.5, 30.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
+            .splineToSplineHeading(Pose2d(34.5, 18.0.switchColor, 0.0.switchColorAngle.toRadians), 270.0.switchColorAngle.toRadians)
             .splineToConstantHeading(preloadHighJunctionLocationRight.vec(), 180.0.switchColorAngle.toRadians)
             .build()
         startHighJunctionToStack = if(Constants.color == Constants.Color.BLUE) d.trajectoryBuilder(preloadHighJunctionLocationLeft)
