@@ -4,6 +4,7 @@ import com.atomicrobotics.cflib.roadrunner.AxisDirection;
 import com.atomicrobotics.cflib.roadrunner.BNO055IMUUtil;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -17,6 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+@Disabled
 @Autonomous(name="Power Play Backup OpMode", group="Linear Opmode")
 public class ZaynBackupAutonomous extends LinearOpMode {
 

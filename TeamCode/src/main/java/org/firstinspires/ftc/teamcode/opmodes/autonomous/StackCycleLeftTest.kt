@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
+@Disabled
 @Autonomous(name = "Stack Cycle Test (Driver's Left)")
 class StackCycleLeftTest : AutonomousOpMode(
     Constants.Color.BLUE,
