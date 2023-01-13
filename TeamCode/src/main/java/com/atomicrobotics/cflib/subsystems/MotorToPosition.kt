@@ -21,7 +21,9 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import com.qualcomm.robotcore.util.Range
 import com.atomicrobotics.cflib.Command
 import com.atomicrobotics.cflib.CommandScheduler
+import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
+import com.qualcomm.robotcore.util.RobotLog
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -47,7 +49,8 @@ open class MotorToPosition(
     override val requirements: List<Subsystem> = arrayListOf(),
     override val interruptible: Boolean = true,
     protected val minError: Int = 15,
-    protected val kP: Double = 0.005
+    protected val kP: Double = 0.005,
+    protected val logData: Boolean = false
 ) : Command() {
 
     protected val timer = ElapsedTime()
@@ -59,6 +62,8 @@ open class MotorToPosition(
     protected var direction: Double = 0.0
     override val _isDone: Boolean
         get() = abs(error) < minError
+
+
 
     /**
      * Sets the motor's mode to RUN_USING_ENCODER, sets the error to the difference between the target and current
@@ -79,6 +84,10 @@ open class MotorToPosition(
         val power = kP * abs(error) * speed * direction
         motor.power = Range.clip(power, -min(speed, 1.0), min(speed, 1.0))
         cancelIfStalled()
+        if(logData) {
+            val data = "Power: " + Range.clip(power, -min(speed, 1.0), min(speed, 1.0)) + ", direction: " + direction + ", error: " + error
+            RobotLog.i("MotorToPosition %s", data)
+        }
     }
 
     /**

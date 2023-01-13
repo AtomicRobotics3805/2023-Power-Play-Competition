@@ -133,7 +133,7 @@ object NewRoutines {
 
     val score: Command
         get() = sequential {
-            +Delay(0.4)
+            +Delay(0.2)
             +parallel {
                 +Claw.open
                 +Lift.slightlyLower
