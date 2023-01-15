@@ -20,6 +20,7 @@ import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import com.atomicrobotics.cflib.sequential
+import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.visualization.MeepMeepRobot
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
@@ -32,24 +33,16 @@ fun main() {
         MecanumDrive(
             CompetitionMecanumDriveConstants,
             TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-        ) { CompetitionTrajectoryFactory.centeredStartPose },
+        ) { NewTrajectoryFactory.preloadCenterHighJunctionLocationLeft },
         14.5,
         15.0,
         {
             sequential {
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.startToHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.startHighJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.highJunctionToCyanResult)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.startToCenterHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.startCenterHighJunctionToStack)
             }
         },
-        Constants.Color.BLUE
+        Constants.Side.RIGHT
     ))
     MeepMeepVisualizer.run(NewTrajectoryFactory)
 }

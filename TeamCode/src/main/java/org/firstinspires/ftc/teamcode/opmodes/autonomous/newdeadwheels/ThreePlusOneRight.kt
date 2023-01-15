@@ -16,9 +16,9 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 
 @Autonomous(name = "3+1 and Park (Driver's Right)")
 class ThreePlusOneRight : AutonomousOpMode(
-    Constants.Color.RED,
+    Constants.Side.RIGHT,
     NewTrajectoryFactory,
-    { NewRoutines.threePlusOneLeft },
+    { NewRoutines.threePlusOne },
     null,
     MecanumDrive(
         CompetitionMecanumDriveConstants,

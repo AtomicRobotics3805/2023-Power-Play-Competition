@@ -16,7 +16,7 @@ object NewRoutines {
     var timer = ElapsedTime()
     var lastTime = 0.0
 
-    val threePlusOneLeft : Command
+    val threePlusOne : Command
         get() = parallel {
             +CustomCommand(_start = { timer.reset() })
             +TelemetryCommand(30.0, "Runtime") { timer.time().toString() }
@@ -29,6 +29,33 @@ object NewRoutines {
             +DisplayRobot(14.5, 15.0)
         }
 
+    val stackCycleToCenterJunction : Command
+        get() = parallel {
+            +CustomCommand(_start = { timer.reset() })
+            +TelemetryCommand(30.0, "Runtime") { timer.time().toString() }
+            +sequential {
+                +OpenCVWebcam.detect
+                +preloadScoreCenterToStack
+            }
+            +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
+            +DisplayRobot(14.5, 15.0)
+        }
+
+    val preloadScoreCenterToStack : Command
+        get() = sequential {
+            +parallel {
+                +Claw.close
+                +Arm.toForward
+                +drive.followTrajectory(NewTrajectoryFactory.startToCenterHighJunction)
+                +Lift.toHigh
+                +sequential {
+                    +Delay(1.0)
+                    +Arm.toHighJunction
+                }
+            }
+            +score
+        }
+
     val preloadToStack : Command
         get() = sequential {
             +parallel {
@@ -38,10 +65,9 @@ object NewRoutines {
                 +Lift.toHigh
                 +sequential {
                     +Delay(1.0)
-                    +Arm.toHighJunction
+                    +Arm.toRight
                 }
             }
-            +Delay(0.3)
             +score
         }
 

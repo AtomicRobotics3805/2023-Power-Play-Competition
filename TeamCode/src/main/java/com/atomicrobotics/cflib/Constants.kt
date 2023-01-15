@@ -38,6 +38,24 @@ object Constants {
         RED,
         UNKNOWN
     }
+
+    object Side {
+        val LEFT : Color
+            get() {
+                return Color.BLUE
+            }
+
+        val RIGHT : Color
+            get() {
+                return Color.RED
+            }
+
+        val UNKNOWN : Color
+            get() {
+                return Color.UNKNOWN
+            }
+    }
+
     var color = Color.UNKNOWN
     lateinit var opMode: LinearOpMode
     lateinit var drive: Driver
