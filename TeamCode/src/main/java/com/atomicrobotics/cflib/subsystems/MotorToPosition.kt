@@ -90,7 +90,7 @@ open class MotorToPosition(
         motor.targetPosition = motor.currentPosition
     }
 
-    /**
+    /**+
      * Starts by determining whether a stall check has been performed in the past 1 / savesPerSecond seconds. If not,
      * It then compares the speed from the previous check to the current speed. If there's a change of at least
      * minimumChangeForStall times, then the motor is stalled. It sends out a telemetry message and cancels the command.

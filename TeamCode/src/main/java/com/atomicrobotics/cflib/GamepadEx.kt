@@ -51,7 +51,7 @@ class GamepadEx(private val gamepad: Gamepad) {
     val controls = listOf(a, b, x, y, dpadUp, dpadDown, dpadLeft, dpadRight,
         leftBumper, rightBumper, leftTrigger, rightTrigger, leftStick, rightStick)
 
-    var secondButtonPressed = false
+    var shiftActivated = false
 
     /**
      * Updates each of the buttons with their corresponding values from the Qualcomm gamepad. The
@@ -61,18 +61,18 @@ class GamepadEx(private val gamepad: Gamepad) {
      *                constructor parameter
      */
     fun update(gamepad: Gamepad = this.gamepad) {
-        a.update(gamepad.a)
-        b.update(gamepad.b)
-        x.update(gamepad.x)
-        y.update(gamepad.y)
+        a.update(gamepad.a, shiftActivated)
+        b.update(gamepad.b, shiftActivated)
+        x.update(gamepad.x, shiftActivated)
+        y.update(gamepad.y, shiftActivated)
 
-        dpadUp.update(gamepad.dpad_up)
-        dpadDown.update(gamepad.dpad_down)
-        dpadLeft.update(gamepad.dpad_left)
-        dpadRight.update(gamepad.dpad_right)
+        dpadUp.update(gamepad.dpad_up, shiftActivated)
+        dpadDown.update(gamepad.dpad_down, shiftActivated)
+        dpadLeft.update(gamepad.dpad_left, shiftActivated)
+        dpadRight.update(gamepad.dpad_right, shiftActivated)
 
-        leftBumper.update(gamepad.left_bumper)
-        rightBumper.update(gamepad.right_bumper)
+        leftBumper.update(gamepad.left_bumper, shiftActivated)
+        rightBumper.update(gamepad.right_bumper, shiftActivated)
 
         leftTrigger.update(gamepad.left_trigger)
         rightTrigger.update(gamepad.right_trigger)
@@ -108,11 +108,11 @@ class GamepadEx(private val gamepad: Gamepad) {
      */
     class Button(private val name: String = "Unknown Button") {
 
-        var isSecondButton = false
         var down = false
         var pressed = false
         var released = false
         var toggleState = 0
+        var secondaryToggleState = 0
         var pressedCommand: (() -> Command)? = null
         var releasedCommand: (() -> Command)? = null
         var toggleCommands: List<() -> Command>? = null
@@ -126,13 +126,13 @@ class GamepadEx(private val gamepad: Gamepad) {
          * or released.
          * @param value whether the button is being held down right now
          */
-        fun update(value: Boolean) {
+        fun update(value: Boolean, shiftActivated: Boolean) {
             // Update whether or not the button is pressed, released, or down
             pressed = value && !down
             released = !value && down
             down = value
             // Run the associated commands
-            if(!isSecondButton) {
+            if(!shiftActivated) {
                 if (pressed && toggleCommands != null && toggleCommands!!.isNotEmpty()) {
                     if (toggleState >= toggleCommands!!.size) {
                         toggleState = 0
@@ -147,8 +147,18 @@ class GamepadEx(private val gamepad: Gamepad) {
                     CommandScheduler.scheduleCommand(releasedCommand!!.invoke())
                 }
             } else {
-                if (pressed) {
-
+                if (pressed && secondaryToggleCommands != null && secondaryToggleCommands!!.isNotEmpty()) {
+                    if (secondaryToggleState >= secondaryToggleCommands!!.size) {
+                        secondaryToggleState = 0
+                    }
+                    CommandScheduler.scheduleCommand(secondaryToggleCommands!![secondaryToggleState].invoke())
+                    secondaryToggleState++
+                }
+                if (pressed && secondaryPressedCommand != null) {
+                    CommandScheduler.scheduleCommand(secondaryPressedCommand!!.invoke())
+                }
+                if (released && secondaryReleasedCommand != null) {
+                    CommandScheduler.scheduleCommand(secondaryReleasedCommand!!.invoke())
                 }
             }
         }
