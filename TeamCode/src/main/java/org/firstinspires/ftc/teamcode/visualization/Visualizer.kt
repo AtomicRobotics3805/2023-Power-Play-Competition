@@ -20,12 +20,10 @@ import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
 import com.atomicrobotics.cflib.sequential
-import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.visualization.MeepMeepRobot
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 
 fun main() {
@@ -40,9 +38,16 @@ fun main() {
             sequential {
                 +Constants.drive.followTrajectory(NewTrajectoryFactory.startToCenterHighJunction)
                 +Constants.drive.followTrajectory(NewTrajectoryFactory.startCenterHighJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToStack)
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
+                // Park
+                +Constants.drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToYellowResult)
             }
         },
-        Constants.Side.RIGHT
+        Constants.Side.LEFT
     ))
     MeepMeepVisualizer.run(NewTrajectoryFactory)
 }

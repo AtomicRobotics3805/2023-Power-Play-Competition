@@ -49,12 +49,10 @@ object Constants {
             get() {
                 return Color.RED
             }
-
-        val UNKNOWN : Color
-            get() {
-                return Color.UNKNOWN
-            }
     }
+
+    val leftSide: Boolean
+        get() = (color == Side.LEFT)
 
     var color = Color.UNKNOWN
     lateinit var opMode: LinearOpMode
