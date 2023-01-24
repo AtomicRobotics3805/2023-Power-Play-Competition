@@ -29,19 +29,20 @@ object NewRoutines {
             +DisplayRobot(14.5, 15.0)
         }
 
-    val stackCycleToCenterJunction : Command
+    val stackCycleToCenterJunction : Command // OPMODE ROUTINE
         get() = parallel {
             +CustomCommand(_start = { timer.reset() })
             +TelemetryCommand(30.0, "Runtime") { timer.time().toString() }
             +sequential {
                 +OpenCVWebcam.detect
-                +preloadScoreCenterToStack
+                +preloadScoreCenter
+                +cycleStackCenter
             }
             +TelemetryCommand(30.0, "Detected Color") { OpenCVWebcam.detectedColor.toString() }
             +DisplayRobot(14.5, 15.0)
         }
 
-    val preloadScoreCenterToStack : Command
+    val preloadScoreCenter : Command
         get() = sequential {
             +parallel {
                 +Claw.close
@@ -54,6 +55,72 @@ object NewRoutines {
                 }
             }
             +score
+        }
+
+    val cycleStackCenter : Command
+        get() = sequential {
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel5
+                }
+                +drive.followTrajectory(NewTrajectoryFactory.startCenterHighJunctionToStack)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
+                        +Arm.toOtherHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +score
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(0.5)
+                    +Lift.toLevel4
+                }
+                +drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToStack)
+            }
+            +Claw.close
+            +parallel {
+                +sequential {
+                    +Delay(0.5)
+                    +parallel {
+                        +drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
+                        +Arm.toOtherHighJunction
+                    }
+                }
+                +Lift.toHigh
+            }
+            +score
+            +parallel {
+                +Arm.toForward
+                +sequential {
+                    +Delay(1.0)
+                    +Lift.toIntake
+                }
+                +centerHighJunctionToSignalResult
+            }
+            +CustomCommand(_start = { lastTime = timer.seconds() })
+            +TelemetryCommand(30.0, "Final Time") { lastTime.toString() }
+        }
+
+    val centerHighJunctionToSignalResult: Command
+        get() = sequential {
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(
+                drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToCyanResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(
+                drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToMagentaResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(
+                drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToYellowResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.UNDETECTED }, { CommandScheduler.scheduleCommand(
+                drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToCyanResult)) })
         }
 
     val preloadToStack : Command

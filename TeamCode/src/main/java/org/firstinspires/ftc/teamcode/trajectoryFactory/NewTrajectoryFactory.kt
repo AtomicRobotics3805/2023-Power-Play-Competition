@@ -46,6 +46,10 @@ object NewTrajectoryFactory : TrajectoryFactory() {
     lateinit var centerHighJunctionToStack : ParallelTrajectory
     lateinit var stackToCenterHighJunction : ParallelTrajectory
 
+    lateinit var centerHighJunctionToCyanResult: ParallelTrajectory
+    lateinit var centerHighJunctionToMagentaResult: ParallelTrajectory
+    lateinit var centerHighJunctionToYellowResult: ParallelTrajectory
+
     lateinit var highJunctionToCyanResult : ParallelTrajectory
     lateinit var highJunctionToMagentaResult : ParallelTrajectory
     lateinit var highJunctionToYellowResult : ParallelTrajectory
@@ -113,16 +117,42 @@ object NewTrajectoryFactory : TrajectoryFactory() {
             .lineToSplineHeading(Pose2d(35.0, 24.0.switch, 0.0.switchAngle.rad))
             .splineToConstantHeading(preloadCenterHighJunctionLocationRight.v, 180.0.switchAngle.rad)
             .build()
-        // 35.7, 12.5.switch
-        startCenterHighJunctionToStack =
-            if(Constants.color == Constants.Side.LEFT)
-                d.trajectoryBuilder(preloadCenterHighJunctionLocationLeft)
-                    .splineTo(stackLocationLeft.v, 0.0.switchAngle.rad)
-                    .build()
-            else
-                d.trajectoryBuilder(preloadCenterHighJunctionLocationRight)
-                    .splineTo(stackLocationRight.v, 0.0.switchAngle.rad)
-                    .build()
+        startCenterHighJunctionToStack = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(preloadCenterHighJunctionLocationLeft)
+            .splineTo(stackLocationLeft.v, 0.0.switchAngle.rad)
+            .build() else d.trajectoryBuilder(preloadCenterHighJunctionLocationRight)
+            .splineTo(stackLocationRight.v, 0.0.switchAngle.rad)
+            .build()
+        centerHighJunctionToStack = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(stackCenterHighJunctionLocationLeft)
+            .lineToConstantHeading(stackLocationLeft.v)
+            .build() else d.trajectoryBuilder(stackCenterHighJunctionLocationRight)
+            .lineToConstantHeading(stackLocationRight.v)
+            .build()
+        stackToCenterHighJunction = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(stackLocationLeft)
+            .lineToConstantHeading(stackCenterHighJunctionLocationLeft.v)
+            .build() else d.trajectoryBuilder(stackLocationRight)
+            .lineToConstantHeading(stackCenterHighJunctionLocationRight.v)
+            .build()
+
+        centerHighJunctionToCyanResult = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(
+            stackCenterHighJunctionLocationLeft)
+            .lineToLinearHeading(cyanLocationLeft)
+            .build() else d.trajectoryBuilder(stackCenterHighJunctionLocationRight)
+            .lineToLinearHeading(cyanLocationRight)
+            .build()
+
+        centerHighJunctionToMagentaResult = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(
+            stackCenterHighJunctionLocationLeft)
+            .lineToLinearHeading(magentaLocationLeft)
+            .build() else d.trajectoryBuilder(stackCenterHighJunctionLocationRight)
+            .lineToLinearHeading(magentaLocationRight)
+            .build()
+
+        centerHighJunctionToYellowResult = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(
+            stackCenterHighJunctionLocationLeft)
+            .lineToLinearHeading(yellowLocationLeft)
+            .build() else d.trajectoryBuilder(stackCenterHighJunctionLocationRight)
+            .lineToLinearHeading(yellowLocationRight)
+            .build()
 
         highJunctionToCyanResult = if(Constants.color == Constants.Side.LEFT) d.trajectoryBuilder(stackHighJunctionLocationLeft)
             .lineToLinearHeading(cyanLocationLeft)

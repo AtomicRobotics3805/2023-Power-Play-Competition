@@ -49,11 +49,6 @@ object Constants {
             get() {
                 return Color.RED
             }
-
-        val UNKNOWN : Color
-            get() {
-                return Color.UNKNOWN
-            }
     }
 
     var color = Color.UNKNOWN
