@@ -51,6 +51,9 @@ object Constants {
             }
     }
 
+    val leftSide: Boolean
+        get() = (color == Side.LEFT)
+
     var color = Color.UNKNOWN
     lateinit var opMode: LinearOpMode
     lateinit var drive: Driver
