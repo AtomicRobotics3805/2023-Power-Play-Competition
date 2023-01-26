@@ -50,7 +50,7 @@ object Lift : Subsystem {
 
     // Lift Positions
     @JvmField
-    var HIGH_JUNCTION = 30.0 // in
+    var HIGH_JUNCTION = 34.0 // in
     @JvmField
     var MEDIUM_JUNCTION = 25.0 // in
     @JvmField
@@ -58,35 +58,35 @@ object Lift : Subsystem {
     @JvmField
     var GROUND_JUNCTION = 1.5 // in
     @JvmField
-    var INTAKE_POSITION = 0.0 // in
+    var INTAKE_POSITION = 0.5 // in
     @JvmField
-    var STACK_5 = 5.0 // in
+    var STACK_5 = 5.5 // in
     @JvmField
-    var STACK_4 = 3.75 // in
+    var STACK_4 = 4.25 // in
     @JvmField
-    var STACK_3 = 2.5 // in
+    var STACK_3 = 3.0 // in
     @JvmField
-    var STACK_2 = 1.25 // in
+    var STACK_2 = 1.75 // in
     @JvmField
     var ABOVE_STACK = 14.0 // in
     @JvmField
-    var SLIGHTLY_LOWER = 27.0 // in
+    var SLIGHTLY_LOWER = 31.0 // in
 
     // Motor Information
     @JvmField
-    var DIRECTION_1 = DcMotorSimple.Direction.REVERSE
+    var DIRECTION_1 = DcMotorSimple.Direction.FORWARD
     @JvmField
     var DIRECTION_2 = DcMotorSimple.Direction.FORWARD
     @JvmField
-    var SPEED_1 = 1.0
+    var SPEED_1 = 0.7
     @JvmField
-    var SPEED_2 = 1.0
+    var SPEED_2 = 0.7
 
     // unconfigurable constants
-    private const val PULLEY_WIDTH = 0.7 // in
-    private const val COUNTS_PER_REV = 28 * 3.700000000 // NeveRest 20 orbital (really 19.2 ratio, not 20)
-    private const val DRIVE_GEAR_REDUCTION = 1.000000000 // higher value means that driven gear is slower
-    private const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (PULLEY_WIDTH * Math.PI)
+    private const val PULLEY_RADIUS = 0.6 // in
+    private const val COUNTS_PER_REV = (1.0+(46.0/17.0)) * 28.0 // GoBilda 5203 1620rpm
+    private const val DRIVE_GEAR_REDUCTION = 1.0
+    private const val COUNTS_PER_INCH = COUNTS_PER_REV * DRIVE_GEAR_REDUCTION / (2 * PULLEY_RADIUS * Math.PI)
 
     // manual control
     val start: Command
@@ -108,58 +108,58 @@ object Lift : Subsystem {
     // preset positions
     val toHigh: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (HIGH_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toMedium: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (MEDIUM_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toLow: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (LOW_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toGround: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (GROUND_JUNCTION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toIntake: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (INTAKE_POSITION * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toLevel5: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (STACK_5 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toLevel4: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (STACK_4 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toLevel3: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (STACK_3 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val toLevel2: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (STACK_2 * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val aboveStack: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (ABOVE_STACK * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
     val slightlyLower: Command
         get() = parallel {
-            +MotorToPosition(liftMotor_1, (SLIGHTLY_LOWER * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true)
-            +MotorToPosition(liftMotor_2, (SLIGHTLY_LOWER * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true)
+            +MotorToPosition(liftMotor_1, (SLIGHTLY_LOWER * COUNTS_PER_INCH).toInt(), SPEED_1, listOf(this@Lift), logData = true, kP = 0.003)
+            +MotorToPosition(liftMotor_2, (SLIGHTLY_LOWER * COUNTS_PER_INCH).toInt(), SPEED_2, listOf(this@Lift), logData = true, kP = 0.003)
         }
 
 

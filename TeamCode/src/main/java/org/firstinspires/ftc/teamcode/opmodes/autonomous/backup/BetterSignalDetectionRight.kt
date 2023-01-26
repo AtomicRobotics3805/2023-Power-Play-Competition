@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
-@Autonomous(name = "Score Preload & Detect Signal w/ Camera (Driver's right)")
+@Autonomous(name = "Low Junction Backup (Driver's right)", group = "backups")
 class BetterSignalDetectionRight : AutonomousOpMode(
     Constants.Color.RED,
     CompetitionTrajectoryFactory,

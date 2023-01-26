@@ -132,7 +132,7 @@ object NewRoutines {
                 +Lift.toHigh
                 +sequential {
                     +Delay(1.0)
-                    +Arm.toRight
+                    +Arm.toHighJunction
                 }
             }
             +score

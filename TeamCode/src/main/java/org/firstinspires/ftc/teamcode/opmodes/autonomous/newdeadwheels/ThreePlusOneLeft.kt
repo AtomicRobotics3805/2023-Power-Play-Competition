@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.OpenCVWebcam
 import org.firstinspires.ftc.teamcode.routines.NewRoutines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
 
-@Autonomous(name = "3+1 and Park (Driver's Left)")
+@Autonomous(name = "3+1 and Park (Driver's Left)", group = "competition")
 class ThreePlusOneLeft : AutonomousOpMode(
     Constants.Side.LEFT,
     NewTrajectoryFactory,
