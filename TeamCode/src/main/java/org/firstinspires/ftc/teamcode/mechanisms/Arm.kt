@@ -59,6 +59,8 @@ object Arm : Subsystem {
         get() = MoveServo(armServo, LEFT, TIME, listOf(this), true)
     val toHighJunction: Command
         get() = MoveServo(armServo, if(Constants.color == Constants.Color.BLUE) RIGHT else LEFT, TIME, listOf(this), true)
+    val toOtherHighJunction : Command
+        get() = MoveServo(armServo, if(Constants.color == Constants.Side.LEFT) LEFT else RIGHT, TIME, listOf(this), true)
 
     // servo
     private lateinit var armServo: Servo
