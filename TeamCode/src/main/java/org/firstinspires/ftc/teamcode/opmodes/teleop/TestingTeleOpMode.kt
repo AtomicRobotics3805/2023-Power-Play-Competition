@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFac
  */
 
 @TeleOp(name = "Testing TeleOp OpMode", group="Testing")
+@Disabled
 class ExampleTeleOpMode : TeleOpMode(
     ExampleControls,
     Constants.Color.UNKNOWN,

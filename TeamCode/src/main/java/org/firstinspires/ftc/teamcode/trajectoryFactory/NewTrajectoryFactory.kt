@@ -55,9 +55,9 @@ object NewTrajectoryFactory : TrajectoryFactory() {
         // POSES
         // Left side
         startPoseLeft = Pose2d(35.0, 62.75.switch, 270.0.switchAngle.rad)
-        stackLocationLeft = Pose2d(61.0, 12.25.switch, 0.0.switchAngle.rad)
+        stackLocationLeft = Pose2d(60.75, 12.15.switch, 0.0.switchAngle.rad)
         stackHighJunctionLocationLeft = Pose2d(27.0, 13.25.switch, 0.0.switchAngle.rad)
-        preloadHighJunctionLocationLeft = Pose2d(27.0, 12.0.switch, 0.0.switchAngle.rad)
+        preloadHighJunctionLocationLeft = Pose2d(27.0, 11.0.switch, 0.0.switchAngle.rad)
 
         preloadCenterHighJunctionLocationLeft = Pose2d(0.0, 9.0.switch, 0.0.switchAngle.rad)
         stackCenterHighJunctionLocationLeft = Pose2d(0.0, 10.5.switch, 0.0.switchAngle.rad)
