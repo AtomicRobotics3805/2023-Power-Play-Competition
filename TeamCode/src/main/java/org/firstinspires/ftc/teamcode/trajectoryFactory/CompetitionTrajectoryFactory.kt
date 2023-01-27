@@ -60,7 +60,7 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
 
         cyanLocationRight = Pose2d(33.5.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
         magentaLocationRight = Pose2d(10.0.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
-        yellowLocationRight = Pose2d(58.5.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
+        yellowLocationRight = Pose2d(59.5.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
 
         // TRAJECTORIES
         startToHighJunction = if(Constants.leftSide) d.trajectoryBuilder(startPoseLeft)
