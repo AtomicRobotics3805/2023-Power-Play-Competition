@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.controls.ExampleControls
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 @Disabled
 @TeleOp
@@ -17,5 +17,5 @@ class FieldCentricTest : TeleOpMode(
     drive = MecanumDrive (
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { NewTrajectoryFactory.startPoseLeft }
+    ) { CompetitionTrajectoryFactory.startPoseLeft }
 )

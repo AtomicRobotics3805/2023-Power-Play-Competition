@@ -9,17 +9,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
 @Autonomous
 @Disabled
 class DisplayRobotTest: AutonomousOpMode(
     Constants.Color.BLUE,
-    CompetitionTrajectoryFactory,
+    OldTrajectoryFactory,
     { DisplayRobot(14.5, 15.0) },
     null,
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.centeredStartPose },
+    ) { OldTrajectoryFactory.centeredStartPose },
 )

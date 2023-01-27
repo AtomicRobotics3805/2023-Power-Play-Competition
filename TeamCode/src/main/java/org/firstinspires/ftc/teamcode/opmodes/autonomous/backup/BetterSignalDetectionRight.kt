@@ -6,22 +6,21 @@ import com.atomicrobotics.cflib.opmodes.AutonomousOpMode
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
 import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.routines.Routines
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
 @Autonomous(name = "Low Junction Backup (Driver's right)", group = "backups")
 class BetterSignalDetectionRight : AutonomousOpMode(
     Constants.Color.RED,
-    CompetitionTrajectoryFactory,
+    OldTrajectoryFactory,
     { Routines.lowJunctionScoreParkInSignalZoneUsingCamera },
     { Routines.initializationRoutine },
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.centeredStartPose },
+    ) { OldTrajectoryFactory.centeredStartPose },
     Arm,
     Claw,
     Lift,

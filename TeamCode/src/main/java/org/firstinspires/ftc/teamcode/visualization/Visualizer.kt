@@ -24,30 +24,30 @@ import com.atomicrobotics.cflib.visualization.MeepMeepRobot
 import com.atomicrobotics.cflib.visualization.MeepMeepVisualizer
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 
 fun main() {
     MeepMeepVisualizer.addRobot(MeepMeepRobot(
         MecanumDrive(
             CompetitionMecanumDriveConstants,
             TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-        ) { NewTrajectoryFactory.preloadCenterHighJunctionLocationLeft },
+        ) { CompetitionTrajectoryFactory.preloadCenterHighJunctionLocationLeft },
         14.5,
         15.0,
         {
             sequential {
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.startToCenterHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.startCenterHighJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToStack)
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.stackToCenterHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.startToCenterHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.startCenterHighJunctionToStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToCenterHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerHighJunctionToStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToCenterHighJunction)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerHighJunctionToStack)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.stackToCenterHighJunction)
                 // Park
-                +Constants.drive.followTrajectory(NewTrajectoryFactory.centerHighJunctionToYellowResult)
+                +Constants.drive.followTrajectory(CompetitionTrajectoryFactory.centerHighJunctionToYellowResult)
             }
         },
         Constants.Side.LEFT
     ))
-    MeepMeepVisualizer.run(NewTrajectoryFactory)
+    MeepMeepVisualizer.run(CompetitionTrajectoryFactory)
 }

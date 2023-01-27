@@ -18,16 +18,12 @@ package org.firstinspires.ftc.teamcode.routines
 
 import com.atomicrobotics.cflib.*
 import com.atomicrobotics.cflib.Constants.drive
-import com.atomicrobotics.cflib.driving.Turn
 import com.atomicrobotics.cflib.subsystems.DisplayRobot
-import com.atomicrobotics.cflib.trajectories.switchColorAngle
-import com.atomicrobotics.cflib.trajectories.toRadians
 import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
 import com.atomicrobotics.cflib.utilCommands.Delay
 import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
-import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.mechanisms.*
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
 /**
  * This class is an example of how to create routines. Routines are essentially just groups of
@@ -52,12 +48,12 @@ object Routines {
             +Delay(1.0)
             +parallel {
                 +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.startToLowJunction)
+                +drive.followTrajectory(OldTrajectoryFactory.startToLowJunction)
             }
             +Claw.open
             +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToSignalRight)
+                +drive.followTrajectory(OldTrajectoryFactory.lowJunctionToSignalRight)
                 +Lift.toIntake
             }
             +ColorSensor.detect
@@ -75,12 +71,12 @@ object Routines {
             +Delay(1.0)
             +parallel {
                 +Lift.toLow
-                +drive.followTrajectory(CompetitionTrajectoryFactory.startToLowJunction)
+                +drive.followTrajectory(OldTrajectoryFactory.startToLowJunction)
             }
             +Claw.open
             +Delay(0.25)
             +parallel {
-                +drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToSignalLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.lowJunctionToSignalLeft)
                 +Lift.toIntake
             }
             +ColorSensor.detect
@@ -97,13 +93,13 @@ object Routines {
                     +Claw.close
                     +Arm.toForward
                     +Lift.toLow
-                    +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToLowJunction)
+                    +drive.followTrajectory(OldTrajectoryFactory.centerStartToLowJunction)
                 }
                 +Claw.open
                 +Lift.toIntake
-                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToCyanResult)) })
-                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToMagentaResult)) })
-                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.lowJunctionToYellowResult)) })
+                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.lowJunctionToCyanResult)) })
+                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.lowJunctionToMagentaResult)) })
+                +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.lowJunctionToYellowResult)) })
             }
             +DisplayRobot(14.5, 15.0)
         }
@@ -117,17 +113,17 @@ object Routines {
 
     val blueRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultBlue)
+            +drive.followTrajectory(OldTrajectoryFactory.signalResultBlue)
         }
 
     val redRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultRed)
+            +drive.followTrajectory(OldTrajectoryFactory.signalResultRed)
         }
 
     val greenRoutine: Command
         get() = sequential {
-            +drive.followTrajectory(CompetitionTrajectoryFactory.signalResultGreen)
+            +drive.followTrajectory(OldTrajectoryFactory.signalResultGreen)
         }
 
     val scorePreloadInHighJunctionToStartStackRoutine: Command
@@ -135,7 +131,7 @@ object Routines {
             +parallel {
                 +Claw.close
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.centerStartToHighJunctionLeft)
                 +Lift.toHigh
                 +sequential {
                     +Delay(0.5)
@@ -147,7 +143,7 @@ object Routines {
             +parallel {
                 +Claw.close
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.centerStartToHighJunctionRight)
+                +drive.followTrajectory(OldTrajectoryFactory.centerStartToHighJunctionRight)
                 +Lift.toHigh
                 +sequential {
                     +Delay(0.5)
@@ -186,14 +182,14 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel5
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.startHighJunctionToStackLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.startHighJunctionToStackLeft)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toHighJunction
                     }
                 }
@@ -206,14 +202,14 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel4
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.highJunctionToStackLeft)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toHighJunction
                     }
                 }
@@ -226,14 +222,14 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel3
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.highJunctionToStackLeft)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toHighJunction
                     }
                 }
@@ -258,14 +254,14 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel5
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.startHighJunctionToStackRight)
+                +drive.followTrajectory(OldTrajectoryFactory.startHighJunctionToStackRight)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionRight)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionRight)
                         +Arm.toHighJunction
                     }
                 }
@@ -278,14 +274,14 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel4
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackRight)
+                +drive.followTrajectory(OldTrajectoryFactory.highJunctionToStackRight)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionRight)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionRight)
                         +Arm.toHighJunction
                     }
                 }
@@ -298,14 +294,14 @@ object Routines {
                     +Delay(0.5)
                     +Lift.toLevel3
                 }
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackRight)
+                +drive.followTrajectory(OldTrajectoryFactory.highJunctionToStackRight)
             }
             +Claw.close
             +parallel {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionRight)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionRight)
                         +Arm.toHighJunction
                     }
                 }
@@ -325,10 +321,10 @@ object Routines {
     val highJunctionToSignalResult: Command
         get() = sequential {
             //+ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.BLUE}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToMagentaResult))}, {CommandScheduler.scheduleCommand(ConditionalCommand({ColorSensor.detectedColor == ColorSensor.SleeveColor.GREEN}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult))}, {CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult))}))})
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToMagentaResult)) })
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToYellowResult)) })
-            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.UNDETECTED }, { CommandScheduler.scheduleCommand(drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToCyanResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.CYAN }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.highJunctionToCyanResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.MAGENTA }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.highJunctionToMagentaResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.YELLOW }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.highJunctionToYellowResult)) })
+            +ConditionalCommand({ OpenCVWebcam.detectedColor == PowerPlayPipeline.SleeveColor.UNDETECTED }, { CommandScheduler.scheduleCommand(drive.followTrajectory(OldTrajectoryFactory.highJunctionToCyanResult)) })
             //+Delay(2.0)
             //+drive.turn(270.0.switchColorAngle.toRadians, Turn.TurnType.ABSOLUTE)
         }
@@ -346,7 +342,7 @@ object Routines {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toRight
                     }
                 }
@@ -356,7 +352,7 @@ object Routines {
             +Delay(0.25)
             +parallel {
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.highJunctionToStackLeft)
                 +Lift.toLevel4
             }
             +Claw.close
@@ -365,7 +361,7 @@ object Routines {
                 +sequential {
                     +Delay(0.5)
                     +parallel {
-                        +drive.followTrajectory(CompetitionTrajectoryFactory.stackToHighJunctionLeft)
+                        +drive.followTrajectory(OldTrajectoryFactory.stackToHighJunctionLeft)
                         +Arm.toRight
                     }
                 }
@@ -375,7 +371,7 @@ object Routines {
             +Delay(0.25)
             +parallel {
                 +Arm.toForward
-                +drive.followTrajectory(CompetitionTrajectoryFactory.highJunctionToStackLeft)
+                +drive.followTrajectory(OldTrajectoryFactory.highJunctionToStackLeft)
             }
         }
 }

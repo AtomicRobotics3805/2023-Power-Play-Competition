@@ -10,11 +10,8 @@ import com.atomicrobotics.cflib.opmodes.TeleOpMode
 import org.firstinspires.ftc.teamcode.controls.ExampleControls
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.mechanisms.Arm
-import org.firstinspires.ftc.teamcode.mechanisms.Claw
-import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.routines.Routines
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
 /**
  * This class is an example of how you can create an TeleOp OpMode. Everything is handled by the
@@ -26,7 +23,7 @@ import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFac
 class ExampleTeleOpMode : TeleOpMode(
     ExampleControls,
     Constants.Color.UNKNOWN,
-    CompetitionTrajectoryFactory,
+    OldTrajectoryFactory,
     { Routines.teleOpStartRoutine },
     null,
     MecanumDrive(

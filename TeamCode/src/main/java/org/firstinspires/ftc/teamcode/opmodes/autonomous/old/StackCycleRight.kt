@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.autonomous
+package org.firstinspires.ftc.teamcode.opmodes.autonomous.old
 
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
@@ -10,19 +10,19 @@ import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.routines.Routines
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
 @Disabled
-@Autonomous(name = "3-Cone Stack Cycle & Park (Driver's Left)")
-class StackCycleLeft : AutonomousOpMode(
-    Constants.Color.BLUE,
-    CompetitionTrajectoryFactory,
+@Autonomous(name = "3-Cone Stack Cycle & Park (Driver's Right)")
+class StackCycleRight : AutonomousOpMode(
+    Constants.Color.RED,
+    OldTrajectoryFactory,
     { Routines.fiftyPointRoutine },
     null,
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.centeredStartPose },
+    ) { OldTrajectoryFactory.centeredStartPose },
     Arm,
     Claw,
     Lift,

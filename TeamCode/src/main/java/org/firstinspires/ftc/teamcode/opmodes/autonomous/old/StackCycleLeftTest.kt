@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.autonomous.newdeadwheels
+package org.firstinspires.ftc.teamcode.opmodes.autonomous.old
 
 import com.atomicrobotics.cflib.Constants
 import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
@@ -8,24 +8,21 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
 import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.mechanisms.Arm
-import org.firstinspires.ftc.teamcode.mechanisms.Claw
-import org.firstinspires.ftc.teamcode.mechanisms.Lift
-import org.firstinspires.ftc.teamcode.mechanisms.OpenCVWebcam
-import org.firstinspires.ftc.teamcode.routines.NewRoutines
-import org.firstinspires.ftc.teamcode.trajectoryFactory.NewTrajectoryFactory
+import org.firstinspires.ftc.teamcode.mechanisms.*
+import org.firstinspires.ftc.teamcode.routines.Routines
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
-@Autonomous(name = "Center High Junction Cycle (Driver's Right)")
 @Disabled
-class CenterStackCycleRight : AutonomousOpMode(
-    Constants.Side.RIGHT,
-    NewTrajectoryFactory,
-    { NewRoutines.stackCycleToCenterJunction },
+@Autonomous(name = "Stack Cycle Test (Driver's Left)")
+class StackCycleLeftTest : AutonomousOpMode(
+    Constants.Color.BLUE,
+    OldTrajectoryFactory,
+    { Routines.fiftyPointRoutine },
     null,
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { NewTrajectoryFactory.startPoseLeft },
+    ) { OldTrajectoryFactory.centeredStartPose },
     Arm,
     Claw,
     Lift,

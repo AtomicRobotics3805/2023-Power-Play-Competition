@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.autonomous
+package org.firstinspires.ftc.teamcode.opmodes.autonomous.old
 
 import com.atomicrobotics.cflib.Constants
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -13,19 +13,19 @@ import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.mechanisms.Arm
 import org.firstinspires.ftc.teamcode.mechanisms.ColorSensor
 import org.firstinspires.ftc.teamcode.routines.Routines
-import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
+import org.firstinspires.ftc.teamcode.trajectoryFactory.OldTrajectoryFactory
 
 @Disabled
 @Autonomous(name = "Score Preload & Detect Signal (Driver's left)")
 class BasicSignalDetectionLeft : AutonomousOpMode(
     Constants.Color.BLUE,
-    CompetitionTrajectoryFactory,
+    OldTrajectoryFactory,
     { Routines.lowJunctionScoreParkInSignalZoneLeft },
     { Routines.initializationRoutine },
     MecanumDrive(
         CompetitionMecanumDriveConstants,
         TwoWheelOdometryLocalizer(CompetitionOdometryConstants())
-    ) { CompetitionTrajectoryFactory.legalStartPose },
+    ) { OldTrajectoryFactory.legalStartPose },
     Arm,
     Claw,
     Lift,
