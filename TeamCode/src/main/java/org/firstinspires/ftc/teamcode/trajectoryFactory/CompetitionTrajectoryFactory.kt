@@ -55,12 +55,12 @@ object CompetitionTrajectoryFactory : TrajectoryFactory() {
         // Right side
         startPoseRight = Pose2d(35.0, 62.75.switch, 270.0.switchAngle.rad)
         stackLocationRight = Pose2d(59.0, 12.25.switch, 0.0.switchAngle.rad)
-        stackHighJunctionLocationRight = Pose2d(26.0, 10.25.switch, 0.0.switchAngle.rad)
+        stackHighJunctionLocationRight = Pose2d(26.0, 9.5.switch, 0.0.switchAngle.rad)
         preloadHighJunctionLocationRight = Pose2d(25.5, 9.0.switch, 0.0.switchAngle.rad)
 
-        cyanLocationRight = Pose2d(33.5, 14.0.switch, 270.0.switchAngle.rad)
-        magentaLocationRight = Pose2d(10.0, 14.0.switch, 270.0.switchAngle.rad)
-        yellowLocationRight = Pose2d(58.5, 14.0.switch, 270.0.switchAngle.rad)
+        cyanLocationRight = Pose2d(33.5.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
+        magentaLocationRight = Pose2d(10.0.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
+        yellowLocationRight = Pose2d(58.5.flipAlongX36, 14.0.switch, 270.0.switchAngle.rad)
 
         // TRAJECTORIES
         startToHighJunction = if(Constants.leftSide) d.trajectoryBuilder(startPoseLeft)
