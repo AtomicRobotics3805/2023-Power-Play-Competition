@@ -37,20 +37,19 @@ class DistanceSensorLocalizer(val constants: DistanceSensorLocalizerConstants) :
     }
 
     override fun update() {
-        val parallelDistance = constants.voltageToInches(parallelDistanceSensor.voltage) *
-                if (constants.REVERSE_PARALLEL_SENSOR) -1 else 1
-        val perpendicularDistance = constants.voltageToInches(perpendicularDistanceSensor.voltage) *
-                if (constants.REVERSE_PERPENDICULAR_SENSOR) -1 else 1
+        val parallelDistance = constants.voltageToInches(parallelDistanceSensor.voltage)
+        val perpendicularDistance = constants.voltageToInches(perpendicularDistanceSensor.voltage)
+
         val canSeeHorizontalWall = canSeeHorizontalWall()
         if (canSeeHorizontalWall.first xor canSeeHorizontalWall.second) {
             val xPosition = (if (canSeeHorizontalWall.first)
                 parallelDistance * sin(drive.rawExternalHeading) else
-                perpendicularDistance * cos(drive.rawExternalHeading)) +
-                -constants.HALF_FIELD_SIZE * sign(drive.rawExternalHeading) * sign(parallelDistance)
+                perpendicularDistance * cos(drive.rawExternalHeading)) -
+                    constants.HALF_FIELD_SIZE * sign(drive.rawExternalHeading) * sign(parallelDistance)
             val yPosition = (if (canSeeHorizontalWall.second)
                 parallelDistance * sin(drive.rawExternalHeading) else
-                perpendicularDistance * cos(drive.rawExternalHeading)) +
-                    constants.HALF_FIELD_SIZE * -sign(drive.rawExternalHeading) * sign(perpendicularDistance)
+                perpendicularDistance * cos(drive.rawExternalHeading)) -
+                    constants.HALF_FIELD_SIZE * sign(drive.rawExternalHeading) * sign(perpendicularDistance)
             val newPose = Pose2d(xPosition, yPosition, drive.rawExternalHeading)
             if (timer != null) {
                 _poseVelocity = (newPose - _poseEstimate) / timer!!.seconds()
