@@ -16,16 +16,12 @@
 */
 package org.firstinspires.ftc.teamcode.routines
 
-import com.atomicrobotics.cflib.*
-import com.atomicrobotics.cflib.Constants.drive
-import com.atomicrobotics.cflib.driving.Turn
-import com.atomicrobotics.cflib.subsystems.DisplayRobot
-import com.atomicrobotics.cflib.trajectories.switchColorAngle
-import com.atomicrobotics.cflib.trajectories.toRadians
-import com.atomicrobotics.cflib.utilCommands.ConditionalCommand
-import com.atomicrobotics.cflib.utilCommands.Delay
-import com.atomicrobotics.cflib.utilCommands.TelemetryCommand
-import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
+import com.atomicrobotics.unused.*
+import com.atomicrobotics.unused.Constants.drive
+import com.atomicrobotics.unused.subsystems.DisplayRobot
+import com.atomicrobotics.unused.utilCommands.ConditionalCommand
+import com.atomicrobotics.unused.utilCommands.Delay
+import com.atomicrobotics.unused.utilCommands.TelemetryCommand
 import org.firstinspires.ftc.teamcode.mechanisms.*
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 

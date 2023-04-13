@@ -1,18 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.atomicrobotics.cflib.Constants
-import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
-import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
-import com.atomicrobotics.cflib.opmodes.TeleOpMode
+import com.atomicrobotics.unused.Constants
+import com.atomicrobotics.unused.driving.drivers.MecanumDrive
+import com.atomicrobotics.unused.driving.localizers.TwoWheelOdometryLocalizer
+import com.atomicrobotics.unused.opmodes.TeleOpMode
 import org.firstinspires.ftc.teamcode.controls.ExampleControls
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
-import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
-import org.firstinspires.ftc.teamcode.mechanisms.Arm
-import org.firstinspires.ftc.teamcode.mechanisms.Claw
-import org.firstinspires.ftc.teamcode.mechanisms.Lift
+import com.atomicrobotics.unused.trajectories.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.routines.Routines
 import org.firstinspires.ftc.teamcode.trajectoryFactory.CompetitionTrajectoryFactory
 

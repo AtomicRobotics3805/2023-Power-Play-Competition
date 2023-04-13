@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.trajectoryFactory
 
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.atomicrobotics.cflib.Constants
-import com.atomicrobotics.cflib.trajectories.*
-import com.atomicrobotics.cflib.Constants.drive as d
+import com.atomicrobotics.unused.Constants
+import com.atomicrobotics.unused.trajectories.*
+import com.atomicrobotics.unused.Constants.drive as d
 
 @Config
 object NewTrajectoryFactory : TrajectoryFactory() {

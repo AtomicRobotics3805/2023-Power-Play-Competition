@@ -16,11 +16,9 @@
 */
 package org.firstinspires.ftc.teamcode.controls
 
-import com.atomicrobotics.cflib.CommandScheduler
-import com.atomicrobotics.cflib.Constants
-import com.atomicrobotics.cflib.controls.Controls
-import org.firstinspires.ftc.teamcode.mechanisms.Arm
-import org.firstinspires.ftc.teamcode.mechanisms.Claw
+import com.atomicrobotics.unused.CommandScheduler
+import com.atomicrobotics.unused.Constants
+import com.atomicrobotics.unused.controls.Controls
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
 
 /**

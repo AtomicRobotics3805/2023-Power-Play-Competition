@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous
 
-import com.atomicrobotics.cflib.Constants
+import com.atomicrobotics.unused.Constants
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import com.atomicrobotics.cflib.opmodes.AutonomousOpMode
+import com.atomicrobotics.unused.opmodes.AutonomousOpMode
 import org.firstinspires.ftc.teamcode.drive.CompetitionMecanumDriveConstants
-import com.atomicrobotics.cflib.driving.drivers.MecanumDrive
-import com.atomicrobotics.cflib.driving.localizers.TwoWheelOdometryLocalizer
+import com.atomicrobotics.unused.driving.drivers.MecanumDrive
+import com.atomicrobotics.unused.driving.localizers.TwoWheelOdometryLocalizer
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
-import org.firstinspires.ftc.teamcode.localizers.CompetitionOdometryConstants
+import com.atomicrobotics.unused.trajectories.localizers.CompetitionOdometryConstants
 import org.firstinspires.ftc.teamcode.mechanisms.Claw
 import org.firstinspires.ftc.teamcode.mechanisms.Lift
 import org.firstinspires.ftc.teamcode.mechanisms.Arm
